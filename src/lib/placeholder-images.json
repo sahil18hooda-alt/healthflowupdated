@@ -1,3 +1,40 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "doctor-1",
+      "description": "A friendly male doctor in his 40s.",
+      "imageUrl": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxJbmRpYW4lMjBkb2N0b3J8ZW58MHx8fHwxNzU5MDY5MDQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Indian doctor"
+    },
+    {
+      "id": "doctor-2",
+      "description": "A compassionate female doctor in her 30s.",
+      "imageUrl": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxJbmRpYW4lMjBkb2N0b3J8ZW58MHx8fHwxNzU5MDY5MDQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Indian doctor"
+    },
+    {
+      "id": "doctor-3",
+      "description": "An experienced senior male doctor.",
+      "imageUrl": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxJbmRpYW4lMjBkb2N0b3J8ZW58MHx8fHwxNzU5MDY5MDQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Indian doctor"
+    },
+    {
+      "id": "doctor-4",
+      "description": "A young, energetic female doctor.",
+      "imageUrl": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxJbmRpYW4lMjBkb2N0b3J8ZW58MHx8fHwxNzU5MDY5MDQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Indian doctor"
+    },
+    {
+      "id": "doctor-5",
+      "description": "A male doctor with glasses, smiling.",
+      "imageUrl": "https://images.unsplash.com/photo-1612636322033-f48f76c34bab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxJbmRpYW4lMjBkb2N0b3J8ZW58MHx8fHwxNzU5MDY5MDQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Indian doctor"
+    },
+    {
+      "id": "doctor-6",
+      "description": "A female surgeon in scrubs.",
+      "imageUrl": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxJbmRpYW4lMjBkb2N0b3J8ZW58MHx8fHwxNzU5MDY5MDQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Indian doctor"
+    }
+  ]
 }
