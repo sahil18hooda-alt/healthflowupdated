@@ -9,13 +9,15 @@ import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { mockDoctors, mockPatientAppointments, mockEmployeeAppointments } from '@/lib/mock-data';
+import { mockDoctors, mockPatientAppointments, mockEmployeeAppointments, addAppointmentRequest, mockAppointmentRequests } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon, Clock, Hospital, Users, Video } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, Hospital, Users, Video, Bell } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useToast } from '@/hooks/use-toast';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 const appointmentFormSchema = z.object({
   doctor: z.string().min(1, 'Please select a doctor.'),
@@ -46,13 +48,20 @@ const AppointmentCard = ({ appointment, role }: { appointment: typeof mockPatien
 );
 
 function PatientAppointments() {
+    const { user } = useAuth();
+    const { toast } = useToast();
     const form = useForm<z.infer<typeof appointmentFormSchema>>({
         resolver: zodResolver(appointmentFormSchema),
     });
 
     function onSubmit(data: z.infer<typeof appointmentFormSchema>) {
-        console.log(data);
-        alert('Appointment booked successfully! (See console for details)');
+        if(!user) return;
+        addAppointmentRequest(data, user.name);
+        toast({
+            title: 'Request Sent!',
+            description: 'Your appointment request has been sent to the doctor for approval.',
+        });
+        form.reset();
     }
   return (
     <TabsContent value="book">
@@ -146,7 +155,7 @@ function PatientAppointments() {
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Book Appointment</Button>
+                        <Button type="submit">Send Request</Button>
                     </form>
                 </Form>
             </CardContent>
@@ -154,6 +163,54 @@ function PatientAppointments() {
     </TabsContent>
   );
 }
+
+function PatientRequests() {
+    const { user } = useAuth();
+    const userRequests = mockAppointmentRequests.filter(req => req.patientName === user?.name);
+
+    return (
+        <TabsContent value="requests">
+            <Card>
+                <CardHeader>
+                    <CardTitle>My Appointment Requests</CardTitle>
+                    <CardDescription>Here is the status of your recent appointment requests.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Doctor</TableHead>
+                                <TableHead>Date</TableHead>
+                                <TableHead>Time</TableHead>
+                                <TableHead>Type</TableHead>
+                                <TableHead>Status</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {userRequests.map((request) => (
+                                <TableRow key={request.id}>
+                                    <TableCell>{request.doctor}</TableCell>
+                                    <TableCell>{format(new Date(request.date), 'MMM dd, yyyy')}</TableCell>
+                                    <TableCell>{request.time}</TableCell>
+                                    <TableCell>{request.type}</TableCell>
+                                    <TableCell>
+                                        <span className={cn('px-2 py-1 text-xs font-semibold rounded-full', 
+                                            request.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
+                                            request.status === 'Accepted' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                                        )}>
+                                            {request.status}
+                                        </span>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
+        </TabsContent>
+    );
+}
+
 
 export default function AppointmentsPage() {
     const { user } = useAuth();
@@ -172,6 +229,7 @@ export default function AppointmentsPage() {
             <TabsTrigger value="schedule">
                 {user?.role === 'patient' ? 'My Appointments' : 'Your Schedule'}
             </TabsTrigger>
+            {user?.role === 'patient' && <TabsTrigger value="requests">My Requests</TabsTrigger>}
           {user?.role === 'patient' && <TabsTrigger value="book">Book New</TabsTrigger>}
         </TabsList>
         <TabsContent value="schedule">
@@ -179,6 +237,7 @@ export default function AppointmentsPage() {
                 {appointments.map(app => <AppointmentCard key={app.id} appointment={app} role={user!.role} />)}
             </div>
         </TabsContent>
+        {user?.role === 'patient' && <PatientRequests />}
         {user?.role === 'patient' && <PatientAppointments />}
       </Tabs>
     </div>

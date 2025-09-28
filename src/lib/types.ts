@@ -2,7 +2,7 @@ export type UserRole = 'patient' | 'employee';
 
 export type User = {
   id: string;
-  name: string;
+  name:string;
   email: string;
   role: UserRole;
 };
@@ -32,6 +32,17 @@ export type Appointment = {
   type: 'Hospital' | 'Online';
   status: 'Upcoming' | 'Completed' | 'Cancelled';
 };
+
+export type AppointmentRequest = {
+  id: string;
+  doctor: string;
+  date: Date;
+  time: string;
+  type: 'Hospital' | 'Online';
+  patientName: string;
+  status: 'Pending' | 'Accepted' | 'Declined';
+};
+
 
 export type AttendanceRecord = {
   id: string;

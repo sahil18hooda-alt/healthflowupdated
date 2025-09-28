@@ -1,4 +1,4 @@
-import type { Doctor, HospitalReview, Appointment, AttendanceRecord } from './types';
+import type { Doctor, HospitalReview, Appointment, AttendanceRecord, AppointmentRequest } from './types';
 
 export const mockDoctors: Doctor[] = [
   {
@@ -159,3 +159,63 @@ export const mockAttendance: AttendanceRecord[] = [
         status: 'Absent',
     },
 ];
+
+export let mockAppointmentRequests: AppointmentRequest[] = [
+    {
+      id: 'req1',
+      doctor: 'Dr. Anjali Sharma',
+      date: new Date('2024-08-20'),
+      time: '10:00 AM',
+      type: 'Hospital',
+      patientName: 'Ravi Kumar',
+      status: 'Pending',
+    },
+    {
+      id: 'req2',
+      doctor: 'Dr. Vikram Singh',
+      date: new Date('2024-08-21'),
+      time: '11:30 AM',
+      type: 'Online',
+      patientName: 'Sunita Devi',
+      status: 'Pending',
+    },
+  ];
+  
+export const addAppointmentRequest = (request: Omit<AppointmentRequest, 'id' | 'status' | 'patientName'>, patientName: string) => {
+    const newRequest: AppointmentRequest = {
+        ...request,
+        id: `req${mockAppointmentRequests.length + 1}`,
+        status: 'Pending',
+        patientName,
+    };
+    mockAppointmentRequests.push(newRequest);
+    return newRequest;
+}
+
+export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 'Declined') => {
+    const request = mockAppointmentRequests.find(req => req.id === id);
+    if(request) {
+        request.status = status;
+        if (status === 'Accepted') {
+            const newAppointment: Appointment = {
+                id: `app${mockPatientAppointments.length + 1}`,
+                doctorName: request.doctor,
+                patientName: request.patientName,
+                date: request.date.toISOString().split('T')[0],
+                time: request.time,
+                type: request.type,
+                status: 'Upcoming'
+            };
+            if(request.patientName === 'Patient Zero') { // Assuming 'Patient Zero' is the current logged-in patient for mock
+                mockPatientAppointments.push(newAppointment);
+            }
+            // For employee, it's a bit more complex, for now we add it to employee's list if their name matches.
+            // In a real app, this would be based on doctor's ID.
+            if(request.doctor === 'Dr. Employee') {
+                mockEmployeeAppointments.push(newAppointment);
+            }
+
+        }
+    }
+    return request;
+};

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User } from 'lucide-react';
+import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell } from 'lucide-react';
 
 import {
   Sidebar,
@@ -24,6 +24,7 @@ const patientNavItems = [
 const employeeNavItems = [
   { href: '/dashboard', icon: <LayoutDashboard />, label: 'Dashboard' },
   { href: '/appointments', icon: <Calendar />, label: 'Appointments' },
+  { href: '/requests', icon: <Bell />, label: 'Requests' },
   { href: '/attendance', icon: <Clock />, label: 'Attendance' },
 ];
 
