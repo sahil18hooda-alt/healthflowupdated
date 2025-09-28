@@ -1,11 +1,14 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+'use client';
+
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Calendar, Pill, Stethoscope } from 'lucide-react';
+import Link from 'next/link';
 
 const QuickLink = ({ icon, title, href }: { icon: React.ReactNode, title: string, href: string }) => (
-    <a href={href} className="flex flex-col items-center justify-center gap-2 rounded-lg bg-accent/50 p-4 text-center transition-colors hover:bg-accent">
+    <Link href={href} className="flex flex-col items-center justify-center gap-2 rounded-lg bg-accent/10 p-4 text-center transition-colors hover:bg-accent/20">
         <div className="rounded-full bg-background p-3">{icon}</div>
-        <span className="text-sm font-medium">{title}</span>
-    </a>
+        <span className="text-sm font-medium text-foreground">{title}</span>
+    </Link>
 );
 
 export default function PatientDashboard({ name }: { name: string }) {
@@ -44,6 +47,7 @@ export default function PatientDashboard({ name }: { name: string }) {
         <Card className="flex flex-col">
           <CardHeader>
             <CardTitle>Quick Links</CardTitle>
+            <CardDescription>Your health shortcuts</CardDescription>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-4">
             <QuickLink icon={<Calendar className="h-6 w-6 text-primary" />} title="Book Appointment" href="/appointments" />
