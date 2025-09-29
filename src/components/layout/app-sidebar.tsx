@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot, Syringe } from 'lucide-react';
+import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot } from 'lucide-react';
 
 import {
   Accordion,
@@ -28,7 +28,6 @@ const patientNavGroups = [
         title: 'Health Tools',
         items: [
             { href: '/symptom-analyzer', icon: <Bot />, label: 'Symptom Analyzer' },
-            { href: '/drug-interaction-checker', icon: <Syringe />, label: 'Drug Interaction' },
         ]
     },
     {
