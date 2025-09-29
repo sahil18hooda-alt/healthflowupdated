@@ -24,7 +24,7 @@ export type HospitalReview = {
 };
 
 export type Appointment = {
-  id: string;
+  id:string;
   doctorName: string;
   patientName: string;
   date: string;
@@ -32,6 +32,7 @@ export type Appointment = {
   type: 'Hospital' | 'Online';
   status: 'Upcoming' | 'Completed' | 'Cancelled';
   meetingLink?: string;
+  problemSummary?: string;
 };
 
 export type AppointmentRequest = {
@@ -42,6 +43,9 @@ export type AppointmentRequest = {
   type: 'Hospital' | 'Online';
   patientName: string;
   status: 'Pending' | 'Accepted' | 'Declined';
+  problemDescription?: string;
+  fileDataUri?: string;
+  problemSummary?: string;
 };
 
 

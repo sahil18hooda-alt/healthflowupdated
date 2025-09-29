@@ -177,6 +177,8 @@ const initialAppointmentRequests: AppointmentRequest[] = [
       type: 'Hospital',
       patientName: 'Ravi Kumar',
       status: 'Pending',
+      problemDescription: 'I have been having chest pains for the last two days. It gets worse when I walk.',
+      problemSummary: 'Patient reports chest pain for two days, aggravated by walking.'
     },
     {
       id: 'req2',
@@ -186,6 +188,8 @@ const initialAppointmentRequests: AppointmentRequest[] = [
       type: 'Online',
       patientName: 'Sunita Devi',
       status: 'Pending',
+      problemDescription: 'I need a follow up on my recent MRI scan for my migraines.',
+      problemSummary: 'Patient requests a follow-up appointment to discuss recent MRI results for migraines.'
     },
   ];
 
@@ -223,9 +227,8 @@ export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 
     const requestIndex = requests.findIndex(req => req.id === id);
 
     if(requestIndex > -1) {
-        requests[requestIndex].status = status;
-        
         const request = requests[requestIndex];
+        request.status = status;
         
         if (status === 'Accepted') {
             const allAppointments = getStoredData<Appointment[]>('allAppointments', [...initialPatientAppointments, ...initialEmployeeAppointments]);
@@ -236,7 +239,8 @@ export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 
                 date: request.date.toISOString().split('T')[0],
                 time: request.time,
                 type: request.type,
-                status: 'Upcoming'
+                status: 'Upcoming',
+                problemSummary: request.problemSummary,
             };
             
             if (newAppointment.type === 'Online') {
@@ -247,10 +251,7 @@ export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 
             setStoredData('allAppointments', [...allAppointments, newAppointment]);
         }
         
-        // Remove the processed request from the list
-        const updatedRequests = requests.filter(req => req.id !== id);
-        // Add the updated request back to the top with its new status
-        setStoredData('appointmentRequests', [{...requests[requestIndex], status}, ...updatedRequests]);
+        setStoredData('appointmentRequests', requests);
         
         return requests[requestIndex];
     }

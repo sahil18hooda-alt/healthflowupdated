@@ -6,7 +6,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -15,7 +15,7 @@ import { mockDoctors, getPatientAppointments, getEmployeeAppointments, addAppoin
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon, Clock, Hospital, Users, Video, Bell, Link as LinkIcon } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, Hospital, Users, Video, Bell, Link as LinkIcon, Paperclip, Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
@@ -23,12 +23,16 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { AppointmentRequest, Appointment } from '@/lib/types';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { Textarea } from '@/components/ui/textarea';
+import { inquiryTriage } from '@/ai/flows/inquiry-triage-flow';
 
 const appointmentFormSchema = z.object({
   doctor: z.string().min(1, 'Please select a doctor.'),
   date: z.date({ required_error: 'A date is required.' }),
   time: z.string().min(1, 'Please select a time slot.'),
   type: z.enum(['Hospital', 'Online']),
+  problemDescription: z.string().optional(),
+  file: z.any().optional(),
 });
 
 const AppointmentCard = ({ appointment, role }: { appointment: Appointment, role: 'patient' | 'employee' }) => (
@@ -48,6 +52,12 @@ const AppointmentCard = ({ appointment, role }: { appointment: Appointment, role
                 <span className={cn('h-2 w-2 rounded-full', appointment.status === 'Upcoming' ? 'bg-green-500' : 'bg-gray-400')}></span>
                 <span>{appointment.status}</span>
              </div>
+             {appointment.problemSummary && (
+                <div className="text-xs text-muted-foreground pt-2 border-t mt-2">
+                    <p className="font-bold">Symptom Summary:</p>
+                    <p className="italic">"{appointment.problemSummary}"</p>
+                </div>
+             )}
         </CardContent>
         {appointment.type === 'Online' && appointment.meetingLink && appointment.status === 'Upcoming' && (
             <CardFooter>
@@ -65,19 +75,67 @@ const AppointmentCard = ({ appointment, role }: { appointment: Appointment, role
 function PatientAppointments({ onAppointmentRequest }: { onAppointmentRequest: (req: AppointmentRequest) => void }) {
     const { user } = useAuth();
     const { toast } = useToast();
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const form = useForm<z.infer<typeof appointmentFormSchema>>({
         resolver: zodResolver(appointmentFormSchema),
     });
 
-    function onSubmit(data: z.infer<typeof appointmentFormSchema>) {
+    const fileRef = form.register('file');
+
+    const readFileAsDataURL = (file: File): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    };
+
+    async function onSubmit(data: z.infer<typeof appointmentFormSchema>) {
         if(!user) return;
-        const newRequest = addAppointmentRequest(data, user.name);
+        setIsSubmitting(true);
+
+        let fileDataUri: string | undefined = undefined;
+        if (data.file && data.file[0]) {
+            try {
+                fileDataUri = await readFileAsDataURL(data.file[0]);
+            } catch (error) {
+                console.error("Error reading file", error);
+                toast({ title: "Error", description: "Could not read the uploaded file.", variant: "destructive" });
+                setIsSubmitting(false);
+                return;
+            }
+        }
+        
+        let summary: string | undefined;
+        if(data.problemDescription) {
+            try {
+                const triageResult = await inquiryTriage({ message: data.problemDescription, fileDataUri: fileDataUri });
+                summary = triageResult.summary;
+            } catch (error) {
+                console.error("Error with AI summary", error);
+                // Non-fatal, we can still proceed
+            }
+        }
+
+
+        const newRequest = addAppointmentRequest({
+            doctor: data.doctor,
+            date: data.date,
+            time: data.time,
+            type: data.type,
+            problemDescription: data.problemDescription,
+            fileDataUri: fileDataUri,
+            problemSummary: summary
+        }, user.name);
+
         onAppointmentRequest(newRequest);
         toast({
             title: 'Request Sent!',
             description: 'Your appointment request has been sent to the doctor for approval.',
         });
         form.reset();
+        setIsSubmitting(false);
     }
   return (
     <TabsContent value="book">
@@ -171,7 +229,48 @@ function PatientAppointments({ onAppointmentRequest }: { onAppointmentRequest: (
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Send Request</Button>
+
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="text-xl">Describe your problem to the doctor</CardTitle>
+                                <CardDescription>This will help the doctor prepare for your appointment.</CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                <FormField
+                                    control={form.control}
+                                    name="problemDescription"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                        <FormLabel>Symptoms & Problems</FormLabel>
+                                        <FormControl>
+                                            <Textarea placeholder="e.g., I've had a persistent cough for the last 3 days, accompanied by a mild fever..." {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="file"
+                                    render={() => (
+                                        <FormItem>
+                                            <FormLabel>Attach Lab Reports / Prescriptions (Optional)</FormLabel>
+                                            <FormControl>
+                                                <Input type="file" {...fileRef} accept="image/*,.pdf,.doc,.docx" />
+                                            </FormControl>
+                                            <FormDescription>You can upload one file (image, PDF, or Word document).</FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </CardContent>
+                        </Card>
+
+
+                        <Button type="submit" disabled={isSubmitting}>
+                            {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                            Send Request
+                        </Button>
                     </form>
                 </Form>
             </CardContent>
@@ -252,7 +351,7 @@ export default function AppointmentsPage() {
                 setAppointments(isPatient ? getPatientAppointments(user.name) : getEmployeeAppointments(user.name));
             };
             fetchAppointments();
-            const interval = setInterval(fetchAppointments, 1000); // Poll for changes
+            const interval = setInterval(fetchAppointments, 2000); // Poll for changes
             return () => clearInterval(interval);
         }
     }, [isPatient, user]);
@@ -262,7 +361,7 @@ export default function AppointmentsPage() {
             setAppointmentRequests(getAppointmentRequests());
         };
         fetchRequests();
-        const interval = setInterval(fetchRequests, 1000); // Poll for changes
+        const interval = setInterval(fetchRequests, 2000); // Poll for changes
         return () => clearInterval(interval);
     }, []);
 
