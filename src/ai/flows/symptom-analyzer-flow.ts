@@ -2,20 +2,20 @@
 /**
  * @fileOverview A symptom analyzer AI flow.
  *
- * - symptomAnalyzerFlow - A function that handles the symptom analysis process.
- * - SymptomAnalyzerInput - The input type for the symptomAnalyzerFlow function.
- * - SymptomAnalyzerOutput - The return type for the symptomAnalyzerFlow function.
+ * - symptomAnalyzer - A function that handles the symptom analysis process.
+ * - SymptomAnalyzerInput - The input type for the symptomAnalyzer function.
+ * - SymptomAnalyzerOutput - The return type for the symptomAnalyzer function.
  */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
-export const SymptomAnalyzerInputSchema = z.object({
+const SymptomAnalyzerInputSchema = z.object({
   symptoms: z.string().describe('A description of the user\'s symptoms.'),
 });
 export type SymptomAnalyzerInput = z.infer<typeof SymptomAnalyzerInputSchema>;
 
-export const SymptomAnalyzerOutputSchema = z.object({
+const SymptomAnalyzerOutputSchema = z.object({
   analysis: z.string().describe('A detailed analysis of the symptoms provided.'),
   potentialConditions: z.array(z.string()).describe('A list of potential conditions.'),
   seriousness: z.enum(['Low', 'Medium', 'High', 'Emergency']).describe('The estimated seriousness of the symptoms.'),

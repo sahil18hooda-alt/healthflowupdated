@@ -2,20 +2,20 @@
 /**
  * @fileOverview A drug interaction checker AI flow.
  *
- * - drugInteractionFlow - A function that checks for interactions between drugs.
- * - DrugInteractionInput - The input type for the drugInteractionFlow function.
- * - DrugInteractionOutput - The return type for the drugInteractionFlow function.
+ * - drugInteractionChecker - A function that checks for interactions between drugs.
+ * - DrugInteractionInput - The input type for the drugInteractionChecker function.
+ * - DrugInteractionOutput - The return type for the drugInteractionChecker function.
  */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
-export const DrugInteractionInputSchema = z.object({
+const DrugInteractionInputSchema = z.object({
   drugs: z.array(z.string()).describe('A list of drugs to check for interactions.'),
 });
 export type DrugInteractionInput = z.infer<typeof DrugInteractionInputSchema>;
 
-export const DrugInteractionOutputSchema = z.object({
+const DrugInteractionOutputSchema = z.object({
   hasInteraction: z.boolean().describe('Whether there are any potential interactions.'),
   interactionSummary: z.string().describe('A summary of the potential interactions.'),
 });
