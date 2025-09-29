@@ -4,7 +4,7 @@
 import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -14,13 +14,14 @@ import { mockDoctors, getPatientAppointments, getEmployeeAppointments, addAppoin
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon, Clock, Hospital, Users, Video, Bell } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, Hospital, Users, Video, Bell, Link as LinkIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { AppointmentRequest, Appointment } from '@/lib/types';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 const appointmentFormSchema = z.object({
   doctor: z.string().min(1, 'Please select a doctor.'),
@@ -30,12 +31,12 @@ const appointmentFormSchema = z.object({
 });
 
 const AppointmentCard = ({ appointment, role }: { appointment: Appointment, role: 'patient' | 'employee' }) => (
-    <Card>
+    <Card className="flex flex-col">
         <CardHeader>
             <CardTitle className="text-lg">{role === 'patient' ? appointment.doctorName : appointment.patientName}</CardTitle>
             <CardDescription>{role === 'patient' ? mockDoctors.find(d => d.name === appointment.doctorName)?.specialization : `Appointment with ${appointment.doctorName}`}</CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-2 text-sm">
+        <CardContent className="grid gap-2 text-sm flex-1">
             <div className="flex items-center gap-2"><CalendarIcon className="h-4 w-4 text-muted-foreground"/> <span>{format(new Date(appointment.date), 'PPP')}</span></div>
             <div className="flex items-center gap-2"><Clock className="h-4 w-4 text-muted-foreground"/> <span>{appointment.time}</span></div>
             <div className="flex items-center gap-2">
@@ -47,6 +48,16 @@ const AppointmentCard = ({ appointment, role }: { appointment: Appointment, role
                 <span>{appointment.status}</span>
              </div>
         </CardContent>
+        {appointment.type === 'Online' && appointment.meetingLink && appointment.status === 'Upcoming' && (
+            <CardFooter>
+                <Button asChild className="w-full">
+                    <Link href={appointment.meetingLink} target="_blank">
+                        <LinkIcon className="mr-2 h-4 w-4" />
+                        Join Meeting
+                    </Link>
+                </Button>
+            </CardFooter>
+        )}
     </Card>
 );
 
@@ -230,25 +241,26 @@ function PatientRequests({ appointmentRequests }: { appointmentRequests: Appoint
 export default function AppointmentsPage() {
     const { user } = useAuth();
     const [appointments, setAppointments] = useState<Appointment[]>([]);
-    const [appointmentRequests, setAppointmentRequests] = useState<AppointmentRequest[]>([]);
+    const [appointmentRequests, setAppointmentRequests] = useState<AppointmentRequest[]>(getAppointmentRequests());
 
     const isPatient = user?.role === 'patient';
     
     useEffect(() => {
-        // Load data from our persistent store on component mount
         setAppointments(isPatient ? getPatientAppointments() : getEmployeeAppointments());
         setAppointmentRequests(getAppointmentRequests());
     }, [isPatient, user]);
-
 
     const handleNewRequest = (newRequest: AppointmentRequest) => {
         setAppointmentRequests(prevRequests => [newRequest, ...prevRequests]);
     };
     
-    // This effect ensures the appointments list is updated when a request is accepted
+    // This effect ensures the appointments list is updated when a request is accepted/declined by an employee
     useEffect(() => {
-        setAppointments(isPatient ? getPatientAppointments() : getEmployeeAppointments());
-    }, [appointmentRequests, isPatient]);
+        const interval = setInterval(() => {
+            setAppointments(isPatient ? getPatientAppointments() : getEmployeeAppointments());
+        }, 1000); // Poll for changes every second
+        return () => clearInterval(interval);
+    }, [isPatient]);
 
 
   return (

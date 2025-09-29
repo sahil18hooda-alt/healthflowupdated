@@ -31,6 +31,7 @@ export type Appointment = {
   time: string;
   type: 'Hospital' | 'Online';
   status: 'Upcoming' | 'Completed' | 'Cancelled';
+  meetingLink?: string;
 };
 
 export type AppointmentRequest = {

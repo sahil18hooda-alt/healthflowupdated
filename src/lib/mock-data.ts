@@ -123,6 +123,7 @@ const initialPatientAppointments: Appointment[] = [
         time: '02:30 PM',
         type: 'Online',
         status: 'Upcoming',
+        meetingLink: 'https://meet.google.com/mno-pqr-stu'
     },
     {
         id: '3',
@@ -153,6 +154,7 @@ const initialEmployeeAppointments: Appointment[] = [
         time: '03:00 PM',
         type: 'Online',
         status: 'Upcoming',
+        meetingLink: 'https://meet.google.com/vwx-yza-bcd'
     },
      {
         id: '3',
@@ -214,6 +216,7 @@ export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 
 
     if(requestIndex > -1) {
         requests[requestIndex].status = status;
+        setStoredData('appointmentRequests', requests);
         const request = requests[requestIndex];
         
         if (status === 'Accepted') {
@@ -227,15 +230,23 @@ export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 
                 status: 'Upcoming'
             };
             
+            if (newAppointment.type === 'Online') {
+                const randomString = Math.random().toString(36).substring(2, 11).replace(/\d/g, '').match(/.{1,3}/g)!.join('-');
+                newAppointment.meetingLink = `https://meet.google.com/${randomString}`;
+            }
+            
+            // This logic assumes we know which user this appointment belongs to, which we don't here.
+            // A real app would have user IDs. For now, we'll add to a generic patient list and doctor list.
             const patientAppointments = getPatientAppointments();
             setStoredData('patientAppointments', [...patientAppointments, newAppointment]);
 
-            if (request.doctor === 'Dr. Employee' || mockDoctors.find(d => d.name === request.doctor)) {
+            // If the doctor is the generic 'Dr. Employee' or one of the mock doctors, add to their schedule.
+            // This is a simplification for the prototype.
+            if (request.doctor === 'Dr. Employee' || mockDoctors.some(d => d.name === request.doctor)) {
                  const employeeAppointments = getEmployeeAppointments();
                  setStoredData('employeeAppointments', [...employeeAppointments, newAppointment]);
             }
         }
-        setStoredData('appointmentRequests', requests);
         return requests[requestIndex];
     }
     return undefined;
