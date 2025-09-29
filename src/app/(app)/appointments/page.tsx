@@ -20,10 +20,11 @@ import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { AppointmentRequest, Appointment } from '@/lib/types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
 import { inquiryTriage } from '@/ai/flows/inquiry-triage-flow';
+import { useSearchParams } from 'next/navigation';
 
 const appointmentFormSchema = z.object({
   doctor: z.string().min(1, 'Please select a doctor.'),
@@ -75,9 +76,21 @@ function PatientAppointments({ onAppointmentRequest }: { onAppointmentRequest: (
     const { user } = useAuth();
     const { toast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const searchParams = useSearchParams();
+    const doctorFromQuery = searchParams.get('doctor');
+
     const form = useForm<z.infer<typeof appointmentFormSchema>>({
         resolver: zodResolver(appointmentFormSchema),
+        defaultValues: {
+            doctor: doctorFromQuery || '',
+        }
     });
+
+    useEffect(() => {
+        if(doctorFromQuery) {
+            form.setValue('doctor', doctorFromQuery);
+        }
+    }, [doctorFromQuery, form]);
 
     const fileRef = form.register('file');
 
@@ -152,7 +165,7 @@ function PatientAppointments({ onAppointmentRequest }: { onAppointmentRequest: (
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Doctor</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
                                         <FormControl>
                                             <SelectTrigger><SelectValue placeholder="Select a doctor" /></SelectTrigger>
                                         </FormControl>
@@ -337,10 +350,13 @@ function PatientRequests({ appointmentRequests }: { appointmentRequests: Appoint
 }
 
 
-export default function AppointmentsPage() {
+function AppointmentsPageContent() {
     const { user } = useAuth();
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [appointmentRequests, setAppointmentRequests] = useState<AppointmentRequest[]>([]);
+    const searchParams = useSearchParams();
+    const tabFromQuery = searchParams.get('tab');
+
 
     const isPatient = user?.role === 'patient';
     
@@ -370,37 +386,45 @@ export default function AppointmentsPage() {
         setAppointmentRequests(prevRequests => [newRequest, ...prevRequests]);
     };
 
-  return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Appointments</h1>
-        <p className="text-muted-foreground">
-          {user?.role === 'patient' ? 'Book a new appointment or view your schedule.' : 'Manage your appointment schedule.'}
-        </p>
-      </div>
-      <Tabs defaultValue="schedule" className="space-y-4">
-        <TabsList>
-            <TabsTrigger value="schedule">
-                {user?.role === 'patient' ? 'My Appointments' : 'Your Schedule'}
-            </TabsTrigger>
-            {user?.role === 'patient' && <TabsTrigger value="requests">My Requests</TabsTrigger>}
-          {user?.role === 'patient' && <TabsTrigger value="book">Book New</TabsTrigger>}
-        </TabsList>
-        <TabsContent value="schedule">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {appointments.map(app => <AppointmentCard key={app.id} appointment={app} role={user!.role} />)}
+    return (
+        <div className="space-y-6">
+            <div>
+                <h1 className="text-3xl font-bold">Appointments</h1>
+                <p className="text-muted-foreground">
+                    {user?.role === 'patient' ? 'Book a new appointment or view your schedule.' : 'Manage your appointment schedule.'}
+                </p>
             </div>
-            {appointments.length === 0 && (
-                <Card>
-                    <CardContent className="py-12 text-center text-muted-foreground">
-                        No appointments scheduled.
-                    </CardContent>
-                </Card>
-            )}
-        </TabsContent>
-        {user?.role === 'patient' && <PatientRequests appointmentRequests={appointmentRequests} />}
-        {user?.role === 'patient' && <PatientAppointments onAppointmentRequest={handleNewRequest} />}
-      </Tabs>
-    </div>
-  );
+            <Tabs defaultValue={tabFromQuery || 'schedule'} className="space-y-4">
+                <TabsList>
+                    <TabsTrigger value="schedule">
+                        {user?.role === 'patient' ? 'My Appointments' : 'Your Schedule'}
+                    </TabsTrigger>
+                    {user?.role === 'patient' && <TabsTrigger value="requests">My Requests</TabsTrigger>}
+                    {user?.role === 'patient' && <TabsTrigger value="book">Book New</TabsTrigger>}
+                </TabsList>
+                <TabsContent value="schedule">
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {appointments.map(app => <AppointmentCard key={app.id} appointment={app} role={user!.role} />)}
+                    </div>
+                    {appointments.length === 0 && (
+                        <Card>
+                            <CardContent className="py-12 text-center text-muted-foreground">
+                                No appointments scheduled.
+                            </CardContent>
+                        </Card>
+                    )}
+                </TabsContent>
+                {user?.role === 'patient' && <PatientRequests appointmentRequests={appointmentRequests} />}
+                {user?.role === 'patient' && <PatientAppointments onAppointmentRequest={handleNewRequest} />}
+            </Tabs>
+        </div>
+    );
+}
+
+export default function AppointmentsPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <AppointmentsPageContent />
+        </Suspense>
+    )
 }

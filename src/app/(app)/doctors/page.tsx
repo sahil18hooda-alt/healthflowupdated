@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { mockDoctors } from '@/lib/mock-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import Link from 'next/link';
 
 export default function DoctorsPage() {
   return (
@@ -36,7 +37,9 @@ export default function DoctorsPage() {
                 <p className="mt-4 text-sm text-muted-foreground">{doctor.availability}</p>
               </CardContent>
               <CardFooter>
-                <Button className="w-full">Book Appointment</Button>
+                <Button className="w-full" asChild>
+                  <Link href={`/appointments?tab=book&doctor=${encodeURIComponent(doctor.name)}`}>Book Appointment</Link>
+                </Button>
               </CardFooter>
             </Card>
           );
