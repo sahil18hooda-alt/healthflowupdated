@@ -19,12 +19,11 @@ import { AlertCircle } from 'lucide-react';
 
 export default function RequestsPage() {
     const { user } = useAuth();
-    const [requests, setRequests] = useState<AppointmentRequest[]>([]);
+    const [requests, setRequests] = useState<AppointmentRequest[]>(getAppointmentRequests());
     const { toast } = useToast();
 
     useEffect(() => {
         const fetchRequests = () => {
-            // Employees should see all requests
             if (user?.role === 'employee') {
                 setRequests(getAppointmentRequests());
             }
@@ -120,5 +119,3 @@ export default function RequestsPage() {
     </div>
   );
 }
-
-    

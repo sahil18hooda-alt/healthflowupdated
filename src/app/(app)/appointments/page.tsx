@@ -339,7 +339,7 @@ function PatientRequests({ appointmentRequests }: { appointmentRequests: Appoint
 export default function AppointmentsPage() {
     const { user } = useAuth();
     const [appointments, setAppointments] = useState<Appointment[]>([]);
-    const [appointmentRequests, setAppointmentRequests] = useState<AppointmentRequest[]>([]);
+    const [appointmentRequests, setAppointmentRequests] = useState<AppointmentRequest[]>(getAppointmentRequests());
 
     const isPatient = user?.role === 'patient';
     
@@ -403,5 +403,3 @@ export default function AppointmentsPage() {
     </div>
   );
 }
-
-    
