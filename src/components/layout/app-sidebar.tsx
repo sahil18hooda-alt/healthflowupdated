@@ -28,6 +28,7 @@ const patientNavGroups = [
         title: 'Health Tools',
         items: [
             { href: '/symptom-analyzer', icon: <Bot />, label: 'Symptom Analyzer' },
+            { href: '/ai-therapist', icon: <BrainCircuit />, label: 'AI Therapist' },
         ]
     },
     {
@@ -129,16 +130,6 @@ export default function AppSidebar() {
                             icon={<Star />}
                             >
                             Reviews
-                            </SidebarMenuButton>
-                        </Link>
-                    </SidebarMenuItem>
-                    <SidebarMenuItem>
-                        <Link href="/ai-therapist" legacyBehavior passHref>
-                            <SidebarMenuButton
-                            isActive={isNavItemActive('/ai-therapist')}
-                            icon={<BrainCircuit />}
-                            >
-                            AI Therapist
                             </SidebarMenuButton>
                         </Link>
                     </SidebarMenuItem>
