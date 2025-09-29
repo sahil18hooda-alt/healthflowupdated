@@ -76,8 +76,8 @@ export default function AppSidebar() {
 
       <SidebarContent>
         <SidebarMenu>
-            <SidebarMenuItem>
-                <Link href="/dashboard" legacyBehavior passHref>
+            <SidebarMenuItem asChild>
+                <Link href="/dashboard">
                     <SidebarMenuButton
                     isActive={isNavItemActive('/dashboard')}
                     icon={<LayoutDashboard />}
@@ -96,8 +96,8 @@ export default function AppSidebar() {
                     <AccordionContent className="pb-0">
                         <SidebarMenu>
                         {group.items.map((item) => (
-                            <SidebarMenuItem key={item.href}>
-                                <Link href={item.href} legacyBehavior passHref>
+                            <SidebarMenuItem key={item.href} asChild>
+                                <Link href={item.href}>
                                     <SidebarMenuButton
                                     isActive={isNavItemActive(item.href)}
                                     icon={item.icon}
@@ -115,8 +115,8 @@ export default function AppSidebar() {
             
             {isPatient && (
                 <>
-                    <SidebarMenuItem>
-                        <Link href="/medications" legacyBehavior passHref>
+                    <SidebarMenuItem asChild>
+                        <Link href="/medications">
                             <SidebarMenuButton
                             isActive={isNavItemActive('/medications')}
                             icon={<Pill />}
@@ -125,8 +125,8 @@ export default function AppSidebar() {
                             </SidebarMenuButton>
                         </Link>
                     </SidebarMenuItem>
-                    <SidebarMenuItem>
-                        <Link href="/reviews" legacyBehavior passHref>
+                    <SidebarMenuItem asChild>
+                        <Link href="/reviews">
                             <SidebarMenuButton
                             isActive={isNavItemActive('/reviews')}
                             icon={<Star />}
@@ -143,8 +143,8 @@ export default function AppSidebar() {
 
       <SidebarFooter>
           <SidebarMenu>
-            <SidebarMenuItem>
-                <Link href="/settings" legacyBehavior passHref>
+            <SidebarMenuItem asChild>
+                <Link href="/settings">
                     <SidebarMenuButton
                     isActive={isNavItemActive('/settings')}
                     icon={<Settings />}
