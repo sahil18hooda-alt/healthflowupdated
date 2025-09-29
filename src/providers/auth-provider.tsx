@@ -1,3 +1,4 @@
+
 'use client';
 
 import { createContext, useState, useEffect, ReactNode } from 'react';
@@ -9,6 +10,7 @@ export interface AuthContextType {
   login: (role: UserRole, emailOrName: string) => void;
   logout: () => void;
   loading: boolean;
+  updateUser: (newDetails: Partial<User>) => void;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -44,7 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = (role: UserRole, emailOrName: string) => {
     const isEmail = emailOrName.includes('@');
-    const name = emailToName(emailOrName);
+    const name = isEmail ? emailToName(emailOrName) : emailOrName;
     const email = isEmail ? emailOrName : (role === 'patient' ? 'patient@healthflow.com' : 'doctor@healthflow.com');
 
     const mockUser: User = {
@@ -64,7 +66,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push('/');
   };
 
-  const value = { user, login, logout, loading };
+  const updateUser = (newDetails: Partial<User>) => {
+    if (user) {
+      const updatedUser = { ...user, ...newDetails };
+      localStorage.setItem('healthflow-user', JSON.stringify(updatedUser));
+      setUser(updatedUser);
+    }
+  };
+
+  const value = { user, login, logout, loading, updateUser };
 
   return (
     <AuthContext.Provider value={value}>

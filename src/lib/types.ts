@@ -64,3 +64,4 @@ export type Medication = {
   frequency: string;
   time: string[];
 };
+
