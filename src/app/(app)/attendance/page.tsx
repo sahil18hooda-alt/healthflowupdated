@@ -1,6 +1,7 @@
+
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -17,6 +18,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { useToast } from '@/hooks/use-toast';
 import { mockAttendance } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
+import type { AttendanceRecord } from '@/lib/types';
 
 const leaveRequestSchema = z.object({
     leaveDate: z.date({
@@ -30,20 +32,62 @@ const leaveRequestSchema = z.object({
 export default function AttendancePage() {
   const [status, setStatus] = useState<'Checked Out' | 'Checked In'>('Checked Out');
   const [time, setTime] = useState<string | null>(null);
+  const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>(mockAttendance);
   const { toast } = useToast();
 
   const leaveForm = useForm<z.infer<typeof leaveRequestSchema>>({
     resolver: zodResolver(leaveRequestSchema),
   });
+  
+  useEffect(() => {
+    // On component mount, check if there's an entry for today that is checked-in but not checked-out
+    const today = format(new Date(), 'yyyy-MM-dd');
+    const todaysRecord = attendanceRecords.find(record => record.date === today);
+    if(todaysRecord && todaysRecord.checkIn && !todaysRecord.checkOut) {
+        setStatus('Checked In');
+        setTime(todaysRecord.checkIn);
+    }
+  }, []);
+
 
   const handleCheckIn = () => {
+    const now = new Date();
+    const currentTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const today = format(now, 'yyyy-MM-dd');
+
     setStatus('Checked In');
-    setTime(new Date().toLocaleTimeString());
+    setTime(currentTime);
+    
+    setAttendanceRecords(prevRecords => {
+      const newRecord: AttendanceRecord = {
+        id: `att-${Date.now()}`,
+        date: today,
+        checkIn: currentTime,
+        checkOut: null,
+        status: 'Present'
+      };
+      // Remove any previous entry for today to avoid duplicates, then add the new one
+      const otherRecords = prevRecords.filter(r => r.date !== today);
+      return [newRecord, ...otherRecords];
+    });
   };
 
   const handleCheckOut = () => {
+    const now = new Date();
+    const currentTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const today = format(now, 'yyyy-MM-dd');
+
     setStatus('Checked Out');
-    setTime(new Date().toLocaleTimeString());
+    setTime(currentTime);
+    
+    setAttendanceRecords(prevRecords => {
+        return prevRecords.map(record => {
+            if (record.date === today) {
+                return { ...record, checkOut: currentTime };
+            }
+            return record;
+        });
+    });
   };
 
   function onLeaveSubmit(data: z.infer<typeof leaveRequestSchema>) {
@@ -108,7 +152,7 @@ export default function AttendancePage() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {mockAttendance.map((record) => (
+                        {attendanceRecords.map((record) => (
                             <TableRow key={record.id}>
                                 <TableCell>{format(new Date(record.date), 'MMM dd, yyyy')}</TableCell>
                                 <TableCell>{record.checkIn || 'N/A'}</TableCell>
