@@ -1,5 +1,3 @@
-
-
 'use client';
 
 import { useAuth } from '@/hooks/use-auth';
@@ -341,14 +339,15 @@ function PatientRequests({ appointmentRequests }: { appointmentRequests: Appoint
 export default function AppointmentsPage() {
     const { user } = useAuth();
     const [appointments, setAppointments] = useState<Appointment[]>([]);
-    const [appointmentRequests, setAppointmentRequests] = useState<AppointmentRequest[]>(getAppointmentRequests());
+    const [appointmentRequests, setAppointmentRequests] = useState<AppointmentRequest[]>([]);
 
     const isPatient = user?.role === 'patient';
     
     useEffect(() => {
         if (user) {
             const fetchAppointments = () => {
-                setAppointments(isPatient ? getPatientAppointments(user.name) : getEmployeeAppointments(user.name));
+                const allAppointments = isPatient ? getPatientAppointments(user.name) : getEmployeeAppointments(user.name);
+                setAppointments(allAppointments);
             };
             fetchAppointments();
             const interval = setInterval(fetchAppointments, 2000); // Poll for changes

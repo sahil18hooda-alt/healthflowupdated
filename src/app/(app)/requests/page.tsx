@@ -1,11 +1,8 @@
-
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { getAppointmentRequests, updateAppointmentRequestStatus } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
@@ -27,6 +24,7 @@ export default function RequestsPage() {
 
     useEffect(() => {
         const fetchRequests = () => {
+            // Employees should see all requests
             if (user?.role === 'employee') {
                 setRequests(getAppointmentRequests());
             }
@@ -122,3 +120,5 @@ export default function RequestsPage() {
     </div>
   );
 }
+
+    
