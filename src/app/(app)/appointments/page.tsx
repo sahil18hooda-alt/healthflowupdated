@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useAuth } from '@/hooks/use-auth';
@@ -9,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { mockDoctors, mockPatientAppointments, mockEmployeeAppointments, addAppointmentRequest, mockAppointmentRequests } from '@/lib/mock-data';
+import { mockDoctors, mockPatientAppointments, mockEmployeeAppointments, addAppointmentRequest, mockAppointmentRequests as initialMockRequests } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
@@ -18,6 +19,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { AppointmentRequest } from '@/lib/types';
+import { useState } from 'react';
 
 const appointmentFormSchema = z.object({
   doctor: z.string().min(1, 'Please select a doctor.'),
@@ -47,7 +50,7 @@ const AppointmentCard = ({ appointment, role }: { appointment: typeof mockPatien
     </Card>
 );
 
-function PatientAppointments() {
+function PatientAppointments({ onAppointmentRequest }: { onAppointmentRequest: (req: AppointmentRequest) => void }) {
     const { user } = useAuth();
     const { toast } = useToast();
     const form = useForm<z.infer<typeof appointmentFormSchema>>({
@@ -56,7 +59,8 @@ function PatientAppointments() {
 
     function onSubmit(data: z.infer<typeof appointmentFormSchema>) {
         if(!user) return;
-        addAppointmentRequest(data, user.name);
+        const newRequest = addAppointmentRequest(data, user.name);
+        onAppointmentRequest(newRequest);
         toast({
             title: 'Request Sent!',
             description: 'Your appointment request has been sent to the doctor for approval.',
@@ -164,9 +168,9 @@ function PatientAppointments() {
   );
 }
 
-function PatientRequests() {
+function PatientRequests({ appointmentRequests }: { appointmentRequests: AppointmentRequest[] }) {
     const { user } = useAuth();
-    const userRequests = mockAppointmentRequests.filter(req => req.patientName === user?.name);
+    const userRequests = appointmentRequests.filter(req => req.patientName === user?.name);
 
     return (
         <TabsContent value="requests">
@@ -215,6 +219,11 @@ function PatientRequests() {
 export default function AppointmentsPage() {
     const { user } = useAuth();
     const appointments = user?.role === 'patient' ? mockPatientAppointments : mockEmployeeAppointments;
+    const [mockAppointmentRequests, setMockAppointmentRequests] = useState<AppointmentRequest[]>(initialMockRequests);
+
+    const handleNewRequest = (newRequest: AppointmentRequest) => {
+        setMockAppointmentRequests(prevRequests => [...prevRequests, newRequest]);
+    };
 
   return (
     <div className="space-y-6">
@@ -237,9 +246,10 @@ export default function AppointmentsPage() {
                 {appointments.map(app => <AppointmentCard key={app.id} appointment={app} role={user!.role} />)}
             </div>
         </TabsContent>
-        {user?.role === 'patient' && <PatientRequests />}
-        {user?.role === 'patient' && <PatientAppointments />}
+        {user?.role === 'patient' && <PatientRequests appointmentRequests={mockAppointmentRequests} />}
+        {user?.role === 'patient' && <PatientAppointments onAppointmentRequest={handleNewRequest} />}
       </Tabs>
     </div>
   );
 }
+
