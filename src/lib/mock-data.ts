@@ -31,7 +31,7 @@ function setStoredData<T>(key: string, data: T) {
 export const mockDoctors: Doctor[] = [
   {
     id: '1',
-    name: 'Dr. Anjali Sharma',
+    name: 'Dr. Arjun Sharma',
     specialization: 'Cardiologist',
     availability: 'Mon, Wed, Fri (9 AM - 1 PM)',
     imageId: 'doctor-2',
@@ -66,7 +66,7 @@ export const mockDoctors: Doctor[] = [
   },
   {
     id: '6',
-    name: 'Dr. Aisha Khan',
+    name: 'Dr. Amir Khan',
     specialization: 'Dermatologist',
     availability: 'Wed, Fri, Sat (11 AM - 3 PM)',
     imageId: 'doctor-6',
@@ -107,7 +107,7 @@ export const mockReviews: HospitalReview[] = [
 const initialPatientAppointments: Appointment[] = [
     {
         id: '1',
-        doctorName: 'Dr. Anjali Sharma',
+        doctorName: 'Dr. Arjun Sharma',
         patientName: 'Patient Zero',
         date: '2024-08-10',
         time: '10:00 AM',
@@ -169,7 +169,7 @@ const initialEmployeeAppointments: Appointment[] = [
 const initialAppointmentRequests: AppointmentRequest[] = [
     {
       id: 'req1',
-      doctor: 'Dr. Anjali Sharma',
+      doctor: 'Dr. Arjun Sharma',
       date: new Date('2024-08-20'),
       time: '10:00 AM',
       type: 'Hospital',

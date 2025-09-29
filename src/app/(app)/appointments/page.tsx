@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useAuth } from '@/hooks/use-auth';
@@ -339,7 +340,7 @@ function PatientRequests({ appointmentRequests }: { appointmentRequests: Appoint
 export default function AppointmentsPage() {
     const { user } = useAuth();
     const [appointments, setAppointments] = useState<Appointment[]>([]);
-    const [appointmentRequests, setAppointmentRequests] = useState<AppointmentRequest[]>(getAppointmentRequests());
+    const [appointmentRequests, setAppointmentRequests] = useState<AppointmentRequest[]>([]);
 
     const isPatient = user?.role === 'patient';
     
