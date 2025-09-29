@@ -23,9 +23,11 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-body antialiased">
+      <body>
         <AuthProvider>
-          {children}
+            <div className="font-body antialiased">
+                {children}
+            </div>
           <Toaster />
         </AuthProvider>
       </body>
