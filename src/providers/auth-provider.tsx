@@ -6,7 +6,7 @@ import type { User, UserRole } from '@/lib/types';
 
 export interface AuthContextType {
   user: User | null;
-  login: (role: UserRole) => void;
+  login: (role: UserRole, name?: string) => void;
   logout: () => void;
   loading: boolean;
 }
@@ -32,10 +32,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const login = (role: UserRole) => {
+  const login = (role: UserRole, name?: string) => {
+    const defaultName = role === 'patient' ? 'Patient Zero' : 'Dr. Employee';
     const mockUser: User = {
       id: '123',
-      name: role === 'patient' ? 'Patient Zero' : 'Dr. Employee',
+      name: name || defaultName,
       email: role === 'patient' ? 'patient@healthflow.com' : 'doctor@healthflow.com',
       role: role,
     };

@@ -43,7 +43,7 @@ export default function PatientSignupForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log('Patient signup values:', values);
-    login('patient');
+    login('patient', values.name);
   }
 
   return (

@@ -43,7 +43,7 @@ export default function EmployeeSignupForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log('Employee signup values:', values);
-    login('employee');
+    login('employee', values.name);
   }
 
   return (
