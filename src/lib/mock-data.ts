@@ -1,3 +1,4 @@
+
 import type { Doctor, HospitalReview, Appointment, AttendanceRecord, AppointmentRequest, Medication } from './types';
 
 export const mockDoctors: Doctor[] = [
@@ -209,12 +210,8 @@ export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 
                 status: 'Upcoming'
             };
             
-            // This is a mock. In a real app, you'd have a global state or a refetch mechanism.
-            // For now, let's assume we can push to both patient and employee arrays.
-            // This won't update the UI automatically without more complex state management.
             mockPatientAppointments.push(newAppointment);
 
-            // Add to the specific doctor's list as well
             if (request.doctor === 'Dr. Employee' || mockDoctors.find(d => d.name === request.doctor)) {
                  mockEmployeeAppointments.push(newAppointment);
             }
