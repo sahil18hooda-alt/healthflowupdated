@@ -45,10 +45,10 @@ export const mockDoctors: Doctor[] = [
   },
   {
     id: '3',
-    name: 'Dr. Priya Patel',
+    name: 'Dr. Rohan Patel',
     specialization: 'Pediatrician',
     availability: 'Mon - Fri (9 AM - 5 PM)',
-    imageId: 'doctor-4',
+    imageId: 'doctor-3',
   },
   {
     id: '4',
@@ -59,10 +59,10 @@ export const mockDoctors: Doctor[] = [
   },
   {
     id: '5',
-    name: 'Dr. Sameer Gupta',
+    name: 'Dr. Sunita Gupta',
     specialization: 'General Physician',
     availability: 'Mon - Sat (8 AM - 12 PM)',
-    imageId: 'doctor-3',
+    imageId: 'doctor-4',
   },
   {
     id: '6',
@@ -116,7 +116,7 @@ const initialPatientAppointments: Appointment[] = [
     },
     {
         id: '2',
-        doctorName: 'Dr. Priya Patel',
+        doctorName: 'Dr. Rohan Patel',
         patientName: 'Patient Zero',
         date: '2024-08-15',
         time: '02:30 PM',
@@ -126,7 +126,7 @@ const initialPatientAppointments: Appointment[] = [
     },
     {
         id: '3',
-        doctorName: 'Dr. Sameer Gupta',
+        doctorName: 'Dr. Sunita Gupta',
         patientName: 'Patient Zero',
         date: '2024-07-05',
         time: '09:00 AM',
