@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot } from 'lucide-react';
+import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot, Route } from 'lucide-react';
 
 import {
   Accordion,
@@ -47,6 +47,7 @@ const employeeNavGroups = [
             { href: '/appointments', icon: <Calendar />, label: 'Appointments' },
             { href: '/requests', icon: <Bell />, label: 'Requests' },
             { href: '/attendance', icon: <Clock />, label: 'Attendance' },
+            { href: '/inquiries', icon: <Route />, label: 'Patient Inquiries' },
         ]
     }
 ];
