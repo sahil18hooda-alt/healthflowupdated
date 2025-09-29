@@ -1,7 +1,5 @@
 
 
-'use client';
-
 import type { Doctor, HospitalReview, Appointment, AttendanceRecord, AppointmentRequest, Medication } from './types';
 
 // Helper to get data from localStorage or use initial mock data
