@@ -21,6 +21,10 @@ const DrugInteractionOutputSchema = z.object({
 });
 export type DrugInteractionOutput = z.infer<typeof DrugInteractionOutputSchema>;
 
+export async function drugInteractionChecker(input: DrugInteractionInput): Promise<DrugInteractionOutput> {
+  return drugInteractionFlow(input);
+}
+
 const prompt = ai.definePrompt({
   name: 'drugInteractionPrompt',
   input: {schema: DrugInteractionInputSchema},
@@ -53,8 +57,3 @@ const drugInteractionFlow = ai.defineFlow(
     return output!;
   }
 );
-
-
-export async function drugInteractionChecker(input: DrugInteractionInput): Promise<DrugInteractionOutput> {
-  return drugInteractionFlow(input);
-}
