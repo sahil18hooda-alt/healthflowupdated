@@ -14,6 +14,7 @@ import { LogOut, UserCircle, Search, Bell } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { SidebarTrigger } from '../ui/sidebar';
 import { Input } from '../ui/input';
+import { ThemeToggle } from '../theme-toggle';
 
 export default function AppHeader() {
   const { user, logout } = useAuth();
@@ -38,11 +39,12 @@ export default function AppHeader() {
         />
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         <Button variant="ghost" size="icon" className="rounded-full">
             <Bell className="h-5 w-5" />
             <span className="sr-only">Toggle notifications</span>
         </Button>
+        <ThemeToggle />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-10 w-10 rounded-full">
