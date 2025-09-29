@@ -20,10 +20,9 @@ export default function RequestsPage() {
 
     useEffect(() => {
         const fetchRequests = () => {
-            if (user) {
-                // For this prototype, employees see all requests. 
-                // A real app would filter by the employee's assigned patients or department.
-                setRequests(getAppointmentRequests().filter(req => req.doctor === user.name || mockDoctors.some(d => d.name === req.doctor)));
+            if (user && user.role === 'employee') {
+                // For this prototype, employees see all requests.
+                setRequests(getAppointmentRequests());
             }
         };
 
@@ -34,14 +33,12 @@ export default function RequestsPage() {
 
 
     const handleStatusUpdate = (id: string, status: 'Accepted' | 'Declined') => {
-        const updatedRequest = updateAppointmentRequestStatus(id, status);
-        if (updatedRequest) {
-            toast({
-                title: `Request ${status}`,
-                description: `The appointment request has been ${status.toLowerCase()}.`,
-            });
-            // The useEffect polling will update the UI, no need to manually set state here.
-        }
+        updateAppointmentRequestStatus(id, status);
+        toast({
+            title: `Request ${status}`,
+            description: `The appointment request has been ${status.toLowerCase()}.`,
+        });
+        // The useEffect polling will update the UI, no need to manually set state here.
     };
 
   return (
@@ -106,5 +103,3 @@ export default function RequestsPage() {
     </div>
   );
 }
-
-    
