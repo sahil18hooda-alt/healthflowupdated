@@ -1,26 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { mockAppointmentRequests, updateAppointmentRequestStatus } from '@/lib/mock-data';
+import { mockAppointmentRequests as initialMockRequests, updateAppointmentRequestStatus } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { AppointmentRequest } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 
 export default function RequestsPage() {
-    const [requests, setRequests] = useState<AppointmentRequest[]>(mockAppointmentRequests);
+    const [requests, setRequests] = useState<AppointmentRequest[]>([]);
     const { toast } = useToast();
 
+    useEffect(() => {
+        // In a real app, you would fetch this data. Here we use the mock data.
+        // We'll use a copy to avoid direct mutation issues in React strict mode.
+        setRequests([...initialMockRequests]);
+    }, []);
+
+
     const handleStatusUpdate = (id: string, status: 'Accepted' | 'Declined') => {
-        updateAppointmentRequestStatus(id, status);
-        setRequests(prev => prev.map(req => req.id === id ? { ...req, status } : req));
-        toast({
-            title: `Request ${status}`,
-            description: `The appointment request has been ${status.toLowerCase()}.`,
-        });
+        const updatedRequest = updateAppointmentRequestStatus(id, status);
+        if (updatedRequest) {
+            setRequests(prev => prev.map(req => req.id === id ? { ...req, status } : req));
+            toast({
+                title: `Request ${status}`,
+                description: `The appointment request has been ${status.toLowerCase()}.`,
+            });
+        }
     };
 
   return (
@@ -32,7 +41,7 @@ export default function RequestsPage() {
 
         <Card>
             <CardHeader>
-                <CardTitle>Pending Requests</CardTitle>
+                <CardTitle>Incoming Requests</CardTitle>
                 <CardDescription>Review and respond to new appointment requests.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -76,6 +85,11 @@ export default function RequestsPage() {
                         ))}
                     </TableBody>
                 </Table>
+                 {requests.filter(r => r.status === 'Pending').length === 0 && (
+                    <div className="text-center py-8 text-muted-foreground">
+                        No pending requests.
+                    </div>
+                )}
             </CardContent>
         </Card>
     </div>

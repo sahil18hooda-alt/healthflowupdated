@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { mockDoctors, mockPatientAppointments, mockEmployeeAppointments, addAppointmentRequest, mockAppointmentRequests as initialMockRequests } from '@/lib/mock-data';
+import { mockDoctors, mockPatientAppointments as initialPatientAppointments, mockEmployeeAppointments, addAppointmentRequest, mockAppointmentRequests as initialMockRequests } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
@@ -19,8 +19,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { AppointmentRequest } from '@/lib/types';
-import { useState } from 'react';
+import { AppointmentRequest, Appointment } from '@/lib/types';
+import { useState, useEffect } from 'react';
 
 const appointmentFormSchema = z.object({
   doctor: z.string().min(1, 'Please select a doctor.'),
@@ -29,7 +29,7 @@ const appointmentFormSchema = z.object({
   type: z.enum(['Hospital', 'Online']),
 });
 
-const AppointmentCard = ({ appointment, role }: { appointment: typeof mockPatientAppointments[0], role: 'patient' | 'employee' }) => (
+const AppointmentCard = ({ appointment, role }: { appointment: typeof initialPatientAppointments[0], role: 'patient' | 'employee' }) => (
     <Card>
         <CardHeader>
             <CardTitle className="text-lg">{role === 'patient' ? appointment.doctorName : appointment.patientName}</CardTitle>
@@ -191,7 +191,7 @@ function PatientRequests({ appointmentRequests }: { appointmentRequests: Appoint
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {userRequests.map((request) => (
+                            {userRequests.length > 0 ? userRequests.map((request) => (
                                 <TableRow key={request.id}>
                                     <TableCell>{request.doctor}</TableCell>
                                     <TableCell>{format(new Date(request.date), 'MMM dd, yyyy')}</TableCell>
@@ -206,7 +206,11 @@ function PatientRequests({ appointmentRequests }: { appointmentRequests: Appoint
                                         </span>
                                     </TableCell>
                                 </TableRow>
-                            ))}
+                            )) : (
+                                <TableRow>
+                                    <TableCell colSpan={5} className="text-center h-24">No requests found.</TableCell>
+                                </TableRow>
+                            )}
                         </TableBody>
                     </Table>
                 </CardContent>
@@ -218,11 +222,43 @@ function PatientRequests({ appointmentRequests }: { appointmentRequests: Appoint
 
 export default function AppointmentsPage() {
     const { user } = useAuth();
-    const appointments = user?.role === 'patient' ? mockPatientAppointments : mockEmployeeAppointments;
+    const [patientAppointments, setPatientAppointments] = useState<Appointment[]>(initialPatientAppointments);
     const [mockAppointmentRequests, setMockAppointmentRequests] = useState<AppointmentRequest[]>(initialMockRequests);
 
+    const isPatient = user?.role === 'patient';
+    const appointments = isPatient ? patientAppointments : mockEmployeeAppointments;
+
+    useEffect(() => {
+        if (isPatient) {
+            // In a real app, this would be a fetch or subscription.
+            // For mock, we check if any accepted requests created new appointments.
+            const acceptedUserRequests = initialMockRequests.filter(
+                req => req.patientName === user.name && req.status === 'Accepted'
+            );
+
+            const newAppointments = acceptedUserRequests.map(req => ({
+                id: `app-${req.id}`,
+                doctorName: req.doctor,
+                patientName: req.patientName,
+                date: format(req.date, 'yyyy-MM-dd'),
+                time: req.time,
+                type: req.type,
+                status: 'Upcoming' as 'Upcoming',
+            }));
+
+            // Avoid adding duplicates
+            const allAppointments = [...initialPatientAppointments];
+            newAppointments.forEach(newApp => {
+                if (!allAppointments.find(app => app.id === newApp.id)) {
+                    allAppointments.push(newApp);
+                }
+            });
+            setPatientAppointments(allAppointments);
+        }
+    }, [mockAppointmentRequests, user, isPatient]);
+
     const handleNewRequest = (newRequest: AppointmentRequest) => {
-        setMockAppointmentRequests(prevRequests => [...prevRequests, newRequest]);
+        setMockAppointmentRequests(prevRequests => [newRequest, ...prevRequests]);
     };
 
   return (
@@ -245,6 +281,13 @@ export default function AppointmentsPage() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {appointments.map(app => <AppointmentCard key={app.id} appointment={app} role={user!.role} />)}
             </div>
+            {appointments.length === 0 && (
+                <Card>
+                    <CardContent className="py-12 text-center text-muted-foreground">
+                        No appointments scheduled.
+                    </CardContent>
+                </Card>
+            )}
         </TabsContent>
         {user?.role === 'patient' && <PatientRequests appointmentRequests={mockAppointmentRequests} />}
         {user?.role === 'patient' && <PatientAppointments onAppointmentRequest={handleNewRequest} />}

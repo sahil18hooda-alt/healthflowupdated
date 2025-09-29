@@ -76,7 +76,7 @@ export const mockReviews: HospitalReview[] = [
   },
 ];
 
-export const mockPatientAppointments: Appointment[] = [
+export let mockPatientAppointments: Appointment[] = [
     {
         id: '1',
         doctorName: 'Dr. Anjali Sharma',
@@ -106,7 +106,7 @@ export const mockPatientAppointments: Appointment[] = [
     }
 ];
 
-export const mockEmployeeAppointments: Appointment[] = [
+export let mockEmployeeAppointments: Appointment[] = [
     {
         id: '1',
         doctorName: 'Dr. Employee',
@@ -184,21 +184,23 @@ export let mockAppointmentRequests: AppointmentRequest[] = [
 export const addAppointmentRequest = (request: Omit<AppointmentRequest, 'id' | 'status' | 'patientName'>, patientName: string) => {
     const newRequest: AppointmentRequest = {
         ...request,
-        id: `req${mockAppointmentRequests.length + 1}`,
+        id: `req${Date.now()}`,
         status: 'Pending',
         patientName,
     };
-    mockAppointmentRequests.push(newRequest);
+    mockAppointmentRequests.unshift(newRequest);
     return newRequest;
 }
 
 export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 'Declined') => {
-    const request = mockAppointmentRequests.find(req => req.id === id);
-    if(request) {
-        request.status = status;
+    const requestIndex = mockAppointmentRequests.findIndex(req => req.id === id);
+    if(requestIndex > -1) {
+        mockAppointmentRequests[requestIndex].status = status;
+        const request = mockAppointmentRequests[requestIndex];
+        
         if (status === 'Accepted') {
             const newAppointment: Appointment = {
-                id: `app${mockPatientAppointments.length + 1}`,
+                id: `app${Date.now()}`,
                 doctorName: request.doctor,
                 patientName: request.patientName,
                 date: request.date.toISOString().split('T')[0],
@@ -206,18 +208,20 @@ export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 
                 type: request.type,
                 status: 'Upcoming'
             };
-            if(request.patientName === 'Patient Zero') { // Assuming 'Patient Zero' is the current logged-in patient for mock
-                mockPatientAppointments.push(newAppointment);
-            }
-            // For employee, it's a bit more complex, for now we add it to employee's list if their name matches.
-            // In a real app, this would be based on doctor's ID.
-            if(request.doctor === 'Dr. Employee') {
-                mockEmployeeAppointments.push(newAppointment);
-            }
+            
+            // This is a mock. In a real app, you'd have a global state or a refetch mechanism.
+            // For now, let's assume we can push to both patient and employee arrays.
+            // This won't update the UI automatically without more complex state management.
+            mockPatientAppointments.push(newAppointment);
 
+            // Add to the specific doctor's list as well
+            if (request.doctor === 'Dr. Employee' || mockDoctors.find(d => d.name === request.doctor)) {
+                 mockEmployeeAppointments.push(newAppointment);
+            }
         }
+        return mockAppointmentRequests[requestIndex];
     }
-    return request;
+    return undefined;
 };
 
 export const mockMedications: Medication[] = [
