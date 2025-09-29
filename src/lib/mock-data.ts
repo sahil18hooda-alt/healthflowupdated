@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import type { Doctor, HospitalReview, Appointment, AttendanceRecord, AppointmentRequest, Medication } from './types';
@@ -188,11 +189,18 @@ const initialAppointmentRequests: AppointmentRequest[] = [
     },
   ];
 
-export const getPatientAppointments = () => getStoredData('patientAppointments', initialPatientAppointments);
-export const getEmployeeAppointments = () => getStoredData('employeeAppointments', initialEmployeeAppointments);
+export const getPatientAppointments = (patientName: string) => {
+    const allAppointments = getStoredData<Appointment[]>('allAppointments', [...initialPatientAppointments, ...initialEmployeeAppointments]);
+    return allAppointments.filter(app => app.patientName === patientName);
+};
+
+export const getEmployeeAppointments = (doctorName: string) => {
+    const allAppointments = getStoredData<Appointment[]>('allAppointments', [...initialPatientAppointments, ...initialEmployeeAppointments]);
+    return allAppointments.filter(app => app.doctorName === doctorName);
+};
+
 export const getAppointmentRequests = () => {
-    const requests = getStoredData('appointmentRequests', initialAppointmentRequests);
-    // Dates need to be revived from strings
+    const requests = getStoredData<AppointmentRequest[]>('appointmentRequests', initialAppointmentRequests);
     return requests.map(req => ({...req, date: new Date(req.date)}));
 };
 
@@ -216,10 +224,11 @@ export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 
 
     if(requestIndex > -1) {
         requests[requestIndex].status = status;
-        setStoredData('appointmentRequests', requests);
+        
         const request = requests[requestIndex];
         
         if (status === 'Accepted') {
+            const allAppointments = getStoredData<Appointment[]>('allAppointments', [...initialPatientAppointments, ...initialEmployeeAppointments]);
             const newAppointment: Appointment = {
                 id: `app${Date.now()}`,
                 doctorName: request.doctor,
@@ -235,18 +244,14 @@ export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 
                 newAppointment.meetingLink = `https://meet.google.com/${randomString}`;
             }
             
-            // This logic assumes we know which user this appointment belongs to, which we don't here.
-            // A real app would have user IDs. For now, we'll add to a generic patient list and doctor list.
-            const patientAppointments = getPatientAppointments();
-            setStoredData('patientAppointments', [...patientAppointments, newAppointment]);
-
-            // If the doctor is the generic 'Dr. Employee' or one of the mock doctors, add to their schedule.
-            // This is a simplification for the prototype.
-            if (request.doctor === 'Dr. Employee' || mockDoctors.some(d => d.name === request.doctor)) {
-                 const employeeAppointments = getEmployeeAppointments();
-                 setStoredData('employeeAppointments', [...employeeAppointments, newAppointment]);
-            }
+            setStoredData('allAppointments', [...allAppointments, newAppointment]);
         }
+        
+        // Remove the processed request from the list
+        const updatedRequests = requests.filter(req => req.id !== id);
+        // Add the updated request back to the top with its new status
+        setStoredData('appointmentRequests', [{...requests[requestIndex], status}, ...updatedRequests]);
+        
         return requests[requestIndex];
     }
     return undefined;
@@ -309,3 +314,5 @@ export const addMedication = (medication: Omit<Medication, 'id'>): Medication =>
     mockMedications.push(newMedication);
     return newMedication;
 };
+
+    

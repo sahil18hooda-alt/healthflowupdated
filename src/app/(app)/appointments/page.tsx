@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useAuth } from '@/hooks/use-auth';
@@ -246,22 +247,29 @@ export default function AppointmentsPage() {
     const isPatient = user?.role === 'patient';
     
     useEffect(() => {
-        setAppointments(isPatient ? getPatientAppointments() : getEmployeeAppointments());
-        setAppointmentRequests(getAppointmentRequests());
+        if (user) {
+            const fetchAppointments = () => {
+                setAppointments(isPatient ? getPatientAppointments(user.name) : getEmployeeAppointments(user.name));
+            };
+            fetchAppointments();
+            const interval = setInterval(fetchAppointments, 1000); // Poll for changes
+            return () => clearInterval(interval);
+        }
     }, [isPatient, user]);
+
+    useEffect(() => {
+        const fetchRequests = () => {
+            setAppointmentRequests(getAppointmentRequests());
+        };
+        fetchRequests();
+        const interval = setInterval(fetchRequests, 1000); // Poll for changes
+        return () => clearInterval(interval);
+    }, []);
+
 
     const handleNewRequest = (newRequest: AppointmentRequest) => {
         setAppointmentRequests(prevRequests => [newRequest, ...prevRequests]);
     };
-    
-    // This effect ensures the appointments list is updated when a request is accepted/declined by an employee
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setAppointments(isPatient ? getPatientAppointments() : getEmployeeAppointments());
-        }, 1000); // Poll for changes every second
-        return () => clearInterval(interval);
-    }, [isPatient]);
-
 
   return (
     <div className="space-y-6">
@@ -297,3 +305,5 @@ export default function AppointmentsPage() {
     </div>
   );
 }
+
+    

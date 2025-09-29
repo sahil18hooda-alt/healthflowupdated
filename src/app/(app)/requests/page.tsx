@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -10,26 +11,36 @@ import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { AppointmentRequest } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/use-auth';
 
 export default function RequestsPage() {
+    const { user } = useAuth();
     const [requests, setRequests] = useState<AppointmentRequest[]>([]);
     const { toast } = useToast();
 
     useEffect(() => {
-        // Load requests from the persistent store
-        setRequests(getAppointmentRequests());
-    }, []);
+        const fetchRequests = () => {
+            if (user) {
+                // For this prototype, employees see all requests. 
+                // A real app would filter by the employee's assigned patients or department.
+                setRequests(getAppointmentRequests().filter(req => req.doctor === user.name || mockDoctors.some(d => d.name === req.doctor)));
+            }
+        };
+
+        fetchRequests();
+        const interval = setInterval(fetchRequests, 1000); // Poll for new requests
+        return () => clearInterval(interval);
+    }, [user]);
 
 
     const handleStatusUpdate = (id: string, status: 'Accepted' | 'Declined') => {
         const updatedRequest = updateAppointmentRequestStatus(id, status);
         if (updatedRequest) {
-            // Re-fetch the data from the source of truth to ensure UI is in sync
-            setRequests(getAppointmentRequests());
             toast({
                 title: `Request ${status}`,
                 description: `The appointment request has been ${status.toLowerCase()}.`,
             });
+            // The useEffect polling will update the UI, no need to manually set state here.
         }
     };
 
@@ -59,7 +70,7 @@ export default function RequestsPage() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {requests.map((request) => (
+                        {requests.length > 0 ? requests.map((request) => (
                             <TableRow key={request.id}>
                                 <TableCell>{request.patientName}</TableCell>
                                 <TableCell>{request.doctor}</TableCell>
@@ -83,16 +94,17 @@ export default function RequestsPage() {
                                     )}
                                 </TableCell>
                             </TableRow>
-                        ))}
+                        )) : (
+                            <TableRow>
+                                <TableCell colSpan={7} className="text-center h-24">No requests found.</TableCell>
+                            </TableRow>
+                        )}
                     </TableBody>
                 </Table>
-                 {requests.filter(r => r.status === 'Pending').length === 0 && (
-                    <div className="text-center py-8 text-muted-foreground">
-                        No pending requests.
-                    </div>
-                )}
             </CardContent>
         </Card>
     </div>
   );
 }
+
+    
