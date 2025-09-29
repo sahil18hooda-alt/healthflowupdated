@@ -38,7 +38,7 @@ export default function LoginForm({ role }: { role: UserRole }) {
     // In a real app, you'd call a Firebase auth function here.
     // For this prototype, we'll use our mock login.
     console.log('Login values:', values);
-    login(role);
+    login(role, values.email);
   }
 
   const roleTitle = role === 'patient' ? 'Patient' : 'Employee';

@@ -6,12 +6,22 @@ import type { User, UserRole } from '@/lib/types';
 
 export interface AuthContextType {
   user: User | null;
-  login: (role: UserRole, name?: string) => void;
+  login: (role: UserRole, emailOrName: string) => void;
   logout: () => void;
   loading: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
+
+// Helper to convert email to a capitalized name
+const emailToName = (email: string) => {
+  if (!email.includes('@')) return email; // It's probably a name from signup
+  const namePart = email.split('@')[0];
+  return namePart
+    .split(/[\._-]/)
+    .map(name => name.charAt(0).toUpperCase() + name.slice(1))
+    .join(' ');
+};
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -32,12 +42,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const login = (role: UserRole, name?: string) => {
-    const defaultName = role === 'patient' ? 'Patient Zero' : 'Dr. Employee';
+  const login = (role: UserRole, emailOrName: string) => {
+    const isEmail = emailOrName.includes('@');
+    const name = emailToName(emailOrName);
+    const email = isEmail ? emailOrName : (role === 'patient' ? 'patient@healthflow.com' : 'doctor@healthflow.com');
+
     const mockUser: User = {
       id: '123',
-      name: name || defaultName,
-      email: role === 'patient' ? 'patient@healthflow.com' : 'doctor@healthflow.com',
+      name: name,
+      email: email,
       role: role,
     };
     localStorage.setItem('healthflow-user', JSON.stringify(mockUser));
