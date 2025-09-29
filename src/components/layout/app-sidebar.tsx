@@ -28,7 +28,7 @@ const patientNavGroups = [
         title: 'Health Tools',
         items: [
             { href: '/symptom-analyzer', icon: <Bot />, label: 'Symptom Analyzer' },
-            { href: '/drug-checker', icon: <Syringe />, label: 'Drug Interaction' },
+            { href: '/drug-interaction-checker', icon: <Syringe />, label: 'Drug Interaction' },
         ]
     },
     {
