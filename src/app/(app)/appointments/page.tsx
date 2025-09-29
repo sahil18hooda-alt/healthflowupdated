@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { mockDoctors, mockPatientAppointments as initialPatientAppointments, mockEmployeeAppointments, addAppointmentRequest, mockAppointmentRequests as initialMockRequests } from '@/lib/mock-data';
+import { mockDoctors, getPatientAppointments, getEmployeeAppointments, addAppointmentRequest, getAppointmentRequests } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
@@ -29,7 +29,7 @@ const appointmentFormSchema = z.object({
   type: z.enum(['Hospital', 'Online']),
 });
 
-const AppointmentCard = ({ appointment, role }: { appointment: typeof initialPatientAppointments[0], role: 'patient' | 'employee' }) => (
+const AppointmentCard = ({ appointment, role }: { appointment: Appointment, role: 'patient' | 'employee' }) => (
     <Card>
         <CardHeader>
             <CardTitle className="text-lg">{role === 'patient' ? appointment.doctorName : appointment.patientName}</CardTitle>
@@ -170,7 +170,14 @@ function PatientAppointments({ onAppointmentRequest }: { onAppointmentRequest: (
 
 function PatientRequests({ appointmentRequests }: { appointmentRequests: AppointmentRequest[] }) {
     const { user } = useAuth();
-    const userRequests = appointmentRequests.filter(req => req.patientName === user?.name);
+    const [userRequests, setUserRequests] = useState<AppointmentRequest[]>([]);
+    
+    useEffect(() => {
+        if(user) {
+            setUserRequests(appointmentRequests.filter(req => req.patientName === user?.name));
+        }
+    }, [appointmentRequests, user]);
+
 
     return (
         <TabsContent value="requests">
@@ -222,44 +229,27 @@ function PatientRequests({ appointmentRequests }: { appointmentRequests: Appoint
 
 export default function AppointmentsPage() {
     const { user } = useAuth();
-    const [patientAppointments, setPatientAppointments] = useState<Appointment[]>(initialPatientAppointments);
-    const [mockAppointmentRequests, setMockAppointmentRequests] = useState<AppointmentRequest[]>(initialMockRequests);
+    const [appointments, setAppointments] = useState<Appointment[]>([]);
+    const [appointmentRequests, setAppointmentRequests] = useState<AppointmentRequest[]>([]);
 
     const isPatient = user?.role === 'patient';
-    const appointments = isPatient ? patientAppointments : mockEmployeeAppointments;
-
+    
     useEffect(() => {
-        if (isPatient) {
-            // In a real app, this would be a fetch or subscription.
-            // For mock, we check if any accepted requests created new appointments.
-            const acceptedUserRequests = initialMockRequests.filter(
-                req => req.patientName === user.name && req.status === 'Accepted'
-            );
+        // Load data from our persistent store on component mount
+        setAppointments(isPatient ? getPatientAppointments() : getEmployeeAppointments());
+        setAppointmentRequests(getAppointmentRequests());
+    }, [isPatient, user]);
 
-            const newAppointments = acceptedUserRequests.map(req => ({
-                id: `app-${req.id}`,
-                doctorName: req.doctor,
-                patientName: req.patientName,
-                date: format(req.date, 'yyyy-MM-dd'),
-                time: req.time,
-                type: req.type,
-                status: 'Upcoming' as 'Upcoming',
-            }));
-
-            // Avoid adding duplicates
-            const allAppointments = [...initialPatientAppointments];
-            newAppointments.forEach(newApp => {
-                if (!allAppointments.find(app => app.id === newApp.id)) {
-                    allAppointments.push(newApp);
-                }
-            });
-            setPatientAppointments(allAppointments);
-        }
-    }, [mockAppointmentRequests, user, isPatient]);
 
     const handleNewRequest = (newRequest: AppointmentRequest) => {
-        setMockAppointmentRequests(prevRequests => [newRequest, ...prevRequests]);
+        setAppointmentRequests(prevRequests => [newRequest, ...prevRequests]);
     };
+    
+    // This effect ensures the appointments list is updated when a request is accepted
+    useEffect(() => {
+        setAppointments(isPatient ? getPatientAppointments() : getEmployeeAppointments());
+    }, [appointmentRequests, isPatient]);
+
 
   return (
     <div className="space-y-6">
@@ -289,10 +279,9 @@ export default function AppointmentsPage() {
                 </Card>
             )}
         </TabsContent>
-        {user?.role === 'patient' && <PatientRequests appointmentRequests={mockAppointmentRequests} />}
+        {user?.role === 'patient' && <PatientRequests appointmentRequests={appointmentRequests} />}
         {user?.role === 'patient' && <PatientAppointments onAppointmentRequest={handleNewRequest} />}
       </Tabs>
     </div>
   );
 }
-

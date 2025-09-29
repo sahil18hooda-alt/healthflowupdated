@@ -1,10 +1,11 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { mockAppointmentRequests as initialMockRequests, updateAppointmentRequestStatus } from '@/lib/mock-data';
+import { getAppointmentRequests, updateAppointmentRequestStatus } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { AppointmentRequest } from '@/lib/types';
@@ -15,16 +16,16 @@ export default function RequestsPage() {
     const { toast } = useToast();
 
     useEffect(() => {
-        // In a real app, you would fetch this data. Here we use the mock data.
-        // We'll use a copy to avoid direct mutation issues in React strict mode.
-        setRequests([...initialMockRequests]);
+        // Load requests from the persistent store
+        setRequests(getAppointmentRequests());
     }, []);
 
 
     const handleStatusUpdate = (id: string, status: 'Accepted' | 'Declined') => {
         const updatedRequest = updateAppointmentRequestStatus(id, status);
         if (updatedRequest) {
-            setRequests(prev => prev.map(req => req.id === id ? { ...req, status } : req));
+            // Re-fetch the data from the source of truth to ensure UI is in sync
+            setRequests(getAppointmentRequests());
             toast({
                 title: `Request ${status}`,
                 description: `The appointment request has been ${status.toLowerCase()}.`,

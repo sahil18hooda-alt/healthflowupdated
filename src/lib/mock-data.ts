@@ -1,5 +1,33 @@
 
+'use client';
+
 import type { Doctor, HospitalReview, Appointment, AttendanceRecord, AppointmentRequest, Medication } from './types';
+
+// Helper to get data from localStorage or use initial mock data
+function getStoredData<T>(key: string, initialData: T): T {
+    if (typeof window === 'undefined') {
+        return initialData;
+    }
+    try {
+        const item = window.localStorage.getItem(key);
+        return item ? JSON.parse(item) : initialData;
+    } catch (error) {
+        console.error(`Error reading ${key} from localStorage`, error);
+        return initialData;
+    }
+}
+
+// Helper to set data in localStorage
+function setStoredData<T>(key: string, data: T) {
+    if (typeof window === 'undefined') {
+        return;
+    }
+    try {
+        window.localStorage.setItem(key, JSON.stringify(data));
+    } catch (error) {
+        console.error(`Error writing ${key} to localStorage`, error);
+    }
+}
 
 export const mockDoctors: Doctor[] = [
   {
@@ -77,7 +105,7 @@ export const mockReviews: HospitalReview[] = [
   },
 ];
 
-export let mockPatientAppointments: Appointment[] = [
+const initialPatientAppointments: Appointment[] = [
     {
         id: '1',
         doctorName: 'Dr. Anjali Sharma',
@@ -107,7 +135,7 @@ export let mockPatientAppointments: Appointment[] = [
     }
 ];
 
-export let mockEmployeeAppointments: Appointment[] = [
+const initialEmployeeAppointments: Appointment[] = [
     {
         id: '1',
         doctorName: 'Dr. Employee',
@@ -137,6 +165,83 @@ export let mockEmployeeAppointments: Appointment[] = [
     }
 ];
 
+const initialAppointmentRequests: AppointmentRequest[] = [
+    {
+      id: 'req1',
+      doctor: 'Dr. Anjali Sharma',
+      date: new Date('2024-08-20'),
+      time: '10:00 AM',
+      type: 'Hospital',
+      patientName: 'Ravi Kumar',
+      status: 'Pending',
+    },
+    {
+      id: 'req2',
+      doctor: 'Dr. Vikram Singh',
+      date: new Date('2024-08-21'),
+      time: '11:30 AM',
+      type: 'Online',
+      patientName: 'Sunita Devi',
+      status: 'Pending',
+    },
+  ];
+
+export const getPatientAppointments = () => getStoredData('patientAppointments', initialPatientAppointments);
+export const getEmployeeAppointments = () => getStoredData('employeeAppointments', initialEmployeeAppointments);
+export const getAppointmentRequests = () => {
+    const requests = getStoredData('appointmentRequests', initialAppointmentRequests);
+    // Dates need to be revived from strings
+    return requests.map(req => ({...req, date: new Date(req.date)}));
+};
+
+
+export const addAppointmentRequest = (request: Omit<AppointmentRequest, 'id' | 'status' | 'patientName'>, patientName: string) => {
+    const requests = getAppointmentRequests();
+    const newRequest: AppointmentRequest = {
+        ...request,
+        id: `req${Date.now()}`,
+        status: 'Pending',
+        patientName,
+    };
+    const updatedRequests = [newRequest, ...requests];
+    setStoredData('appointmentRequests', updatedRequests);
+    return newRequest;
+}
+
+export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 'Declined') => {
+    const requests = getAppointmentRequests();
+    const requestIndex = requests.findIndex(req => req.id === id);
+
+    if(requestIndex > -1) {
+        requests[requestIndex].status = status;
+        const request = requests[requestIndex];
+        
+        if (status === 'Accepted') {
+            const newAppointment: Appointment = {
+                id: `app${Date.now()}`,
+                doctorName: request.doctor,
+                patientName: request.patientName,
+                date: request.date.toISOString().split('T')[0],
+                time: request.time,
+                type: request.type,
+                status: 'Upcoming'
+            };
+            
+            const patientAppointments = getPatientAppointments();
+            setStoredData('patientAppointments', [...patientAppointments, newAppointment]);
+
+            if (request.doctor === 'Dr. Employee' || mockDoctors.find(d => d.name === request.doctor)) {
+                 const employeeAppointments = getEmployeeAppointments();
+                 setStoredData('employeeAppointments', [...employeeAppointments, newAppointment]);
+            }
+        }
+        setStoredData('appointmentRequests', requests);
+        return requests[requestIndex];
+    }
+    return undefined;
+};
+
+
 export const mockAttendance: AttendanceRecord[] = [
     {
         id: '1',
@@ -161,67 +266,7 @@ export const mockAttendance: AttendanceRecord[] = [
     },
 ];
 
-export let mockAppointmentRequests: AppointmentRequest[] = [
-    {
-      id: 'req1',
-      doctor: 'Dr. Anjali Sharma',
-      date: new Date('2024-08-20'),
-      time: '10:00 AM',
-      type: 'Hospital',
-      patientName: 'Ravi Kumar',
-      status: 'Pending',
-    },
-    {
-      id: 'req2',
-      doctor: 'Dr. Vikram Singh',
-      date: new Date('2024-08-21'),
-      time: '11:30 AM',
-      type: 'Online',
-      patientName: 'Sunita Devi',
-      status: 'Pending',
-    },
-  ];
-  
-export const addAppointmentRequest = (request: Omit<AppointmentRequest, 'id' | 'status' | 'patientName'>, patientName: string) => {
-    const newRequest: AppointmentRequest = {
-        ...request,
-        id: `req${Date.now()}`,
-        status: 'Pending',
-        patientName,
-    };
-    mockAppointmentRequests.unshift(newRequest);
-    return newRequest;
-}
-
-export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 'Declined') => {
-    const requestIndex = mockAppointmentRequests.findIndex(req => req.id === id);
-    if(requestIndex > -1) {
-        mockAppointmentRequests[requestIndex].status = status;
-        const request = mockAppointmentRequests[requestIndex];
-        
-        if (status === 'Accepted') {
-            const newAppointment: Appointment = {
-                id: `app${Date.now()}`,
-                doctorName: request.doctor,
-                patientName: request.patientName,
-                date: request.date.toISOString().split('T')[0],
-                time: request.time,
-                type: request.type,
-                status: 'Upcoming'
-            };
-            
-            mockPatientAppointments.push(newAppointment);
-
-            if (request.doctor === 'Dr. Employee' || mockDoctors.find(d => d.name === request.doctor)) {
-                 mockEmployeeAppointments.push(newAppointment);
-            }
-        }
-        return mockAppointmentRequests[requestIndex];
-    }
-    return undefined;
-};
-
-export const mockMedications: Medication[] = [
+export let mockMedications: Medication[] = [
     {
         id: '1',
         name: 'Aspirin',
