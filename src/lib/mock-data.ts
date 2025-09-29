@@ -1,4 +1,4 @@
-import type { Doctor, HospitalReview, Appointment, AttendanceRecord, AppointmentRequest } from './types';
+import type { Doctor, HospitalReview, Appointment, AttendanceRecord, AppointmentRequest, Medication } from './types';
 
 export const mockDoctors: Doctor[] = [
   {
@@ -218,4 +218,37 @@ export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 
         }
     }
     return request;
+};
+
+export const mockMedications: Medication[] = [
+    {
+        id: '1',
+        name: 'Aspirin',
+        dosage: '75mg',
+        frequency: 'Once a day',
+        time: ['09:00 PM'],
+    },
+    {
+        id: '2',
+        name: 'Metformin',
+        dosage: '500mg',
+        frequency: 'Twice a day',
+        time: ['08:00 AM', '08:00 PM'],
+    },
+    {
+        id: '3',
+        name: 'Vitamin D3',
+        dosage: '1000 IU',
+        frequency: 'Once a day',
+        time: ['09:00 AM'],
+    }
+];
+
+export const addMedication = (medication: Omit<Medication, 'id'>): Medication => {
+    const newMedication: Medication = {
+        ...medication,
+        id: `med${mockMedications.length + 1}`,
+    };
+    mockMedications.push(newMedication);
+    return newMedication;
 };
