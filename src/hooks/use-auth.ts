@@ -2,6 +2,7 @@
 
 import { useContext } from 'react';
 import { AuthContext, type AuthContextType } from '@/providers/auth-provider';
+import { useFirebase as useFirebaseServices } from '@/firebase';
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
@@ -10,3 +11,5 @@ export const useAuth = (): AuthContextType => {
   }
   return context;
 };
+
+export const useFirebase = useFirebaseServices;

@@ -18,6 +18,10 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { useAuth } from '@/hooks/use-auth';
 import type { UserRole } from '@/lib/types';
+import { useState } from 'react';
+import { Loader2 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Invalid email address.' }),
@@ -26,6 +30,9 @@ const formSchema = z.object({
 
 export default function LoginForm({ role }: { role: UserRole }) {
   const { login } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,11 +41,20 @@ export default function LoginForm({ role }: { role: UserRole }) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // In a real app, you'd call a Firebase auth function here.
-    // For this prototype, we'll use our mock login.
-    console.log('Login values:', values);
-    login(role, values.email);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    try {
+      await login(role, values.email, values.password);
+    } catch (error: any) {
+      console.error('Login failed:', error);
+      toast({
+        title: 'Login Failed',
+        description: error.message || 'An unexpected error occurred. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const roleTitle = role === 'patient' ? 'Patient' : 'Employee';
@@ -80,7 +96,8 @@ export default function LoginForm({ role }: { role: UserRole }) {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Login
             </Button>
           </form>

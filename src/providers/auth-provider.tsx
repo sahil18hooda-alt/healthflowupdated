@@ -1,13 +1,18 @@
-
 'use client';
 
-import { createContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { User as FirebaseUser, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { useFirebase } from '@/firebase';
 import type { User, UserRole } from '@/lib/types';
+import { setDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 
 export interface AuthContextType {
   user: User | null;
-  login: (role: UserRole, emailOrName: string) => void;
+  firebaseUser: FirebaseUser | null;
+  login: (role: UserRole, email: string, pass: string) => Promise<void>;
+  signup: (role: UserRole, details: Omit<User, 'id' | 'role'> & {password: string}) => Promise<void>;
   logout: () => void;
   loading: boolean;
   updateUser: (newDetails: Partial<User>) => void;
@@ -15,66 +20,114 @@ export interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
-// Helper to convert email to a capitalized name
-const emailToName = (email: string) => {
-  if (!email.includes('@')) return email; // It's probably a name from signup
-  const namePart = email.split('@')[0];
-  return namePart
-    .split(/[\._-]/)
-    .map(name => name.charAt(0).toUpperCase() + name.slice(1))
-    .join(' ');
-};
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { auth, firestore, isUserLoading } = useFirebase();
 
-  useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem('healthflow-user');
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
+  const fetchAppData = useCallback(async (fbUser: FirebaseUser | null) => {
+    if (fbUser && firestore) {
+      // Check if user is in 'users' (patient) collection
+      let userDocRef = doc(firestore, 'users', fbUser.uid);
+      let userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        const patientData = userDocSnap.data();
+        setUser({
+          id: fbUser.uid,
+          email: fbUser.email!,
+          name: patientData.name,
+          role: 'patient',
+        });
+      } else {
+        // Check if user is in 'employees' collection
+        userDocRef = doc(firestore, 'employees', fbUser.uid);
+        userDocSnap = await getDoc(userDocRef);
+        if (userDocSnap.exists()) {
+          const employeeData = userDocSnap.data();
+          setUser({
+            id: fbUser.uid,
+            email: fbUser.email!,
+            name: employeeData.name,
+            role: 'employee',
+          });
+        } else {
+            // User exists in Auth but not in Firestore DB. This might be a fresh signup.
+            // Or an inconsistent state. For now, we log out.
+            console.warn("User record not found in Firestore. Logging out.");
+            await signOut(auth);
+            setUser(null);
+        }
       }
-    } catch (error) {
-      console.error('Failed to parse user from localStorage', error);
-      localStorage.removeItem('healthflow-user');
-    } finally {
-      setLoading(false);
+    } else {
+      setUser(null);
     }
-  }, []);
+    setFirebaseUser(fbUser);
+    setLoading(false);
+  }, [firestore, auth]);
+  
+  useEffect(() => {
+    if (!isUserLoading && auth.currentUser !== firebaseUser) {
+        fetchAppData(auth.currentUser);
+    }
+  }, [isUserLoading, auth.currentUser, firebaseUser, fetchAppData]);
 
-  const login = (role: UserRole, emailOrName: string) => {
-    const isEmail = emailOrName.includes('@');
-    const name = isEmail ? emailToName(emailOrName) : emailOrName;
-    const email = isEmail ? emailOrName : (role === 'patient' ? 'patient@healthflow.com' : 'doctor@healthflow.com');
 
-    const mockUser: User = {
-      id: '123',
-      name: name,
-      email: email,
-      role: role,
-    };
-    localStorage.setItem('healthflow-user', JSON.stringify(mockUser));
-    setUser(mockUser);
+  const login = async (role: UserRole, email: string, pass: string) => {
+    setLoading(true);
+    await signInWithEmailAndPassword(auth, email, pass);
+    // onAuthStateChanged will handle the rest
+    router.push('/dashboard');
+  };
+  
+  const signup = async (role: UserRole, details: Omit<User, 'id' | 'role'> & {password: string}) => {
+    setLoading(true);
+    const userCredential = await createUserWithEmailAndPassword(auth, details.email, details.password);
+    const { uid } = userCredential.user;
+
+    const collectionPath = role === 'patient' ? 'users' : 'employees';
+    const userDocRef = doc(firestore, collectionPath, uid);
+
+    const { password, ...userData } = details;
+
+    setDocumentNonBlocking(userDocRef, { ...userData, id: uid }, {});
+
+    setUser({
+        id: uid,
+        ...userData,
+        role,
+    });
+
     router.push('/dashboard');
   };
 
-  const logout = () => {
-    localStorage.removeItem('healthflow-user');
+
+  const logout = async () => {
+    await signOut(auth);
     setUser(null);
+    setFirebaseUser(null);
     router.push('/');
   };
 
   const updateUser = (newDetails: Partial<User>) => {
-    if (user) {
+    if (user && firestore) {
       const updatedUser = { ...user, ...newDetails };
-      localStorage.setItem('healthflow-user', JSON.stringify(updatedUser));
       setUser(updatedUser);
+      
+      const collectionPath = user.role === 'patient' ? 'users' : 'employees';
+      const userDocRef = doc(firestore, collectionPath, user.id);
+      
+      updateDoc(userDocRef, newDetails).catch(error => {
+        console.error("Failed to update user in Firestore", error);
+        // Optionally revert state or show an error
+      });
     }
   };
 
-  const value = { user, login, logout, loading, updateUser };
+  const value = { user, firebaseUser, login, signup, logout, loading, updateUser };
 
   return (
     <AuthContext.Provider value={value}>

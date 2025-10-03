@@ -7,6 +7,7 @@ import AppSidebar from '@/components/layout/app-sidebar';
 import AppHeader from '@/components/layout/app-header';
 import { useAuth } from '@/hooks/use-auth';
 import Chatbot from '@/components/chatbot';
+import { Loader2 } from 'lucide-react';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -21,7 +22,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   if (loading || !user) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <div className="text-lg font-semibold">Loading HealthFlow...</div>
+          <div className="flex items-center gap-2">
+            <Loader2 className="h-6 w-6 animate-spin text-primary" />
+            <div className="text-lg font-semibold">Loading HealthFlow...</div>
+        </div>
       </div>
     );
   }
