@@ -19,6 +19,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { useAuth } from '@/hooks/use-auth';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { FirebaseError } from 'firebase/app';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -52,11 +53,27 @@ export default function EmployeeSignupForm() {
         await signup('employee', values);
     } catch(error: any) {
         console.error('Signup failed:', error);
-        toast({
-            title: 'Signup Failed',
-            description: error.message || 'An unexpected error occurred. Please try again.',
-            variant: 'destructive'
-        });
+        if (error instanceof FirebaseError && error.code === 'auth/email-already-in-use') {
+            toast({
+                title: 'Email Already Registered',
+                description: (
+                    <>
+                        An account with this email already exists. Please{' '}
+                        <Link href="/login?role=employee" className="font-bold text-primary hover:underline">
+                            login
+                        </Link>{' '}
+                        instead.
+                    </>
+                ),
+                variant: 'destructive'
+            });
+        } else {
+            toast({
+                title: 'Signup Failed',
+                description: error.message || 'An unexpected error occurred. Please try again.',
+                variant: 'destructive'
+            });
+        }
     } finally {
         setIsLoading(false);
     }
