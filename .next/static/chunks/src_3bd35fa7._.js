@@ -849,11 +849,16 @@ function AuthProvider({ children }) {
                 let userDocSnap = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm2017$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getDoc"])(userDocRef);
                 if (userDocSnap.exists()) {
                     const patientData = userDocSnap.data();
+                    // Fetch health profile
+                    const healthProfileRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm2017$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["doc"])(firestore, 'users', fbUser.uid, 'healthProfile', fbUser.uid);
+                    const healthProfileSnap = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm2017$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getDoc"])(healthProfileRef);
+                    const healthProfile = healthProfileSnap.exists() ? healthProfileSnap.data() : undefined;
                     setUser({
                         id: fbUser.uid,
                         email: fbUser.email,
                         name: patientData.name,
-                        role: 'patient'
+                        role: 'patient',
+                        healthProfile
                     });
                 } else {
                     // Check if user is in 'employees' collection
@@ -936,10 +941,21 @@ function AuthProvider({ children }) {
             setUser(updatedUser);
             const collectionPath = user.role === 'patient' ? 'users' : 'employees';
             const userDocRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm2017$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["doc"])(firestore, collectionPath, user.id);
-            updateDoc(userDocRef, newDetails).catch((error)=>{
+            const { id, role, healthProfile, ...detailsToUpdate } = newDetails;
+            (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm2017$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["updateDoc"])(userDocRef, detailsToUpdate).catch((error)=>{
                 console.error("Failed to update user in Firestore", error);
             // Optionally revert state or show an error
             });
+        }
+    };
+    const updateHealthProfile = (healthProfile)=>{
+        if (user && firestore) {
+            setUser((prev)=>prev ? {
+                    ...prev,
+                    healthProfile
+                } : null);
+            const healthProfileRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm2017$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["doc"])(firestore, 'users', user.id, 'healthProfile', user.id);
+            (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$firebase$2f$non$2d$blocking$2d$updates$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["setDocumentNonBlocking"])(healthProfileRef, healthProfile, {});
         }
     };
     const value = {
@@ -949,14 +965,15 @@ function AuthProvider({ children }) {
         signup,
         logout,
         loading,
-        updateUser
+        updateUser,
+        updateHealthProfile
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(AuthContext.Provider, {
         value: value,
         children: children
     }, void 0, false, {
         fileName: "[project]/src/providers/auth-provider.tsx",
-        lineNumber: 133,
+        lineNumber: 152,
         columnNumber: 5
     }, this);
 }

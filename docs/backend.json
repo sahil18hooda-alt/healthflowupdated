@@ -85,6 +85,51 @@
         "hospitalDepartment",
         "email"
       ]
+    },
+    "HealthProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Health Profile",
+      "type": "object",
+      "description": "Stores detailed health and lifestyle information for a patient.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Health Profile, same as the user ID."
+        },
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user this profile belongs to."
+        },
+        "primaryGoal": {
+          "type": "string",
+          "enum": ["lose-weight", "gain-muscle", "improve-endurance", "reduce-stress", "eat-healthier", "improve-sleep"]
+        },
+        "activityLevel": {
+          "type": "string",
+          "enum": ["sedentary", "lightly-active", "moderately-active", "very-active"]
+        },
+        "dietaryPreferences": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["vegetarian", "vegan", "gluten-free", "dairy-free", "none"]
+          }
+        },
+        "sleepHours": {
+          "type": "number",
+          "description": "Average hours of sleep per night."
+        },
+        "stressLevel": {
+          "type": "string",
+          "enum": ["low", "moderate", "high"]
+        },
+        "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the profile was last updated."
+        }
+      },
+      "required": ["id", "userId", "primaryGoal", "activityLevel", "sleepHours", "stressLevel", "updatedAt"]
     }
   },
   "auth": {
@@ -109,6 +154,26 @@
               "description": "The unique identifier of the user."
             }
           ]
+        }
+      },
+      {
+        "path": "users/{userId}/healthProfile/{profileId}",
+        "definition": {
+            "entityName": "HealthProfile",
+            "schema": {
+                "$ref": "#/backend/entities/HealthProfile"
+            },
+            "description": "Stores the detailed health profile of a patient. The profileId should be the same as the userId.",
+            "params": [
+                {
+                    "name": "userId",
+                    "description": "The unique identifier of the user."
+                },
+                {
+                    "name": "profileId",
+                    "description": "The unique identifier of the health profile, same as userId."
+                }
+            ]
         }
       },
       {
@@ -160,6 +225,6 @@
         }
       }
     ],
-    "reasoning": "This Firestore structure is designed to support the HealthFlow application, focusing on secure authentication, role-based access control, and data organization for patients and employees. It prioritizes authorization independence and efficient data retrieval. \n\n**Authorization Independence (Denormalization):**\n\n*   `users/{userId}`: The `role` field is directly stored within the user document. This denormalization allows simple, role-based access control rules without requiring complex `get()` calls to other collections.\n*   `appointments/{appointmentId}`: The `patientId` and `doctorId` are stored within the appointment document. This denormalization avoids the need to perform additional lookups to authorize appointment access based on user roles.\n\n**Structural Segregation (Homogeneous Security Posture):**\n\n*   The structure segregates user data (`users/{userId}`), appointment data (`appointments/{appointmentId}`), and review data (`reviews/{reviewId}`). This segregation ensures that each collection can have its own distinct security rules, avoiding the need for complex conditional logic within the rules themselves.\n\n**Access Modeling:**\n\n*   **User Data:** User profiles, including roles, are stored directly under the `users/{userId}` collection. This path-based ownership simplifies user authentication and authorization.\n*   **Appointment Data:** Appointments are stored under `appointments/{appointmentId}`, with relevant user IDs (`patientId`, `doctorId`) denormalized within each document. This structure supports efficient queries for appointments and simplifies authorization rules based on user roles.\n*   **Review Data:** Reviews are stored under `reviews/{reviewId}`, with `hospitalId` and `patientId` denormalized within each document. This structure is designed to manage user-generated reviews.\n\n**QAPs (Rules are not Filters):**\n\nThe structure supports secure `list` operations by avoiding dependencies on external data for authorization. Because the role is stored directly in the user document, listing users is inherently secure. Similarly, listing reviews or appointments can be secured based on the denormalized `patientId` and `doctorId` fields, without requiring additional `get()` calls. The path segregation strategy also ensures that listing operations remain secure and efficient, as rules can be applied at the collection level.\n\n**Data Clarity and Predictability:**\n\n*   The structure uses explicit field names and consistent data types. This clarity enhances debuggability and maintainability.\n"
+    "reasoning": "This Firestore structure is designed to support the HealthFlow application, focusing on secure authentication, role-based access control, and data organization for patients and employees. It prioritizes authorization independence and efficient data retrieval. \n\n**Authorization Independence (Denormalization):**\n\n*   `users/{userId}`: The `role` field is directly stored within the user document. This denormalization allows simple, role-based access control rules without requiring complex `get()` calls to other collections.\n*   `appointments/{appointmentId}`: The `patientId` and `doctorId` are stored within the appointment document. This denormalization avoids the need to perform additional lookups to authorize appointment access based on user roles.\n\n**Structural Segregation (Homogeneous Security Posture):**\n\n*   The structure segregates user data (`users/{userId}`), appointment data (`appointments/{appointmentId}`), and review data (`reviews/{reviewId}`). This segregation ensures that each collection can have its own distinct security rules, avoiding the need for complex conditional logic within the rules themselves.\n*   The `healthProfile` is stored in a subcollection under the user, ensuring that this sensitive data has its own security scope and can only be accessed in the context of the parent user.\n\n**Access Modeling:**\n\n*   **User Data:** User profiles, including roles, are stored directly under the `users/{userId}` collection. This path-based ownership simplifies user authentication and authorization.\n*   **Appointment Data:** Appointments are stored under `appointments/{appointmentId}`, with relevant user IDs (`patientId`, `doctorId`) denormalized within each document. This structure supports efficient queries for appointments and simplifies authorization rules based on user roles.\n*   **Review Data:** Reviews are stored under `reviews/{reviewId}`, with `hospitalId` and `patientId` denormalized within each document. This structure is designed to manage user-generated reviews.\n\n**QAPs (Rules are not Filters):**\n\nThe structure supports secure `list` operations by avoiding dependencies on external data for authorization. Because the role is stored directly in the user document, listing users is inherently secure. Similarly, listing reviews or appointments can be secured based on the denormalized `patientId` and `doctorId` fields, without requiring additional `get()` calls. The path segregation strategy also ensures that listing operations remain secure and efficient, as rules can be applied at the collection level.\n\n**Data Clarity and Predictability:**\n\n*   The structure uses explicit field names and consistent data types. This clarity enhances debuggability and maintainability.\n"
   }
 }

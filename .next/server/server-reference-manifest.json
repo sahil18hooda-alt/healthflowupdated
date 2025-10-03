@@ -10,6 +10,10 @@
           "moduleId": "[project]/.next-internal/server/app/(app)/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
+        "app/(app)/health-tips/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/health-tips/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/personalized-health-tips-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        },
         "app/(app)/symptom-analyzer/page": {
           "moduleId": "[project]/.next-internal/server/app/(app)/symptom-analyzer/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/symptom-analyzer-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
@@ -18,6 +22,7 @@
       "layer": {
         "app/(app)/ai-therapist/page": "action-browser",
         "app/(app)/dashboard/page": "action-browser",
+        "app/(app)/health-tips/page": "action-browser",
         "app/(app)/symptom-analyzer/page": "action-browser"
       }
     },
@@ -41,6 +46,17 @@
       },
       "layer": {
         "app/(app)/ai-therapist/page": "action-browser"
+      }
+    },
+    "40c4f0b96130f22ecb8c9da9da76a40ea38541de81": {
+      "workers": {
+        "app/(app)/health-tips/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/health-tips/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/personalized-health-tips-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(app)/health-tips/page": "action-browser"
       }
     }
   },

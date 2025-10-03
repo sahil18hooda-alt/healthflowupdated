@@ -5,6 +5,7 @@ export type User = {
   name:string;
   email: string;
   role: UserRole;
+  healthProfile?: HealthProfile;
 };
 
 export type Doctor = {
@@ -65,3 +66,15 @@ export type Medication = {
   time: string[];
 };
 
+export type HealthProfile = {
+  id: string;
+  userId: string;
+  age: number;
+  gender: 'male' | 'female' | 'other' | 'prefer-not-to-say';
+  primaryGoal: 'lose-weight' | 'gain-muscle' | 'improve-endurance' | 'reduce-stress' | 'eat-healthier' | 'improve-sleep';
+  activityLevel: 'sedentary' | 'lightly-active' | 'moderately-active' | 'very-active';
+  dietaryPreferences: Array<'vegetarian' | 'vegan' | 'gluten-free' | 'dairy-free' | 'none'>;
+  sleepHours: number;
+  stressLevel: 'low' | 'moderate' | 'high';
+  updatedAt: string; // ISO 8601 date string
+};

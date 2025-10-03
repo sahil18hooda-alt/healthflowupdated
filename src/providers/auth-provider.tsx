@@ -3,9 +3,9 @@
 import { createContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { User as FirebaseUser, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { useFirebase } from '@/firebase';
-import type { User, UserRole } from '@/lib/types';
+import type { User, UserRole, HealthProfile } from '@/lib/types';
 import { setDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 
 export interface AuthContextType {
@@ -16,6 +16,7 @@ export interface AuthContextType {
   logout: () => void;
   loading: boolean;
   updateUser: (newDetails: Partial<User>) => void;
+  updateHealthProfile: (healthProfile: HealthProfile) => void;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -36,12 +37,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (userDocSnap.exists()) {
         const patientData = userDocSnap.data();
+
+        // Fetch health profile
+        const healthProfileRef = doc(firestore, 'users', fbUser.uid, 'healthProfile', fbUser.uid);
+        const healthProfileSnap = await getDoc(healthProfileRef);
+        const healthProfile = healthProfileSnap.exists() ? healthProfileSnap.data() as HealthProfile : undefined;
+
         setUser({
           id: fbUser.uid,
           email: fbUser.email!,
           name: patientData.name,
           role: 'patient',
+          healthProfile,
         });
+
       } else {
         // Check if user is in 'employees' collection
         userDocRef = doc(firestore, 'employees', fbUser.uid);
@@ -120,14 +129,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const collectionPath = user.role === 'patient' ? 'users' : 'employees';
       const userDocRef = doc(firestore, collectionPath, user.id);
       
-      updateDoc(userDocRef, newDetails).catch(error => {
+      const {id, role, healthProfile, ...detailsToUpdate} = newDetails;
+      
+      updateDoc(userDocRef, detailsToUpdate).catch(error => {
         console.error("Failed to update user in Firestore", error);
         // Optionally revert state or show an error
       });
     }
   };
 
-  const value = { user, firebaseUser, login, signup, logout, loading, updateUser };
+  const updateHealthProfile = (healthProfile: HealthProfile) => {
+    if (user && firestore) {
+        setUser(prev => prev ? {...prev, healthProfile} : null);
+        const healthProfileRef = doc(firestore, 'users', user.id, 'healthProfile', user.id);
+        setDocumentNonBlocking(healthProfileRef, healthProfile, {});
+    }
+  };
+
+  const value = { user, firebaseUser, login, signup, logout, loading, updateUser, updateHealthProfile };
 
   return (
     <AuthContext.Provider value={value}>
