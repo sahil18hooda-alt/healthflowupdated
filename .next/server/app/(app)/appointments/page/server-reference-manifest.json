@@ -1,0 +1,27 @@
+{
+  "node": {
+    "409aebaa996bcf964de339242b10236fb7d9286a54": {
+      "workers": {
+        "app/(app)/appointments/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/appointments/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/inquiry-triage-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(app)/appointments/page": "action-browser"
+      }
+    },
+    "408daf5bf607659f7e57edbbd26ee9ec91d113576e": {
+      "workers": {
+        "app/(app)/appointments/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/appointments/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/inquiry-triage-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(app)/appointments/page": "action-browser"
+      }
+    }
+  },
+  "edge": {}
+}
