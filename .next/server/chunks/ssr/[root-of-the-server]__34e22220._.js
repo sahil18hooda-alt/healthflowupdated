@@ -311,7 +311,9 @@ const aiChatbotAssistantFlow = __TURBOPACK__imported__module__$5b$project$5d2f$s
 
 var { g: global, __dirname } = __turbopack_context__;
 {
-/* __next_internal_action_entry_do_not_use__ [{"40c4f0b96130f22ecb8c9da9da76a40ea38541de81":"getPersonalizedHealthTips"},"",""] */ __turbopack_context__.s({
+/* __next_internal_action_entry_do_not_use__ [{"40c4f0b96130f22ecb8c9da9da76a40ea38541de81":"getPersonalizedHealthTips","7f4653cb3aeb2c3d132304b9ccde7f0a2cf9db9eac":"HealthTipsInputSchema","7fa5439fde5453621bbb19f1144cc4260b96f1bf1b":"HealthTipsOutputSchema"},"",""] */ __turbopack_context__.s({
+    "HealthTipsInputSchema": (()=>HealthTipsInputSchema),
+    "HealthTipsOutputSchema": (()=>HealthTipsOutputSchema),
     "getPersonalizedHealthTips": (()=>getPersonalizedHealthTips)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/webpack/loaders/next-flight-loader/server-reference.js [app-rsc] (ecmascript)");
@@ -319,7 +321,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 /**
  * @fileOverview An AI flow for generating personalized health tips for patients.
  *
- * - getPersonalizedHealthTips - A function that generates health tips based on user profile.
+ * - getPersonalizedHealthTips - A function that generates health tips based on a user's health profile and real-time data.
  * - HealthTipsInput - The input type for the getPersonalizedHealthTips function.
  * - HealthTipsOutput - The return type for the getPersonalizedHealthTips function.
  */ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/ai/genkit.ts [app-rsc] (ecmascript)");
@@ -330,17 +332,34 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 ;
 ;
 ;
+// Define the structure for the user's health profile
+const UserProfileSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].object({
+    name: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe("The patient's name."),
+    primaryGoal: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('The main health goal of the user (e.g., lose-weight, reduce-stress).'),
+    activityLevel: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('The user\'s current activity level (e.g., sedentary, active).'),
+    sleepHours: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].number().describe('The average number of hours the user sleeps per night.'),
+    stressLevel: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('The user\'s self-reported stress level (e.g., low, high).')
+});
+// Define the structure for real-time environmental data
+const RealTimeDataSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].object({
+    weather: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('The current weather conditions (e.g., "Sunny", "Rainy").'),
+    airQuality: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('A descriptive air quality index (e.g., "Good", "Moderate", "Unhealthy").')
+});
 const HealthTipsInputSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].object({
-    name: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe("The patient's name.")
+    userProfile: UserProfileSchema,
+    realTimeData: RealTimeDataSchema
 });
 const HealthTipsOutputSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].object({
-    nutritionTips: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].array(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string()).describe('A list of personalized nutrition tips.'),
-    exerciseTips: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].array(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string()).describe('A list of personalized exercise recommendations.'),
-    stressManagementTips: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].array(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string()).describe('A list of personalized stress management techniques.')
+    greeting: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe("A personalized greeting for the user."),
+    nutritionTip: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('A personalized nutrition tip based on the user profile and context.'),
+    exerciseTip: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('A personalized exercise recommendation based on the user profile and context.'),
+    wellbeingTip: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('A personalized stress management or mental well-being tip.'),
+    contextualTip: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('A special tip that directly relates to the current weather or air quality.')
 });
 async function getPersonalizedHealthTips(input) {
     return personalizedHealthTipsFlow(input);
 }
+// Define the AI prompt with the new, more detailed input and output schemas
 const prompt = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"].definePrompt({
     name: 'personalizedHealthTipsPrompt',
     input: {
@@ -349,16 +368,31 @@ const prompt = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genk
     output: {
         schema: HealthTipsOutputSchema
     },
-    prompt: `You are a health and wellness coach AI. Your goal is to provide personalized, actionable, and encouraging health tips to a user named {{{name}}}.
+    prompt: `You are a holistic AI wellness coach named "Kai". Your goal is to provide personalized, actionable, and encouraging daily health tips.
 
-  Based on the user's name, generate a set of tips for the following categories:
-  1.  **Nutrition**: Provide 3 unique and easy-to-follow dietary tips.
-  2.  **Exercise**: Suggest 3 different types of physical activities.
-  3.  **Stress Management**: Recommend 3 simple techniques for relaxation and mental well-being.
+  User Profile:
+  - Name: {{{userProfile.name}}}
+  - Primary Goal: {{{userProfile.primaryGoal}}}
+  - Activity Level: {{{userProfile.activityLevel}}}
+  - Average Sleep: {{{userProfile.sleepHours}}} hours
+  - Stress Level: {{{userProfile.stressLevel}}}
 
-  Keep the tips concise (1-2 sentences each) and positive in tone. Address the user directly by name in your introduction. For example: "Here are some tips for you, {{{name}}}!".
+  Current Conditions:
+  - Weather: {{{realTimeData.weather}}}
+  - Air Quality: {{{realTimeData.airQuality}}}
+
+  Based on all this information, generate a set of tips for {{{userProfile.name}}}.
+
+  1. **Greeting**: Start with a friendly, personalized greeting.
+  2. **Nutrition Tip**: Provide a unique nutrition tip relevant to their goal.
+  3. **Exercise Tip**: Suggest a physical activity. If the weather is bad (e.g., Rainy, Extreme Heat) or air quality is poor (e.g., Unhealthy), suggest an indoor activity. Otherwise, suggest an outdoor one.
+  4. **Wellbeing Tip**: Give a simple technique for relaxation or mental well-being, especially considering their stress and sleep levels.
+  5. **Contextual Tip**: Create a special tip that specifically acknowledges and addresses today's weather or air quality. For example, if it's sunny, suggest getting some Vitamin D. If air quality is poor, recommend staying indoors.
+
+  Keep all tips concise (1-2 sentences) and maintain a positive, encouraging tone. Address the user by name where it feels natural.
   `
 });
+// Define the Genkit flow
 const personalizedHealthTipsFlow = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"].defineFlow({
     name: 'personalizedHealthTipsFlow',
     inputSchema: HealthTipsInputSchema,
@@ -369,8 +403,12 @@ const personalizedHealthTipsFlow = __TURBOPACK__imported__module__$5b$project$5d
 });
 ;
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$validate$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ensureServerEntryExports"])([
+    HealthTipsInputSchema,
+    HealthTipsOutputSchema,
     getPersonalizedHealthTips
 ]);
+(0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(HealthTipsInputSchema, "7f4653cb3aeb2c3d132304b9ccde7f0a2cf9db9eac", null);
+(0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(HealthTipsOutputSchema, "7fa5439fde5453621bbb19f1144cc4260b96f1bf1b", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getPersonalizedHealthTips, "40c4f0b96130f22ecb8c9da9da76a40ea38541de81", null);
 }}),
 "[project]/.next-internal/server/app/(app)/health-tips/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/personalized-health-tips-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript) <locals>": ((__turbopack_context__) => {
