@@ -862,6 +862,7 @@ function AuthProvider({ children }) {
                         role: 'patient',
                         healthProfile
                     });
+                    router.push('/dashboard');
                 } else {
                     // Check if user is in 'employees' collection
                     userDocRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm2017$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["doc"])(firestore, 'employees', fbUser.uid);
@@ -874,6 +875,7 @@ function AuthProvider({ children }) {
                             name: employeeData.name,
                             role: 'employee'
                         });
+                        router.push('/dashboard');
                     } else {
                         // User exists in Auth but not in Firestore DB. This might be a fresh signup.
                         // Or an inconsistent state. For now, we log out.
@@ -891,7 +893,8 @@ function AuthProvider({ children }) {
         }
     }["AuthProvider.useCallback[fetchAppData]"], [
         firestore,
-        auth
+        auth,
+        router
     ]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "AuthProvider.useEffect": ()=>{
@@ -917,8 +920,7 @@ function AuthProvider({ children }) {
     const login = async (role, email, pass)=>{
         setLoading(true);
         await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$firebase$2f$node_modules$2f40$firebase$2f$auth$2f$dist$2f$esm2017$2f$index$2d$8e6e89cb$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__ac__as__signInWithEmailAndPassword$3e$__["signInWithEmailAndPassword"])(auth, email, pass);
-        // onAuthStateChanged will handle the rest
-        router.push('/dashboard');
+    // onAuthStateChanged will handle the rest, including the redirect inside fetchAppData
     };
     const signup = async (role, details)=>{
         setLoading(true);
@@ -936,7 +938,7 @@ function AuthProvider({ children }) {
             ...userData,
             role
         });
-        router.push('/dashboard');
+    // The redirect will be handled by the useEffect when the user state is set
     };
     const logout = async ()=>{
         await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$firebase$2f$node_modules$2f40$firebase$2f$auth$2f$dist$2f$esm2017$2f$index$2d$8e6e89cb$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__D__as__signOut$3e$__["signOut"])(auth);
@@ -985,7 +987,7 @@ function AuthProvider({ children }) {
         children: children
     }, void 0, false, {
         fileName: "[project]/src/providers/auth-provider.tsx",
-        lineNumber: 166,
+        lineNumber: 165,
         columnNumber: 5
     }, this);
 }

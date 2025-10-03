@@ -53,7 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           role: 'patient',
           healthProfile,
         });
-
+        router.push('/dashboard');
       } else {
         // Check if user is in 'employees' collection
         userDocRef = doc(firestore, 'employees', fbUser.uid);
@@ -66,6 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             name: employeeData.name,
             role: 'employee',
           });
+          router.push('/dashboard');
         } else {
             // User exists in Auth but not in Firestore DB. This might be a fresh signup.
             // Or an inconsistent state. For now, we log out.
@@ -80,7 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } finally {
         setLoading(false);
     }
-  }, [firestore, auth]);
+  }, [firestore, auth, router]);
   
   useEffect(() => {
     // isUserLoading is the master loading state from the core Firebase provider.
@@ -102,8 +103,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (role: UserRole, email: string, pass: string) => {
     setLoading(true);
     await signInWithEmailAndPassword(auth, email, pass);
-    // onAuthStateChanged will handle the rest
-    router.push('/dashboard');
+    // onAuthStateChanged will handle the rest, including the redirect inside fetchAppData
   };
   
   const signup = async (role: UserRole, details: Omit<User, 'id' | 'role'> & {password: string}) => {
@@ -123,8 +123,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         ...userData,
         role,
     });
-
-    router.push('/dashboard');
+    // The redirect will be handled by the useEffect when the user state is set
   };
 
 
