@@ -73,7 +73,7 @@ export default function AITherapistPage() {
             <AlertTriangle className="h-4 w-4" />
             <AlertTitle>Important Disclaimer</AlertTitle>
             <AlertDescription>
-            This AI is for supportive conversations and is not a substitute for professional medical or psychiatric advice. If you are in crisis, please contact a local emergency service.
+            This AI is for supportive conversations. For professional medical or psychiatric advice, please contact one of our local therapists. If you are in a crisis, please contact an emergency service.
             </AlertDescription>
         </Alert>
 
