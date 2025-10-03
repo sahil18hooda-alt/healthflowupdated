@@ -27,10 +27,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const { auth, firestore, isUserLoading } = useFirebase();
+  const { auth, firestore, isUserLoading, user: authStateUser } = useFirebase();
 
-  const fetchAppData = useCallback(async (fbUser: FirebaseUser | null) => {
-    if (fbUser && firestore) {
+  const fetchAppData = useCallback(async (fbUser: FirebaseUser) => {
+    if (!firestore) return;
+    setLoading(true);
+
+    try {
       // Check if user is in 'users' (patient) collection
       let userDocRef = doc(firestore, 'users', fbUser.uid);
       let userDocSnap = await getDoc(userDocRef);
@@ -71,18 +74,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUser(null);
         }
       }
-    } else {
-      setUser(null);
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        setUser(null);
+    } finally {
+        setLoading(false);
     }
-    setFirebaseUser(fbUser);
-    setLoading(false);
   }, [firestore, auth]);
   
   useEffect(() => {
-    if (!isUserLoading && auth.currentUser !== firebaseUser) {
-        fetchAppData(auth.currentUser);
+    // isUserLoading is the master loading state from the core Firebase provider.
+    // When it's done, authStateUser will be populated or null.
+    if (!isUserLoading) {
+      setFirebaseUser(authStateUser);
+      if (authStateUser) {
+        // If there's a user from Firebase Auth, fetch our app-specific data.
+        fetchAppData(authStateUser);
+      } else {
+        // No user is logged in.
+        setUser(null);
+        setLoading(false);
+      }
     }
-  }, [isUserLoading, auth.currentUser, firebaseUser, fetchAppData]);
+  }, [isUserLoading, authStateUser, fetchAppData]);
 
 
   const login = async (role: UserRole, email: string, pass: string) => {

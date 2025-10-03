@@ -840,10 +840,12 @@ function AuthProvider({ children }) {
     const [firebaseUser, setFirebaseUser] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
-    const { auth, firestore, isUserLoading } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$firebase$2f$provider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useFirebase"])();
+    const { auth, firestore, isUserLoading, user: authStateUser } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$firebase$2f$provider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useFirebase"])();
     const fetchAppData = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "AuthProvider.useCallback[fetchAppData]": async (fbUser)=>{
-            if (fbUser && firestore) {
+            if (!firestore) return;
+            setLoading(true);
+            try {
                 // Check if user is in 'users' (patient) collection
                 let userDocRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm2017$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["doc"])(firestore, 'users', fbUser.uid);
                 let userDocSnap = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$firebase$2f$firestore$2f$dist$2f$index$2e$esm2017$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getDoc"])(userDocRef);
@@ -880,11 +882,12 @@ function AuthProvider({ children }) {
                         setUser(null);
                     }
                 }
-            } else {
+            } catch (error) {
+                console.error("Error fetching user data:", error);
                 setUser(null);
+            } finally{
+                setLoading(false);
             }
-            setFirebaseUser(fbUser);
-            setLoading(false);
         }
     }["AuthProvider.useCallback[fetchAppData]"], [
         firestore,
@@ -892,14 +895,23 @@ function AuthProvider({ children }) {
     ]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "AuthProvider.useEffect": ()=>{
-            if (!isUserLoading && auth.currentUser !== firebaseUser) {
-                fetchAppData(auth.currentUser);
+            // isUserLoading is the master loading state from the core Firebase provider.
+            // When it's done, authStateUser will be populated or null.
+            if (!isUserLoading) {
+                setFirebaseUser(authStateUser);
+                if (authStateUser) {
+                    // If there's a user from Firebase Auth, fetch our app-specific data.
+                    fetchAppData(authStateUser);
+                } else {
+                    // No user is logged in.
+                    setUser(null);
+                    setLoading(false);
+                }
             }
         }
     }["AuthProvider.useEffect"], [
         isUserLoading,
-        auth.currentUser,
-        firebaseUser,
+        authStateUser,
         fetchAppData
     ]);
     const login = async (role, email, pass)=>{
@@ -973,11 +985,11 @@ function AuthProvider({ children }) {
         children: children
     }, void 0, false, {
         fileName: "[project]/src/providers/auth-provider.tsx",
-        lineNumber: 152,
+        lineNumber: 166,
         columnNumber: 5
     }, this);
 }
-_s(AuthProvider, "PWS9+q8muLlmxgrEm1GH3blAt/Y=", false, function() {
+_s(AuthProvider, "Y4CGv2/awiT/oft1P8G159EXfy0=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$firebase$2f$provider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useFirebase"]
