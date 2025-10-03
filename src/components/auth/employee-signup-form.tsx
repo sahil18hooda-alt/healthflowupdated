@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Link from 'next/link';
-import { useState } from 'react';
+
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -17,9 +17,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { useAuth } from '@/hooks/use-auth';
-import { Loader2 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { FirebaseError } from 'firebase/app';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -32,9 +29,6 @@ const formSchema = z.object({
 
 export default function EmployeeSignupForm() {
   const { signup } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,36 +41,8 @@ export default function EmployeeSignupForm() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-    try {
-        await signup('employee', values);
-    } catch(error: any) {
-        console.error('Signup failed:', error);
-        if (error instanceof FirebaseError && error.code === 'auth/email-already-in-use') {
-            toast({
-                title: 'Email Already Registered',
-                description: (
-                    <>
-                        An account with this email already exists. Please{' '}
-                        <Link href="/login?role=employee" className="font-bold text-primary hover:underline">
-                            login
-                        </Link>{' '}
-                        instead.
-                    </>
-                ),
-                variant: 'destructive'
-            });
-        } else {
-            toast({
-                title: 'Signup Failed',
-                description: error.message || 'An unexpected error occurred. Please try again.',
-                variant: 'destructive'
-            });
-        }
-    } finally {
-        setIsLoading(false);
-    }
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    signup('employee', values);
   }
 
   return (
@@ -168,8 +134,7 @@ export default function EmployeeSignupForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Button type="submit" className="w-full">
               Create Account
             </Button>
           </form>

@@ -49,46 +49,55 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navi
 ;
 ;
 const AuthContext = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["createContext"])(null);
-// Helper to convert email to a capitalized name
-const emailToName = (email)=>{
-    if (!email.includes('@')) return email; // It's probably a name from signup
-    const namePart = email.split('@')[0];
-    return namePart.split(/[\._-]/).map((name)=>name.charAt(0).toUpperCase() + name.slice(1)).join(' ');
+const MOCK_PATIENT = {
+    id: 'patient-001',
+    name: 'John Patient',
+    email: 'patient@healthflow.com',
+    role: 'patient'
+};
+const MOCK_EMPLOYEE = {
+    id: 'employee-001',
+    name: 'Dr. Smith',
+    email: 'employee@healthflow.com',
+    role: 'employee'
 };
 function AuthProvider({ children }) {
     const [user, setUser] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        try {
-            const storedUser = localStorage.getItem('healthflow-user');
-            if (storedUser) {
-                setUser(JSON.parse(storedUser));
-            }
-        } catch (error) {
-            console.error('Failed to parse user from localStorage', error);
-            localStorage.removeItem('healthflow-user');
-        } finally{
-            setLoading(false);
+        // Simulate checking for a user session
+        const session = localStorage.getItem('healthflow-user');
+        if (session) {
+            setUser(JSON.parse(session));
         }
+        setLoading(false);
     }, []);
-    const login = (role, emailOrName)=>{
-        const isEmail = emailOrName.includes('@');
-        const name = isEmail ? emailToName(emailOrName) : emailOrName;
-        const email = isEmail ? emailOrName : role === 'patient' ? 'patient@healthflow.com' : 'doctor@healthflow.com';
-        const mockUser = {
-            id: '123',
-            name: name,
-            email: email,
+    const login = (role, email, pass)=>{
+        setLoading(true);
+        // This is a mock login. In a real app, you'd call an API.
+        const loggedInUser = role === 'patient' ? MOCK_PATIENT : MOCK_EMPLOYEE;
+        setUser(loggedInUser);
+        localStorage.setItem('healthflow-user', JSON.stringify(loggedInUser));
+        router.push('/dashboard');
+        setLoading(false);
+    };
+    const signup = (role, details)=>{
+        setLoading(true);
+        // This is a mock signup.
+        const newUser = {
+            ...details,
+            id: `new-${Date.now()}`,
             role: role
         };
-        localStorage.setItem('healthflow-user', JSON.stringify(mockUser));
-        setUser(mockUser);
+        setUser(newUser);
+        localStorage.setItem('healthflow-user', JSON.stringify(newUser));
         router.push('/dashboard');
+        setLoading(false);
     };
     const logout = ()=>{
-        localStorage.removeItem('healthflow-user');
         setUser(null);
+        localStorage.removeItem('healthflow-user');
         router.push('/');
     };
     const updateUser = (newDetails)=>{
@@ -97,23 +106,35 @@ function AuthProvider({ children }) {
                 ...user,
                 ...newDetails
             };
-            localStorage.setItem('healthflow-user', JSON.stringify(updatedUser));
             setUser(updatedUser);
+            localStorage.setItem('healthflow-user', JSON.stringify(updatedUser));
+        }
+    };
+    const updateHealthProfile = (healthProfile)=>{
+        if (user && user.role === 'patient') {
+            const updatedUser = {
+                ...user,
+                healthProfile
+            };
+            setUser(updatedUser);
+            localStorage.setItem('healthflow-user', JSON.stringify(updatedUser));
         }
     };
     const value = {
         user,
         login,
+        signup,
         logout,
         loading,
-        updateUser
+        updateUser,
+        updateHealthProfile
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(AuthContext.Provider, {
         value: value,
         children: children
     }, void 0, false, {
         fileName: "[project]/src/providers/auth-provider.tsx",
-        lineNumber: 80,
+        lineNumber: 97,
         columnNumber: 5
     }, this);
 }

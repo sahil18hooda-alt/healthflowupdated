@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import { AuthProvider } from '@/providers/auth-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/providers/theme-provider';
-import { FirebaseClientProvider } from '@/firebase';
 import './globals.css';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   title: 'HealthFlow',
@@ -32,12 +34,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <FirebaseClientProvider>
-            <AuthProvider>
-              {children}
-              <Toaster />
-            </AuthProvider>
-          </FirebaseClientProvider>
+          <AuthProvider>
+            {children}
+            <Toaster />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

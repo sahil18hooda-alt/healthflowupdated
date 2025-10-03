@@ -1,75 +1,38 @@
-# HealthFlow: A Modern Healthcare Management Platform
+# Next.js App
 
-HealthFlow is a comprehensive, full-featured web application designed to streamline the connection between patients and healthcare providers. It features distinct portals for patients and employees, each with a tailored set of tools to manage appointments, track health data, and leverage AI for a better healthcare experience.
-
-This project is built with a modern tech stack, including **Next.js**, **TypeScript**, **Firebase**, and **Genkit** for AI features.
-
-## Core Features
-
-### Patient Portal
-
-*   **Personalized Dashboard**: At-a-glance view of upcoming appointments and health summaries.
-*   **Find a Doctor**: Browse a directory of specialists and initiate the booking process.
-*   **Appointment Management**: Schedule new appointments, view upcoming visits, and track the status of requests. The booking form uses an AI-powered triage to summarize the patient's issue for the doctor.
-*   **AI Health Tools**:
-    *   **Symptom Analyzer**: Get a preliminary AI-based analysis of symptoms.
-    *   **AI Therapist**: A supportive chatbot for mental wellness conversations.
-    *   **Personalized Health Tips**: Receive daily wellness advice based on a detailed health profile and mock environmental factors (like weather and air quality).
-*   **Medication Tracker**: Manage and track daily medication schedules.
-*   **Leave Reviews**: Share feedback on the hospital and its services.
-
-### Employee Portal (Doctors & Staff)
-
-*   **At-a-Glance Dashboard**: View daily schedules, pending requests, and key metrics like patient engagement.
-*   **Appointment & Request Management**: Review incoming appointment requests from patients, view AI-generated summaries, and accept or decline them.
-*   **Attendance Tracking**: A simple system for employees to clock in and out.
-*   **Automated Inquiry Triage**: An AI tool to analyze patient messages and route them to the appropriate department (e.g., Pharmacy, Billing).
-
-## Tech Stack & Architecture
-
-*   **Framework**: Next.js 14+ (App Router)
-*   **Language**: TypeScript
-*   **Backend-as-a-Service (BaaS)**: Firebase
-    *   **Authentication**: Handles secure, role-based user login (email/password).
-    *   **Database**: Firestore is used to store all application data, with separate collections for `users` (patients) and `employees` to ensure data segregation and security.
-*   **Generative AI**: Genkit with Google's Gemini models for all AI-driven features.
-*   **UI & Styling**:
-    *   **Component Library**: ShadCN UI for a consistent, accessible, and modern set of components.
-    *   **CSS**: Tailwind CSS for utility-first styling.
-*   **State Management**: Primarily uses React Context API (`useContext`) for managing global state like authentication and theme.
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
-To run this project locally, follow these steps:
+First, run the development server:
 
-1.  **Install Dependencies**:
-    ```bash
-    npm install
-    ```
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-2.  **Set Up Environment Variables**:
-    This project uses Firebase. Ensure you have a Firebase project configured. The necessary client-side keys are stored in `src/firebase/config.ts`. For Genkit (AI) features, you will need to set up a `.env` file with your `GEMINI_API_KEY`.
+Open [http://localhost:9002](http://localhost:9002) with your browser to see the result.
 
-    ```
-    # .env
-    GEMINI_API_KEY=your_google_ai_api_key_here
-    ```
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-3.  **Run the Development Servers**:
-    This project requires two concurrent development processes: one for the Next.js frontend and one for the Genkit AI flows.
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-    *   **Terminal 1: Run the Next.js App**
-        ```bash
-        npm run dev
-        ```
-        This will start the main application on `http://localhost:9002`.
+## Learn More
 
-    *   **Terminal 2: Run the Genkit Flows**
-        ```bash
-        npm run genkit:watch
-        ```
-        This starts the Genkit development server, which watches for changes in your AI flows.
+To learn more about Next.js, take a look at the following resources:
 
-4.  **Explore the App**:
-    *   Open `http://localhost:9002` in your browser.
-    *   Sign up as both a "Patient" and an "Employee" to explore the two distinct user experiences.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
