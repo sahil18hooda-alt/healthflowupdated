@@ -14,11 +14,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
+    // If the auth state is resolved and there's no user, redirect to home.
     if (!loading && !user) {
       router.push('/');
     }
   }, [user, loading, router]);
 
+  // While loading, show a full-screen loader.
+  // This prevents rendering of any child components until auth state is confirmed.
   if (loading || !user) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -30,6 +33,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     );
   }
 
+  // Once loaded and user is confirmed, render the main app layout.
   return (
     <SidebarProvider>
       <div className="flex min-h-screen">

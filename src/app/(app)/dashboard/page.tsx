@@ -6,9 +6,10 @@ import { useAuth } from '@/hooks/use-auth';
 import { Loader2 } from 'lucide-react';
 
 export default function DashboardPage() {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   
-  if (loading || !user) {
+  if (!user) {
+    // This can be a simple loading state or null, as the layout will handle the main loading UI
     return (
         <div className="flex h-full items-center justify-center">
             <div className="flex items-center gap-2">
