@@ -19,7 +19,7 @@ import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { AppointmentRequest, Appointment, UserRole } from '@/lib/types';
-import { useState, useEffect, Suspense, useMemo } from 'react';
+import { useState, useEffect, Suspense, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
 import { inquiryTriage } from '@/ai/flows/inquiry-triage-flow';
@@ -362,24 +362,46 @@ function AppointmentsPageContent() {
     const [appointmentRequests, setAppointmentRequests] = useState<AppointmentRequest[]>([]);
     const tabFromQuery = searchParams.get('tab');
 
-    useEffect(() => {
-        const fetchAppointments = () => {
-            const allAppointments = user.role === 'patient' ? getPatientAppointments(user.name) : getEmployeeAppointments(user.name);
-            setAppointments(allAppointments);
-        };
-        fetchAppointments();
-        const interval = setInterval(fetchAppointments, 2000); // Poll for changes
-        return () => clearInterval(interval);
+    const fetchAppointments = useCallback(() => {
+        const allAppointments = user.role === 'patient' ? getPatientAppointments(user.name) : getEmployeeAppointments(user.name);
+        setAppointments(allAppointments);
     }, [user]);
 
-    useEffect(() => {
-        const fetchRequests = () => {
-            setAppointmentRequests(getAppointmentRequests());
-        };
-        fetchRequests();
-        const interval = setInterval(fetchRequests, 2000); // Poll for changes
-        return () => clearInterval(interval);
+    const fetchRequests = useCallback(() => {
+        setAppointmentRequests(getAppointmentRequests());
     }, []);
+
+
+    useEffect(() => {
+        fetchAppointments();
+        fetchRequests();
+
+        // Listen for custom storage events to update data in real-time
+        window.addEventListener('storage-update', (e) => {
+            const event = e as CustomEvent;
+            if (event.detail.key === 'allAppointments') {
+                fetchAppointments();
+            }
+            if (event.detail.key === 'appointmentRequests') {
+                fetchRequests();
+            }
+        });
+
+        // Fallback polling for other tabs/windows
+        const interval = setInterval(() => {
+            fetchAppointments();
+            fetchRequests();
+        }, 5000); 
+
+        return () => {
+             window.removeEventListener('storage-update', (e) => {
+                const event = e as CustomEvent;
+                if (event.detail.key === 'allAppointments') fetchAppointments();
+                if (event.detail.key === 'appointmentRequests') fetchRequests();
+            });
+            clearInterval(interval);
+        };
+    }, [fetchAppointments, fetchRequests]);
 
 
     const handleNewRequest = (newRequest: AppointmentRequest) => {

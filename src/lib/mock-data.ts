@@ -2,6 +2,14 @@
 
 import type { Doctor, HospitalReview, Appointment, AttendanceRecord, AppointmentRequest, Medication } from './types';
 
+// Custom event for storage updates
+const dispatchStorageEvent = (key: string) => {
+    if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('storage-update', { detail: { key } }));
+    }
+};
+
+
 // Helper to get data from localStorage or use initial mock data
 function getStoredData<T>(key: string, initialData: T): T {
     if (typeof window === 'undefined') {
@@ -23,6 +31,7 @@ function setStoredData<T>(key: string, data: T) {
     }
     try {
         window.localStorage.setItem(key, JSON.stringify(data));
+        dispatchStorageEvent(key);
     } catch (error) {
         console.error(`Error writing ${key} to localStorage`, error);
     }

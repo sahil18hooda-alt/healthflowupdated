@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { getAppointmentRequests, updateAppointmentRequestStatus } from '@/lib/mock-data';
@@ -20,21 +20,36 @@ import { useSearchParams } from 'next/navigation';
 export default function RequestsPage() {
     const searchParams = useSearchParams();
     const role = searchParams.get('role');
-    const [requests, setRequests] = useState<AppointmentRequest[]>(getAppointmentRequests());
+    const [requests, setRequests] = useState<AppointmentRequest[]>([]);
     const { toast } = useToast();
 
-    useEffect(() => {
-        const fetchRequests = () => {
-            // This page is only for employees, but we check for safety
-            if (role === 'employee') {
-                setRequests(getAppointmentRequests());
-            }
-        };
-
-        fetchRequests();
-        const interval = setInterval(fetchRequests, 2000); // Poll for new requests
-        return () => clearInterval(interval);
+    const fetchRequests = useCallback(() => {
+        if (role === 'employee') {
+            setRequests(getAppointmentRequests());
+        }
     }, [role]);
+
+    useEffect(() => {
+        fetchRequests();
+
+        window.addEventListener('storage-update', (e) => {
+            const event = e as CustomEvent;
+            if (event.detail.key === 'appointmentRequests') {
+                fetchRequests();
+            }
+        });
+
+        // Fallback polling
+        const interval = setInterval(fetchRequests, 5000); 
+
+        return () => {
+            window.removeEventListener('storage-update', (e) => {
+                const event = e as CustomEvent;
+                if (event.detail.key === 'appointmentRequests') fetchRequests();
+            });
+            clearInterval(interval);
+        };
+    }, [fetchRequests]);
 
 
     const handleStatusUpdate = (id: string, status: 'Accepted' | 'Declined') => {
@@ -43,7 +58,7 @@ export default function RequestsPage() {
             title: `Request ${status}`,
             description: `The appointment request has been ${status.toLowerCase()}.`,
         });
-        // The useEffect polling will update the UI, no need to manually set state here.
+        // The event listener will handle the UI update
     };
 
   return (
