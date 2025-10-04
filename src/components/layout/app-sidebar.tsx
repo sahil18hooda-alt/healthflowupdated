@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot, Route, ShieldAlert } from 'lucide-react';
+import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot, Route, ShieldAlert, Activity } from 'lucide-react';
 
 import {
   Accordion,
@@ -45,8 +45,14 @@ const employeeNavGroups = [
             { href: '/appointments', icon: <Calendar />, label: 'Appointments' },
             { href: '/requests', icon: <Bell />, label: 'Requests' },
             { href: '/attendance', icon: <Clock />, label: 'Attendance' },
-            { href: '/inquiries', icon: <Route />, label: 'Patient Inquiries' },
-            { href: '/fraud-detection', icon: <ShieldAlert />, label: 'Fraud Detection' },
+        ]
+    },
+    {
+        title: 'AI Tools',
+        items: [
+             { href: '/inquiries', icon: <Route />, label: 'Inquiry Triage' },
+             { href: '/fraud-detection', icon: <ShieldAlert />, label: 'Fraud Detection' },
+             { href: '/predictive-risk-model', icon: <Activity />, label: 'Predictive Risk' },
         ]
     }
 ];
@@ -91,7 +97,7 @@ export default function AppSidebar() {
                 </Link>
             </SidebarMenuItem>
 
-            <Accordion type="multiple" className="w-full" defaultValue={['Health Tools', 'Appointments', 'Management']}>
+            <Accordion type="multiple" className="w-full" defaultValue={['Health Tools', 'Appointments', 'Management', 'AI Tools']}>
             {navGroups.map((group) => (
                 <AccordionItem value={group.title} key={group.title} className="border-none">
                     <AccordionTrigger className="text-sm font-medium text-muted-foreground hover:no-underline px-2 py-1.5 hover:bg-accent hover:text-accent-foreground rounded-md group-data-[collapsible=icon]:hidden">

@@ -90,3 +90,18 @@ export interface FraudDetectionOutput {
   reasons: string[];
   summary: string;
 }
+
+export interface PredictiveRiskInput {
+  patientData: string;
+}
+
+export interface PredictiveRiskOutput {
+  readmissionRiskScore: number;
+  complicationRiskScore: number;
+  riskFactors: Array<{
+    factor: string;
+    explanation: string;
+  }>;
+  recommendations: string[];
+  summary: string;
+}
