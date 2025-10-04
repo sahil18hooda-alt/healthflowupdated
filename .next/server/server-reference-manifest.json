@@ -18,6 +18,10 @@
           "moduleId": "[project]/.next-internal/server/app/(app)/health-tips/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/personalized-health-tips-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
+        "app/(app)/requests/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/requests/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        },
         "app/(app)/symptom-analyzer/page": {
           "moduleId": "[project]/.next-internal/server/app/(app)/symptom-analyzer/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/symptom-analyzer-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
@@ -28,6 +32,7 @@
         "app/(app)/appointments/page": "action-browser",
         "app/(app)/dashboard/page": "action-browser",
         "app/(app)/health-tips/page": "action-browser",
+        "app/(app)/requests/page": "action-browser",
         "app/(app)/symptom-analyzer/page": "action-browser"
       }
     },
