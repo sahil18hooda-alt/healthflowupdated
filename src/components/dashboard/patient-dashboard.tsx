@@ -6,8 +6,10 @@ import Link from 'next/link';
 
 const QuickLink = ({ icon, title, href }: { icon: React.ReactNode, title: string, href: string }) => (
     <Link href={href} className="flex flex-col items-center justify-center gap-2 rounded-lg bg-accent/10 p-4 text-center transition-colors hover:bg-accent/20">
-        <div className="rounded-full bg-background p-3">{icon}</div>
-        <span className="text-sm font-medium text-foreground">{title}</span>
+        <>
+            <div className="rounded-full bg-background p-3">{icon}</div>
+            <span className="text-sm font-medium text-foreground">{title}</span>
+        </>
     </Link>
 );
 
