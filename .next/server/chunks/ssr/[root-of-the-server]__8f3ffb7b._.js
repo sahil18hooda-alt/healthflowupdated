@@ -328,29 +328,28 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 ;
 ;
 ;
-async function fraudDetection(input) {
-    const FraudDetectionInputSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].object({
-        dataType: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].enum([
-            'Insurance Claim',
-            'Prescription Log'
-        ]),
-        data: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('The JSON data of the claim or log to be analyzed.')
-    });
-    const FraudDetectionOutputSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].object({
-        isSuspicious: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].boolean().describe('Whether the data is flagged as suspicious.'),
-        riskScore: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].number().describe('A numerical score from 0 to 100 indicating the likelihood of fraud.'),
-        reasons: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].array(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string()).describe('A list of specific reasons why the data was flagged as suspicious.'),
-        summary: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('A concise, high-level summary of the findings.')
-    });
-    const prompt = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"].definePrompt({
-        name: 'fraudDetectionPrompt',
-        input: {
-            schema: FraudDetectionInputSchema
-        },
-        output: {
-            schema: FraudDetectionOutputSchema
-        },
-        prompt: `You are an expert in healthcare fraud detection. Analyze the provided {{{dataType}}} data for any signs of fraudulent activity.
+const FraudDetectionInputSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].object({
+    dataType: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].enum([
+        'Insurance Claim',
+        'Prescription Log'
+    ]),
+    data: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('The JSON data of the claim or log to be analyzed.')
+});
+const FraudDetectionOutputSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].object({
+    isSuspicious: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].boolean().describe('Whether the data is flagged as suspicious.'),
+    riskScore: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].number().describe('A numerical score from 0 to 100 indicating the likelihood of fraud.'),
+    reasons: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].array(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string()).describe('A list of specific reasons why the data was flagged as suspicious.'),
+    summary: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('A concise, high-level summary of the findings.')
+});
+const prompt = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"].definePrompt({
+    name: 'fraudDetectionPrompt',
+    input: {
+        schema: FraudDetectionInputSchema
+    },
+    output: {
+        schema: FraudDetectionOutputSchema
+    },
+    prompt: `You are an expert in healthcare fraud detection. Analyze the provided {{{dataType}}} data for any signs of fraudulent activity.
 
 Data:
 \`\`\`json
@@ -366,15 +365,16 @@ Look for common red flags such as:
 - Mismatched patient information, provider details, or dates.
 
 Based on your analysis, determine if the activity is suspicious, provide a risk score (0-100), list the specific reasons for your conclusion, and give a brief summary. If no fraud is detected, state that clearly.`
-    });
-    const fraudDetectionFlow = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"].defineFlow({
-        name: 'fraudDetectionFlow',
-        inputSchema: FraudDetectionInputSchema,
-        outputSchema: FraudDetectionOutputSchema
-    }, async (flowInput)=>{
-        const { output } = await prompt(flowInput);
-        return output;
-    });
+});
+const fraudDetectionFlow = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"].defineFlow({
+    name: 'fraudDetectionFlow',
+    inputSchema: FraudDetectionInputSchema,
+    outputSchema: FraudDetectionOutputSchema
+}, async (flowInput)=>{
+    const { output } = await prompt(flowInput);
+    return output;
+});
+async function fraudDetection(input) {
     return fraudDetectionFlow(input);
 }
 ;
