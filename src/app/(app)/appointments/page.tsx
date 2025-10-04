@@ -1,7 +1,6 @@
 
 'use client';
 
-import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,7 +18,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { AppointmentRequest, Appointment } from '@/lib/types';
+import { AppointmentRequest, Appointment, UserRole } from '@/lib/types';
 import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
@@ -35,7 +34,7 @@ const appointmentFormSchema = z.object({
   file: z.any().optional(),
 });
 
-const AppointmentCard = ({ appointment, role }: { appointment: Appointment, role: 'patient' | 'employee' }) => (
+const AppointmentCard = ({ appointment, role }: { appointment: Appointment, role: UserRole }) => (
     <Card className="flex flex-col">
         <CardHeader>
             <CardTitle className="text-lg">{role === 'patient' ? appointment.doctorName : appointment.patientName}</CardTitle>
@@ -73,7 +72,7 @@ const AppointmentCard = ({ appointment, role }: { appointment: Appointment, role
 );
 
 function PatientAppointments({ onAppointmentRequest }: { onAppointmentRequest: (req: AppointmentRequest) => void }) {
-    const { user } = useAuth();
+    const user = { name: 'Guest', role: 'patient' as UserRole };
     const { toast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const searchParams = useSearchParams();
@@ -292,7 +291,7 @@ function PatientAppointments({ onAppointmentRequest }: { onAppointmentRequest: (
 }
 
 function PatientRequests({ appointmentRequests }: { appointmentRequests: AppointmentRequest[] }) {
-    const { user } = useAuth();
+    const user = { name: 'Guest' };
     const [userRequests, setUserRequests] = useState<AppointmentRequest[]>([]);
     
     useEffect(() => {
@@ -351,7 +350,7 @@ function PatientRequests({ appointmentRequests }: { appointmentRequests: Appoint
 
 
 function AppointmentsPageContent() {
-    const { user } = useAuth();
+    const user = { name: 'Guest', role: 'patient' as UserRole };
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [appointmentRequests, setAppointmentRequests] = useState<AppointmentRequest[]>([]);
     const searchParams = useSearchParams();
@@ -428,3 +427,5 @@ export default function AppointmentsPage() {
         </Suspense>
     )
 }
+
+    

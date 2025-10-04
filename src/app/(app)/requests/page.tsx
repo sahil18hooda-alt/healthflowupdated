@@ -6,9 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { getAppointmentRequests, updateAppointmentRequestStatus } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-import { AppointmentRequest } from '@/lib/types';
+import { AppointmentRequest, UserRole } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/hooks/use-auth';
 import {
   Accordion,
   AccordionContent,
@@ -18,7 +17,7 @@ import {
 import { AlertCircle } from 'lucide-react';
 
 export default function RequestsPage() {
-    const { user } = useAuth();
+    const user = { role: 'employee' as UserRole };
     const [requests, setRequests] = useState<AppointmentRequest[]>(getAppointmentRequests());
     const { toast } = useToast();
 
@@ -119,3 +118,5 @@ export default function RequestsPage() {
     </div>
   );
 }
+
+    
