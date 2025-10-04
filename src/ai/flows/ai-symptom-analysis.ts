@@ -35,18 +35,15 @@ const prompt = ai.definePrompt({
   prompt: `You are an AI diagnostic assistant. Your role is to help a physician formulate a differential diagnosis based on patient information.
   Analyze the provided symptoms, medical history, and demographics to identify potential medical conditions.
 
-  Patient Symptoms: {{{symptoms}}}
-  {{#if history}}
-  Medical History: {{{history}}}
-  {{/if}}
-  {{#if demographics}}
-  Patient Demographics: {{{demographics}}}
-  {{/if}}
+Patient Information:
+- Symptoms: {{{symptoms}}}
+- Medical History: {{{history}}}
+- Demographics: {{{demographics}}}
 
-  Based on your analysis:
-  1.  Provide a list of 'possibleConditions' that could explain the symptoms.
-  2.  Provide your 'confidenceLevels' for each condition.
-  3.  You MUST include the following 'disclaimer': "This analysis is AI-generated and for informational purposes only. It is not a substitute for professional medical judgment. All diagnoses must be confirmed by a qualified healthcare provider."
+Based on your analysis:
+1.  Provide a list of 'possibleConditions' that could explain the symptoms.
+2.  Provide your 'confidenceLevels' for each condition.
+3.  You MUST include the following 'disclaimer': "This analysis is AI-generated and for informational purposes only. It is not a substitute for professional medical judgment. All diagnoses must be confirmed by a qualified healthcare provider."
   `,
 });
 
