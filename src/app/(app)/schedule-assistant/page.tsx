@@ -79,7 +79,7 @@ export default function ScheduleAssistantPage() {
     }
   };
 
-  const handleConfirmSchedule = () => {
+  const handleConfirmSchedule = async () => {
     if (!analysis || !analysis.suggestedAppointmentSlot || analysis.suggestedAppointmentSlot.includes("No available slot")) {
         return;
     }
@@ -88,7 +88,7 @@ export default function ScheduleAssistantPage() {
     const startDate = new Date(startString);
     const formValues = form.getValues();
 
-    addAppointment({
+    await addAppointment({
         doctorName: formValues.doctor,
         patientName: formValues.patient,
         date: format(startDate, 'yyyy-MM-dd'),

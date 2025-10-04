@@ -52,8 +52,8 @@ export default function RequestsPage() {
     }, [fetchRequests]);
 
 
-    const handleStatusUpdate = (id: string, status: 'Accepted' | 'Declined') => {
-        updateAppointmentRequestStatus(id, status);
+    const handleStatusUpdate = async (id: string, status: 'Accepted' | 'Declined') => {
+        await updateAppointmentRequestStatus(id, status);
         toast({
             title: `Request ${status}`,
             description: `The appointment request has been ${status.toLowerCase()}.`,

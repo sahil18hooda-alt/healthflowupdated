@@ -17,13 +17,18 @@
         "app/(app)/queue-status/page": {
           "moduleId": "[project]/.next-internal/server/app/(app)/queue-status/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-queue-management.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
+        },
+        "app/(app)/symptom-analyzer/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/symptom-analyzer/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/symptom-analyzer-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
         }
       },
       "layer": {
         "app/(app)/dashboard/page": "action-browser",
         "app/(app)/lab-report-analyzer/page": "action-browser",
         "app/(app)/medication-checker/page": "action-browser",
-        "app/(app)/queue-status/page": "action-browser"
+        "app/(app)/queue-status/page": "action-browser",
+        "app/(app)/symptom-analyzer/page": "action-browser"
       }
     },
     "406b4951e3fa52aa5134ddaa55491ce7808b5d4900": {
@@ -57,6 +62,17 @@
       },
       "layer": {
         "app/(app)/queue-status/page": "action-browser"
+      }
+    },
+    "40ced92d6316d188fabe7797365b6289b00fc0ca1f": {
+      "workers": {
+        "app/(app)/symptom-analyzer/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/symptom-analyzer/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/symptom-analyzer-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(app)/symptom-analyzer/page": "action-browser"
       }
     }
   },

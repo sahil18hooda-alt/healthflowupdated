@@ -200,6 +200,11 @@ const initialAppointmentRequests: AppointmentRequest[] = [
     },
   ];
 
+// !! IMPORTANT !!
+// Replace this with your actual n8n webhook URL.
+const N8N_MEET_WEBHOOK_URL = 'PASTE_YOUR_N8N_WEBHOOK_URL_HERE';
+
+
 export const getPatientAppointments = (patientName: string) => {
     const allAppointments = getStoredData<Appointment[]>('allAppointments', [...initialPatientAppointments, ...initialEmployeeAppointments]);
     return allAppointments.filter(app => app.patientName === patientName);
@@ -229,7 +234,7 @@ export const addAppointmentRequest = (request: Omit<AppointmentRequest, 'id' | '
     return newRequest;
 }
 
-export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 'Declined') => {
+export const updateAppointmentRequestStatus = async (id: string, status: 'Accepted' | 'Declined') => {
     const requests = getAppointmentRequests();
     const requestIndex = requests.findIndex(req => req.id === id);
 
@@ -251,6 +256,27 @@ export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 
             };
             
             if (newAppointment.type === 'Online') {
+                 // UNCOMMENT THE CODE BELOW AND PROVIDE YOUR N8N WEBHOOK URL
+                 /*
+                try {
+                    const response = await fetch(N8N_MEET_WEBHOOK_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            summary: `Appointment: ${newAppointment.doctorName} and ${newAppointment.patientName}`,
+                            startDateTime: new Date(`${newAppointment.date}T${newAppointment.time}`).toISOString()
+                        }),
+                    });
+                    if (!response.ok) throw new Error('n8n webhook failed');
+                    const { meetLink } = await response.json();
+                    newAppointment.meetingLink = meetLink;
+                } catch (error) {
+                    console.error("Failed to generate Google Meet link via n8n:", error);
+                    // Fallback to a random link if n8n fails
+                    const randomString = Math.random().toString(36).substring(2, 11).replace(/\d/g, '').match(/.{1,3}/g)!.join('-');
+                    newAppointment.meetingLink = `https://meet.google.com/${randomString}`;
+                }
+                */
                 const randomString = Math.random().toString(36).substring(2, 11).replace(/\d/g, '').match(/.{1,3}/g)!.join('-');
                 newAppointment.meetingLink = `https://meet.google.com/${randomString}`;
             }
@@ -265,7 +291,7 @@ export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 
     return undefined;
 };
 
-export const addAppointment = (appointment: Omit<Appointment, 'id' | 'status'>) => {
+export const addAppointment = async (appointment: Omit<Appointment, 'id' | 'status'>) => {
     const allAppointments = getStoredData<Appointment[]>('allAppointments', [...initialPatientAppointments, ...initialEmployeeAppointments]);
     const newAppointment: Appointment = {
         ...appointment,
@@ -274,6 +300,27 @@ export const addAppointment = (appointment: Omit<Appointment, 'id' | 'status'>) 
     };
     
     if (newAppointment.type === 'Online' && !newAppointment.meetingLink) {
+        // UNCOMMENT THE CODE BELOW AND PROVIDE YOUR N8N WEBHOOK URL
+        /*
+        try {
+            const response = await fetch(N8N_MEET_WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    summary: `Appointment: ${newAppointment.doctorName} and ${newAppointment.patientName}`,
+                    startDateTime: new Date(`${newAppointment.date}T${newAppointment.time}`).toISOString()
+                }),
+            });
+            if (!response.ok) throw new Error('n8n webhook failed');
+            const { meetLink } = await response.json();
+            newAppointment.meetingLink = meetLink;
+        } catch (error) {
+            console.error("Failed to generate Google Meet link via n8n:", error);
+            // Fallback to a random link if n8n fails
+            const randomString = Math.random().toString(36).substring(2, 11).replace(/\d/g, '').match(/.{1,3}/g)!.join('-');
+            newAppointment.meetingLink = `https://meet.google.com/${randomString}`;
+        }
+        */
         const randomString = Math.random().toString(36).substring(2, 11).replace(/\d/g, '').match(/.{1,3}/g)!.join('-');
         newAppointment.meetingLink = `https://meet.google.com/${randomString}`;
     }
