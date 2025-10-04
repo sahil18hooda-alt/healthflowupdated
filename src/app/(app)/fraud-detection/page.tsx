@@ -164,7 +164,7 @@ export default function FraudDetectionPage() {
 
       {error && (
         <Alert variant="destructive">
-          <AlertTriangle className="h-4 w-4" />
+          <ShieldAlert className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
