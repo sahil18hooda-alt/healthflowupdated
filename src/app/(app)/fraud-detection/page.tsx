@@ -30,7 +30,7 @@ const prescriptionSchema = z.object({
   prescriptionId: z.string().min(1, "Prescription ID is required."),
   patientId: z.string().min(1, "Patient ID is required."),
   drug: z.string().min(1, "Drug name is required."),
-  doctor: z-string().min(1, "Doctor name is required."),
+  doctor: z.string().min(1, "Doctor name is required."),
   date: z.string().min(1, "Date is required."),
 });
 

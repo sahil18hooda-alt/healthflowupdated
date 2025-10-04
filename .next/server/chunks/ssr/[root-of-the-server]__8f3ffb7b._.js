@@ -335,7 +335,7 @@ const FraudDetectionInputSchema = __TURBOPACK__imported__module__$5b$project$5d2
         'Insurance Claim',
         'Prescription Log'
     ]),
-    jsonData: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('The JSON data of the claim or log to be analyzed.')
+    jsonData: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('A JSON string representing an array of claims or logs to be analyzed.')
 });
 const FraudDetectionOutputSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].object({
     isSuspicious: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].boolean().describe('A flag indicating if the data is suspicious.'),
@@ -356,7 +356,7 @@ const prompt = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genk
     },
     prompt: `You are an expert AI healthcare fraud detection analyst. Your task is to analyze the provided JSON data, which represents either an 'Insurance Claim' or a 'Prescription Log', and identify any signs of fraudulent activity.
 
-  Analyze the following data:
+  Analyze the following data. Note that the data is provided as an array containing one or more records.
   Data Type: {{{dataType}}}
   Data:
   \`\`\`json
