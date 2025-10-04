@@ -15,15 +15,18 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { AlertCircle } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 
 export default function RequestsPage() {
-    const user = { role: 'employee' as UserRole };
+    const searchParams = useSearchParams();
+    const role = searchParams.get('role');
     const [requests, setRequests] = useState<AppointmentRequest[]>(getAppointmentRequests());
     const { toast } = useToast();
 
     useEffect(() => {
         const fetchRequests = () => {
-            if (user?.role === 'employee') {
+            // This page is only for employees, but we check for safety
+            if (role === 'employee') {
                 setRequests(getAppointmentRequests());
             }
         };
@@ -31,7 +34,7 @@ export default function RequestsPage() {
         fetchRequests();
         const interval = setInterval(fetchRequests, 2000); // Poll for new requests
         return () => clearInterval(interval);
-    }, [user]);
+    }, [role]);
 
 
     const handleStatusUpdate = (id: string, status: 'Accepted' | 'Declined') => {

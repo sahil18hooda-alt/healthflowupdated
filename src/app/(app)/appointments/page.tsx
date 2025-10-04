@@ -34,7 +34,17 @@ const appointmentFormSchema = z.object({
   file: z.any().optional(),
 });
 
-const AppointmentCard = ({ appointment, role }: { appointment: Appointment, role: UserRole }) => (
+const AppointmentCard = ({ appointment, role, roleFromQuery }: { appointment: Appointment, role: UserRole, roleFromQuery: string | null }) => {
+    
+    const createLink = (href: string) => {
+        const params = new URLSearchParams();
+        if (roleFromQuery) {
+            params.set('role', roleFromQuery);
+        }
+        return `${href}?${params.toString()}`;
+    }
+    
+    return (
     <Card className="flex flex-col">
         <CardHeader>
             <CardTitle className="text-lg">{role === 'patient' ? appointment.doctorName : appointment.patientName}</CardTitle>
@@ -69,10 +79,11 @@ const AppointmentCard = ({ appointment, role }: { appointment: Appointment, role
             </CardFooter>
         )}
     </Card>
-);
+    )
+};
 
 function PatientAppointments({ onAppointmentRequest }: { onAppointmentRequest: (req: AppointmentRequest) => void }) {
-    const user = { name: 'Guest', role: 'patient' as UserRole };
+    const user = { name: 'Guest' };
     const { toast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const searchParams = useSearchParams();
@@ -103,7 +114,6 @@ function PatientAppointments({ onAppointmentRequest }: { onAppointmentRequest: (
     };
 
     async function onSubmit(data: z.infer<typeof appointmentFormSchema>) {
-        if(!user) return;
         setIsSubmitting(true);
 
         let fileDataUri: string | undefined = undefined;
@@ -290,15 +300,12 @@ function PatientAppointments({ onAppointmentRequest }: { onAppointmentRequest: (
   );
 }
 
-function PatientRequests({ appointmentRequests, user }: { appointmentRequests: AppointmentRequest[], user: { name: string } }) {
+const MemoizedPatientRequests = ({ appointmentRequests, user }: { appointmentRequests: AppointmentRequest[], user: { name: string, role: UserRole } }) => {
     const [userRequests, setUserRequests] = useState<AppointmentRequest[]>([]);
     
     useEffect(() => {
-        if(user) {
-            setUserRequests(appointmentRequests.filter(req => req.patientName === user.name));
-        }
+        setUserRequests(appointmentRequests.filter(req => req.patientName === user.name));
     }, [appointmentRequests, user]);
-
 
     return (
         <TabsContent value="requests">
@@ -347,28 +354,27 @@ function PatientRequests({ appointmentRequests, user }: { appointmentRequests: A
     );
 }
 
+const PatientRequests = MemoizedPatientRequests;
+
 
 function AppointmentsPageContent() {
-    const user = useMemo(() => ({ name: 'Guest', role: 'patient' as UserRole }), []);
+    const searchParams = useSearchParams();
+    const role = searchParams.get('role');
+    const user = useMemo(() => ({ name: role === 'employee' ? 'Dr. Employee' : 'Guest', role: (role === 'employee' ? 'employee' : 'patient') as UserRole }), [role]);
+    
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [appointmentRequests, setAppointmentRequests] = useState<AppointmentRequest[]>([]);
-    const searchParams = useSearchParams();
     const tabFromQuery = searchParams.get('tab');
 
-
-    const isPatient = user?.role === 'patient';
-    
     useEffect(() => {
-        if (user) {
-            const fetchAppointments = () => {
-                const allAppointments = isPatient ? getPatientAppointments(user.name) : getEmployeeAppointments(user.name);
-                setAppointments(allAppointments);
-            };
-            fetchAppointments();
-            const interval = setInterval(fetchAppointments, 2000); // Poll for changes
-            return () => clearInterval(interval);
-        }
-    }, [isPatient, user]);
+        const fetchAppointments = () => {
+            const allAppointments = user.role === 'patient' ? getPatientAppointments(user.name) : getEmployeeAppointments(user.name);
+            setAppointments(allAppointments);
+        };
+        fetchAppointments();
+        const interval = setInterval(fetchAppointments, 2000); // Poll for changes
+        return () => clearInterval(interval);
+    }, [user]);
 
     useEffect(() => {
         const fetchRequests = () => {
@@ -402,7 +408,7 @@ function AppointmentsPageContent() {
                 </TabsList>
                 <TabsContent value="schedule">
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        {appointments.map(app => <AppointmentCard key={app.id} appointment={app} role={user!.role} />)}
+                        {appointments.map(app => <AppointmentCard key={app.id} appointment={app} role={user!.role} roleFromQuery={role} />)}
                     </div>
                     {appointments.length === 0 && (
                         <Card>

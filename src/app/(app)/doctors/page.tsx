@@ -4,8 +4,24 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { mockDoctors } from '@/lib/mock-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-export default function DoctorsPage() {
+function DoctorsContent() {
+  const searchParams = useSearchParams();
+  const role = searchParams.get('role');
+
+  const createLink = (href: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    const baseHref = href.split('?')[0];
+    const hrefParams = new URLSearchParams(href.split('?')[1] || '');
+    hrefParams.forEach((value, key) => {
+        params.set(key, value);
+    });
+
+    return `${baseHref}?${params.toString()}`;
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -38,7 +54,7 @@ export default function DoctorsPage() {
               </CardContent>
               <CardFooter>
                 <Button className="w-full" asChild>
-                  <Link href={`/appointments?tab=book&doctor=${encodeURIComponent(doctor.name)}`}>Book Appointment</Link>
+                  <Link href={createLink(`/appointments?tab=book&doctor=${encodeURIComponent(doctor.name)}`)}>Book Appointment</Link>
                 </Button>
               </CardFooter>
             </Card>
@@ -47,4 +63,13 @@ export default function DoctorsPage() {
       </div>
     </div>
   );
+}
+
+
+export default function DoctorsPage() {
+    return (
+        <Suspense fallback={<div>Loading doctors...</div>}>
+            <DoctorsContent />
+        </Suspense>
+    )
 }

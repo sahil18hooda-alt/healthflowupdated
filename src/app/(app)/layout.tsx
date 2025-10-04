@@ -1,12 +1,12 @@
 'use client';
 
+import { Suspense } from 'react';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import AppSidebar from '@/components/layout/app-sidebar';
 import AppHeader from '@/components/layout/app-header';
 import Chatbot from '@/components/chatbot';
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
-  // Removed authentication checks.
+function LayoutContent({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <div className="flex min-h-screen">
@@ -20,5 +20,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       </div>
       <Chatbot />
     </SidebarProvider>
+  );
+}
+
+
+export default function AppLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LayoutContent>{children}</LayoutContent>
+    </Suspense>
   );
 }

@@ -1,11 +1,27 @@
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import PatientDashboard from '@/components/dashboard/patient-dashboard';
 import EmployeeDashboard from '@/components/dashboard/employee-dashboard';
+import { Suspense } from 'react';
+
+function DashboardContent() {
+    const searchParams = useSearchParams();
+    const role = searchParams.get('role');
+
+    if (role === 'employee') {
+        return <EmployeeDashboard name="Doctor" />;
+    }
+    
+    // Default to patient dashboard
+    return <PatientDashboard name="Guest" />;
+}
+
 
 export default function DashboardPage() {
-  // Since there's no login, we can't determine the role.
-  // For now, let's default to the patient dashboard.
-  // In a real scenario, you might have a different default view.
-  return <PatientDashboard name="Guest"/>;
+  return (
+    <Suspense fallback={<div>Loading Dashboard...</div>}>
+        <DashboardContent />
+    </Suspense>
+  );
 }

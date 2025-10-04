@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot, Route } from 'lucide-react';
 
 import {
@@ -53,17 +53,25 @@ const employeeNavGroups = [
 
 export default function AppSidebar() {
   const pathname = usePathname();
-  const isPatient = true; // Defaulting to patient view as there's no login
+  const searchParams = useSearchParams();
+  const role = searchParams.get('role');
+
+  const isPatient = role !== 'employee';
   const navGroups = isPatient ? patientNavGroups : employeeNavGroups;
 
   const isNavItemActive = (href: string) => {
     return pathname === href;
   };
+  
+  const createLink = (href: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    return `${href}?${params.toString()}`;
+  }
 
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <Link href="/dashboard" className="flex items-center gap-2">
+        <Link href={createLink("/dashboard")} className="flex items-center gap-2">
           <Hospital className="h-7 w-7 text-primary" />
           <span className="font-bold text-lg font-headline">HealthFlow</span>
         </Link>
@@ -72,7 +80,7 @@ export default function AppSidebar() {
       <SidebarContent>
         <SidebarMenu>
             <SidebarMenuItem>
-                <Link href="/dashboard" className="w-full">
+                <Link href={createLink("/dashboard")} className="w-full">
                     <SidebarMenuButton
                     isActive={isNavItemActive('/dashboard')}
                     icon={<LayoutDashboard />}
@@ -92,7 +100,7 @@ export default function AppSidebar() {
                         <SidebarMenu>
                         {group.items.map((item) => (
                             <SidebarMenuItem key={item.href}>
-                                <Link href={item.href} className="w-full">
+                                <Link href={createLink(item.href)} className="w-full">
                                     <SidebarMenuButton
                                     isActive={isNavItemActive(item.href)}
                                     icon={item.icon}
@@ -111,7 +119,7 @@ export default function AppSidebar() {
             {isPatient && (
                 <>
                     <SidebarMenuItem>
-                        <Link href="/medications" className="w-full">
+                        <Link href={createLink("/medications")} className="w-full">
                             <SidebarMenuButton
                             isActive={isNavItemActive('/medications')}
                             icon={<Pill />}
@@ -121,7 +129,7 @@ export default function AppSidebar() {
                         </Link>
                     </SidebarMenuItem>
                     <SidebarMenuItem>
-                        <Link href="/reviews" className="w-full">
+                        <Link href={createLink("/reviews")} className="w-full">
                             <SidebarMenuButton
                             isActive={isNavItemActive('/reviews')}
                             icon={<Star />}
@@ -139,7 +147,7 @@ export default function AppSidebar() {
       <SidebarFooter>
           <SidebarMenu>
             <SidebarMenuItem>
-                <Link href="/settings" className="w-full">
+                <Link href={createLink("/settings")} className="w-full">
                     <SidebarMenuButton
                     isActive={isNavItemActive('/settings')}
                     icon={<Settings />}
