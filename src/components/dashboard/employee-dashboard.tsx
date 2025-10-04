@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Calendar, Users, Clock, ArrowRight, BarChart3 } from 'lucide-react';
+import { Calendar, Users, Clock, ArrowRight, BarChart3, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import {
@@ -12,6 +12,9 @@ import {
     ChartLegendContent,
   } from '@/components/ui/chart';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, Tooltip, ResponsiveContainer } from 'recharts';
+import { getEmployeeAppointments, getAppointmentRequests } from '@/lib/mock-data';
+import { useMemo } from 'react';
+import { format } from 'date-fns';
 
 const chartData = [
     { month: 'January', new: 186, recurring: 80 },
@@ -38,7 +41,7 @@ function EngagementChart() {
         <Card>
             <CardHeader>
                 <CardTitle>Patient Engagement</CardTitle>
-                <CardDescription>New vs. Recurring Patients</CardDescription>
+                <CardDescription>New vs. Recurring Patients (Last 6 Months)</CardDescription>
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig} className="h-[250px] w-full">
@@ -64,6 +67,19 @@ function EngagementChart() {
 }
 
 export default function EmployeeDashboard({ name }: { name: string }) {
+  const appointments = getEmployeeAppointments(name);
+  const appointmentRequests = getAppointmentRequests();
+
+  const todaysAppointmentsCount = useMemo(() => {
+    const today = format(new Date(), 'yyyy-MM-dd');
+    return appointments.filter(a => a.date === today).length;
+  }, [appointments]);
+
+  const pendingRequestsCount = useMemo(() => {
+    return appointmentRequests.filter(req => req.status === 'Pending').length;
+  }, [appointmentRequests]);
+
+
   return (
     <div className="grid gap-6">
       <div className="space-y-1.5">
@@ -78,24 +94,24 @@ export default function EmployeeDashboard({ name }: { name: string }) {
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">12</div>
-            <p className="text-xs text-muted-foreground">+3 from yesterday</p>
+            <div className="text-2xl font-bold">{todaysAppointmentsCount}</div>
+            <p className="text-xs text-muted-foreground">scheduled for today</p>
             <Button variant="link" asChild className="p-0 h-auto mt-2">
-                <Link href="/appointments">View Schedule <ArrowRight className="ml-1 h-4 w-4"/></Link>
+                <Link href="/appointments?role=employee">View Schedule <ArrowRight className="ml-1 h-4 w-4"/></Link>
             </Button>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Patient Queue</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Pending Requests</CardTitle>
+            <AlertCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">5</div>
-            <p className="text-xs text-muted-foreground">New questions waiting</p>
+            <div className="text-2xl font-bold">{pendingRequestsCount}</div>
+            <p className="text-xs text-muted-foreground">requests need approval</p>
             <Button variant="link" asChild className="p-0 h-auto mt-2">
-                <Link href="#">View Queue <ArrowRight className="ml-1 h-4 w-4"/></Link>
+                <Link href="/requests?role=employee">View Requests <ArrowRight className="ml-1 h-4 w-4"/></Link>
             </Button>
           </CardContent>
         </Card>
@@ -109,7 +125,7 @@ export default function EmployeeDashboard({ name }: { name: string }) {
             <div className="text-2xl font-bold text-green-600">Checked In</div>
             <p className="text-xs text-muted-foreground">at 08:55 AM</p>
              <Button variant="link" asChild className="p-0 h-auto mt-2">
-                <Link href="/attendance">Manage Attendance <ArrowRight className="ml-1 h-4 w-4"/></Link>
+                <Link href="/attendance?role=employee">Manage Attendance <ArrowRight className="ml-1 h-4 w-4"/></Link>
             </Button>
           </CardContent>
         </Card>
@@ -120,7 +136,7 @@ export default function EmployeeDashboard({ name }: { name: string }) {
         <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium">Doctor-Patient Ratio</CardTitle>
-                <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
                 <div className="text-2xl font-bold">1:25</div>

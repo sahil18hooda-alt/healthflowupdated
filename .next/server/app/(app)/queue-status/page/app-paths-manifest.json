@@ -1,0 +1,3 @@
+{
+  "/(app)/queue-status/page": "app/(app)/queue-status/page.js"
+}

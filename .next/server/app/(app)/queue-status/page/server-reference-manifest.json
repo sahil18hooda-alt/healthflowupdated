@@ -1,0 +1,27 @@
+{
+  "node": {
+    "409aebaa996bcf964de339242b10236fb7d9286a54": {
+      "workers": {
+        "app/(app)/queue-status/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/queue-status/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-queue-management.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(app)/queue-status/page": "action-browser"
+      }
+    },
+    "4044ab84fa080dc479d13fc05fac2cf73ddfae623d": {
+      "workers": {
+        "app/(app)/queue-status/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/queue-status/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-queue-management.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(app)/queue-status/page": "action-browser"
+      }
+    }
+  },
+  "edge": {}
+}

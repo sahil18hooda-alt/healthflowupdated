@@ -2,6 +2,10 @@
   "node": {
     "409aebaa996bcf964de339242b10236fb7d9286a54": {
       "workers": {
+        "app/(app)/dashboard/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        },
         "app/(app)/lab-report-analyzer/page": {
           "moduleId": "[project]/.next-internal/server/app/(app)/lab-report-analyzer/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-lab-report-analyzer.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
@@ -9,11 +13,17 @@
         "app/(app)/medication-checker/page": {
           "moduleId": "[project]/.next-internal/server/app/(app)/medication-checker/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-medication-interaction-checker.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
+        },
+        "app/(app)/queue-status/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/queue-status/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-queue-management.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
         }
       },
       "layer": {
+        "app/(app)/dashboard/page": "action-browser",
         "app/(app)/lab-report-analyzer/page": "action-browser",
-        "app/(app)/medication-checker/page": "action-browser"
+        "app/(app)/medication-checker/page": "action-browser",
+        "app/(app)/queue-status/page": "action-browser"
       }
     },
     "406b4951e3fa52aa5134ddaa55491ce7808b5d4900": {
@@ -36,6 +46,17 @@
       },
       "layer": {
         "app/(app)/medication-checker/page": "action-browser"
+      }
+    },
+    "4044ab84fa080dc479d13fc05fac2cf73ddfae623d": {
+      "workers": {
+        "app/(app)/queue-status/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/queue-status/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-queue-management.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(app)/queue-status/page": "action-browser"
       }
     }
   },

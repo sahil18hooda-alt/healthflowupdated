@@ -3,6 +3,9 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Calendar, Pill, Stethoscope } from 'lucide-react';
 import Link from 'next/link';
+import { getPatientAppointments, mockMedications } from '@/lib/mock-data';
+import { useMemo } from 'react';
+import { format } from 'date-fns';
 
 const QuickLink = ({ icon, title, href }: { icon: React.ReactNode, title: string, href: string }) => (
     <Link href={href} className="flex flex-col items-center justify-center gap-2 rounded-lg bg-accent/10 p-4 text-center transition-colors hover:bg-accent/20">
@@ -14,6 +17,20 @@ const QuickLink = ({ icon, title, href }: { icon: React.ReactNode, title: string
 );
 
 export default function PatientDashboard({ name }: { name: string }) {
+  const appointments = getPatientAppointments(name);
+  
+  const upcomingAppointment = useMemo(() => {
+    const now = new Date();
+    return appointments
+      .filter(a => new Date(a.date) >= now)
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())[0];
+  }, [appointments]);
+
+  const nextMedication = useMemo(() => {
+    // This is a simplified logic. A real app would compare times for today.
+    return mockMedications[0];
+  }, []);
+
   return (
     <div className="grid gap-6">
       <div className="space-y-1.5">
@@ -28,9 +45,15 @@ export default function PatientDashboard({ name }: { name: string }) {
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent className="flex-1 flex flex-col justify-center">
-            <div className="text-2xl font-bold">Dr. Anjali Sharma</div>
-            <p className="text-xs text-muted-foreground">Cardiology</p>
-            <p className="mt-2 font-semibold">Tomorrow at 10:00 AM</p>
+            {upcomingAppointment ? (
+                <>
+                    <div className="text-2xl font-bold">{upcomingAppointment.doctorName}</div>
+                    <p className="text-xs text-muted-foreground">{upcomingAppointment.problemSummary || 'Check-up'}</p>
+                    <p className="mt-2 font-semibold">{format(new Date(upcomingAppointment.date), 'PPP')} at {upcomingAppointment.time}</p>
+                </>
+            ) : (
+                <p className="text-center text-muted-foreground py-4">No upcoming appointments.</p>
+            )}
           </CardContent>
         </Card>
 
@@ -40,9 +63,15 @@ export default function PatientDashboard({ name }: { name: string }) {
             <Pill className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent className="flex-1 flex flex-col justify-center">
-            <div className="text-2xl font-bold">Aspirin 75mg</div>
-            <p className="text-xs text-muted-foreground">Next dose</p>
-            <p className="mt-2 font-semibold">Today at 09:00 PM</p>
+            {nextMedication ? (
+                 <>
+                    <div className="text-2xl font-bold">{nextMedication.name} {nextMedication.dosage}</div>
+                    <p className="text-xs text-muted-foreground">Next dose</p>
+                    <p className="mt-2 font-semibold">Today at {nextMedication.time[0]}</p>
+                 </>
+            ) : (
+                <p className="text-center text-muted-foreground py-4">No medications scheduled.</p>
+            )}
           </CardContent>
         </Card>
         
