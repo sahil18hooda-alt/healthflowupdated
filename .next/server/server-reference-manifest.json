@@ -30,6 +30,10 @@
           "moduleId": "[project]/.next-internal/server/app/(app)/inquiries/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/inquiry-triage-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
+        "app/(app)/medical-notes/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/medical-notes/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-medical-notes-generation.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        },
         "app/(app)/predictive-risk-model/page": {
           "moduleId": "[project]/.next-internal/server/app/(app)/predictive-risk-model/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-predictive-risk-model.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
@@ -51,6 +55,7 @@
         "app/(app)/fraud-detection/page": "action-browser",
         "app/(app)/health-tips/page": "action-browser",
         "app/(app)/inquiries/page": "action-browser",
+        "app/(app)/medical-notes/page": "action-browser",
         "app/(app)/predictive-risk-model/page": "action-browser",
         "app/(app)/requests/page": "action-browser",
         "app/(app)/symptom-analyzer/page": "action-browser"
@@ -136,6 +141,17 @@
       },
       "layer": {
         "app/(app)/decision-support/page": "action-browser"
+      }
+    },
+    "4008d2c6391b864b88331611cafcddf253869aa86a": {
+      "workers": {
+        "app/(app)/medical-notes/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/medical-notes/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-medical-notes-generation.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(app)/medical-notes/page": "action-browser"
       }
     }
   },

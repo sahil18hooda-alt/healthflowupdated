@@ -105,3 +105,20 @@ export interface PredictiveRiskOutput {
   recommendations: string[];
   summary: string;
 }
+
+export interface ScheduleAppointmentInput {
+  doctor: string;
+  patient: string;
+  appointmentType: string;
+  durationInMinutes: number;
+  preferredDateRange: {
+    start: string;
+    end: string;
+  };
+  existingCommitments: string;
+}
+
+export interface ScheduleAppointmentOutput {
+  suggestedAppointmentSlot: string;
+  reasoning: string;
+}

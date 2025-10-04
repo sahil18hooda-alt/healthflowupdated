@@ -1,0 +1,27 @@
+{
+  "node": {
+    "409aebaa996bcf964de339242b10236fb7d9286a54": {
+      "workers": {
+        "app/(app)/medical-notes/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/medical-notes/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-medical-notes-generation.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(app)/medical-notes/page": "action-browser"
+      }
+    },
+    "4008d2c6391b864b88331611cafcddf253869aa86a": {
+      "workers": {
+        "app/(app)/medical-notes/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/medical-notes/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-medical-notes-generation.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(app)/medical-notes/page": "action-browser"
+      }
+    }
+  },
+  "edge": {}
+}

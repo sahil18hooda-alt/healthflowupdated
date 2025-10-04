@@ -10,3 +10,4 @@ import '@/ai/flows/ai-therapist-flow.ts';
 import '@/ai/flows/inquiry-triage-flow.ts';
 import '@/ai/flows/ai-predictive-risk-model.ts';
 import '@/ai/flows/ai-medical-notes-generation.ts';
+import '@/ai/flows/ai-surgery-scheduling-assistant.ts';

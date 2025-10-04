@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot, Route, ShieldAlert, Activity, FilePlus } from 'lucide-react';
+import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot, Route, ShieldAlert, Activity, FilePlus, CalendarClock } from 'lucide-react';
 
 import {
   Accordion,
@@ -54,6 +54,7 @@ const employeeNavGroups = [
              { href: '/fraud-detection', icon: <ShieldAlert />, label: 'Fraud Detection' },
              { href: '/predictive-risk-model', icon: <Activity />, label: 'Predictive Risk' },
              { href: '/medical-notes', icon: <FilePlus />, label: 'Medical Notes' },
+             { href: '/schedule-assistant', icon: <CalendarClock />, label: 'Schedule Assistant' },
         ]
     }
 ];
