@@ -888,6 +888,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bot$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Bot$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/bot.js [app-client] (ecmascript) <export default as Bot>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$route$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Route$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/route.js [app-client] (ecmascript) <export default as Route>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShieldAlert$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/shield-alert.js [app-client] (ecmascript) <export default as ShieldAlert>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$activity$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Activity$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/activity.js [app-client] (ecmascript) <export default as Activity>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$accordion$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/accordion.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$sidebar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/sidebar.tsx [app-client] (ecmascript)");
 ;
@@ -976,24 +977,38 @@ const employeeNavGroups = [
                     columnNumber: 42
                 }, this),
                 label: 'Attendance'
-            },
+            }
+        ]
+    },
+    {
+        title: 'AI Tools',
+        items: [
             {
                 href: '/inquiries',
                 icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$route$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Route$3e$__["Route"], {}, void 0, false, {
                     fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                    lineNumber: 48,
-                    columnNumber: 41
+                    lineNumber: 53,
+                    columnNumber: 42
                 }, this),
-                label: 'Patient Inquiries'
+                label: 'Inquiry Triage'
             },
             {
                 href: '/fraud-detection',
                 icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShieldAlert$3e$__["ShieldAlert"], {}, void 0, false, {
                     fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                    lineNumber: 49,
-                    columnNumber: 47
+                    lineNumber: 54,
+                    columnNumber: 48
                 }, this),
                 label: 'Fraud Detection'
+            },
+            {
+                href: '/predictive-risk-model',
+                icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$activity$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Activity$3e$__["Activity"], {}, void 0, false, {
+                    fileName: "[project]/src/components/layout/app-sidebar.tsx",
+                    lineNumber: 55,
+                    columnNumber: 54
+                }, this),
+                label: 'Predictive Risk'
             }
         ]
     }
@@ -1024,7 +1039,7 @@ function AppSidebar() {
                             className: "h-7 w-7 text-primary"
                         }, void 0, false, {
                             fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                            lineNumber: 76,
+                            lineNumber: 82,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1032,18 +1047,18 @@ function AppSidebar() {
                             children: "HealthFlow"
                         }, void 0, false, {
                             fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                            lineNumber: 77,
+                            lineNumber: 83,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                    lineNumber: 75,
+                    lineNumber: 81,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                lineNumber: 74,
+                lineNumber: 80,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$sidebar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SidebarContent"], {
@@ -1057,23 +1072,23 @@ function AppSidebar() {
                                     isActive: isNavItemActive('/dashboard'),
                                     icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$layout$2d$dashboard$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__LayoutDashboard$3e$__["LayoutDashboard"], {}, void 0, false, {
                                         fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                        lineNumber: 87,
+                                        lineNumber: 93,
                                         columnNumber: 27
                                     }, void 0),
                                     children: "Dashboard"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                    lineNumber: 85,
+                                    lineNumber: 91,
                                     columnNumber: 21
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                lineNumber: 84,
+                                lineNumber: 90,
                                 columnNumber: 17
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                            lineNumber: 83,
+                            lineNumber: 89,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$accordion$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Accordion"], {
@@ -1082,7 +1097,8 @@ function AppSidebar() {
                             defaultValue: [
                                 'Health Tools',
                                 'Appointments',
-                                'Management'
+                                'Management',
+                                'AI Tools'
                             ],
                             children: navGroups.map((group)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$accordion$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AccordionItem"], {
                                     value: group.title,
@@ -1093,7 +1109,7 @@ function AppSidebar() {
                                             children: group.title
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                            lineNumber: 97,
+                                            lineNumber: 103,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$accordion$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AccordionContent"], {
@@ -1109,38 +1125,38 @@ function AppSidebar() {
                                                                 children: item.label
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                                                lineNumber: 105,
+                                                                lineNumber: 111,
                                                                 columnNumber: 37
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                                            lineNumber: 104,
+                                                            lineNumber: 110,
                                                             columnNumber: 33
                                                         }, this)
                                                     }, item.href, false, {
                                                         fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                                        lineNumber: 103,
+                                                        lineNumber: 109,
                                                         columnNumber: 29
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                                lineNumber: 101,
+                                                lineNumber: 107,
                                                 columnNumber: 25
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                            lineNumber: 100,
+                                            lineNumber: 106,
                                             columnNumber: 21
                                         }, this)
                                     ]
                                 }, group.title, true, {
                                     fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                    lineNumber: 96,
+                                    lineNumber: 102,
                                     columnNumber: 17
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                            lineNumber: 94,
+                            lineNumber: 100,
                             columnNumber: 13
                         }, this),
                         isPatient && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -1153,23 +1169,23 @@ function AppSidebar() {
                                             isActive: isNavItemActive('/medications'),
                                             icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pill$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Pill$3e$__["Pill"], {}, void 0, false, {
                                                 fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                                lineNumber: 126,
+                                                lineNumber: 132,
                                                 columnNumber: 35
                                             }, void 0),
                                             children: "Medications"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                            lineNumber: 124,
+                                            lineNumber: 130,
                                             columnNumber: 29
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                        lineNumber: 123,
+                                        lineNumber: 129,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                    lineNumber: 122,
+                                    lineNumber: 128,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$sidebar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SidebarMenuItem"], {
@@ -1180,23 +1196,23 @@ function AppSidebar() {
                                             isActive: isNavItemActive('/reviews'),
                                             icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__["Star"], {}, void 0, false, {
                                                 fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                                lineNumber: 136,
+                                                lineNumber: 142,
                                                 columnNumber: 35
                                             }, void 0),
                                             children: "Reviews"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                            lineNumber: 134,
+                                            lineNumber: 140,
                                             columnNumber: 29
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                        lineNumber: 133,
+                                        lineNumber: 139,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                    lineNumber: 132,
+                                    lineNumber: 138,
                                     columnNumber: 21
                                 }, this)
                             ]
@@ -1204,12 +1220,12 @@ function AppSidebar() {
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                    lineNumber: 82,
+                    lineNumber: 88,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                lineNumber: 81,
+                lineNumber: 87,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$sidebar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SidebarFooter"], {
@@ -1222,39 +1238,39 @@ function AppSidebar() {
                                 isActive: isNavItemActive('/settings'),
                                 icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$settings$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Settings$3e$__["Settings"], {}, void 0, false, {
                                     fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                    lineNumber: 154,
+                                    lineNumber: 160,
                                     columnNumber: 27
                                 }, void 0),
                                 children: "Settings"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                                lineNumber: 152,
+                                lineNumber: 158,
                                 columnNumber: 21
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                            lineNumber: 151,
+                            lineNumber: 157,
                             columnNumber: 17
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                        lineNumber: 150,
+                        lineNumber: 156,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                    lineNumber: 149,
+                    lineNumber: 155,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                lineNumber: 148,
+                lineNumber: 154,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/layout/app-sidebar.tsx",
-        lineNumber: 73,
+        lineNumber: 79,
         columnNumber: 5
     }, this);
 }

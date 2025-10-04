@@ -27,6 +27,7 @@ const patientNavGroups = [
         items: [
             { href: '/symptom-analyzer', icon: <Bot />, label: 'Symptom Analyzer' },
             { href: '/ai-therapist', icon: <BrainCircuit />, label: 'AI Therapist' },
+            { href: '/inquiries', icon: <Route />, label: 'Inquiry Assistant' },
         ]
     },
     {
@@ -50,7 +51,6 @@ const employeeNavGroups = [
     {
         title: 'AI Tools',
         items: [
-             { href: '/inquiries', icon: <Route />, label: 'Inquiry Triage' },
              { href: '/fraud-detection', icon: <ShieldAlert />, label: 'Fraud Detection' },
              { href: '/predictive-risk-model', icon: <Activity />, label: 'Predictive Risk' },
         ]

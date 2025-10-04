@@ -22,6 +22,10 @@
           "moduleId": "[project]/.next-internal/server/app/(app)/health-tips/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/personalized-health-tips-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
+        "app/(app)/inquiries/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/inquiries/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/inquiry-triage-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        },
         "app/(app)/requests/page": {
           "moduleId": "[project]/.next-internal/server/app/(app)/requests/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
@@ -37,6 +41,7 @@
         "app/(app)/dashboard/page": "action-browser",
         "app/(app)/fraud-detection/page": "action-browser",
         "app/(app)/health-tips/page": "action-browser",
+        "app/(app)/inquiries/page": "action-browser",
         "app/(app)/requests/page": "action-browser",
         "app/(app)/symptom-analyzer/page": "action-browser"
       }
@@ -79,10 +84,15 @@
         "app/(app)/appointments/page": {
           "moduleId": "[project]/.next-internal/server/app/(app)/appointments/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/inquiry-triage-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
+        },
+        "app/(app)/inquiries/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/inquiries/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/inquiry-triage-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
         }
       },
       "layer": {
-        "app/(app)/appointments/page": "action-browser"
+        "app/(app)/appointments/page": "action-browser",
+        "app/(app)/inquiries/page": "action-browser"
       }
     },
     "4091b7cd9f6b70952336b3b25b4c531a656beb1e56": {

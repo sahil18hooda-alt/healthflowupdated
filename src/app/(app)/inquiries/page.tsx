@@ -34,7 +34,7 @@ export default function InquiryTriagePage() {
       setTriageResult(result);
     } catch (err) {
       console.error(err);
-      setError('An error occurred while triaging the inquiry. Please try again.');
+      setError('An error occurred while analyzing your inquiry. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -44,17 +44,17 @@ export default function InquiryTriagePage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Route /> Automated Patient Inquiry Triage
+            <Route /> Inquiry Assistant
         </h1>
         <p className="text-muted-foreground">
-          Analyze patient messages to route them to the correct department.
+          Not sure where to send your question? Our AI can help route you to the right place.
         </p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>New Patient Inquiry</CardTitle>
-          <CardDescription>Enter a patient's message below to begin the triage process.</CardDescription>
+          <CardTitle>Submit Your Question</CardTitle>
+          <CardDescription>Enter your question below, and we'll suggest the best department to handle it.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <Textarea
@@ -66,7 +66,7 @@ export default function InquiryTriagePage() {
           />
           <Button onClick={handleTriage} disabled={isLoading || !message.trim()}>
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isLoading ? 'Analyzing...' : 'Triage Inquiry'}
+            {isLoading ? 'Analyzing...' : 'Analyze Inquiry'}
           </Button>
         </CardContent>
       </Card>
@@ -82,8 +82,8 @@ export default function InquiryTriagePage() {
       {triageResult && (
         <Card>
           <CardHeader>
-            <CardTitle>Triage Analysis</CardTitle>
-            <CardDescription>The patient's message has been automatically analyzed and categorized.</CardDescription>
+            <CardTitle>Analysis Complete</CardTitle>
+            <CardDescription>Here's where we recommend sending your inquiry for the fastest response.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
@@ -104,7 +104,7 @@ export default function InquiryTriagePage() {
                 </div>
             </div>
             <div>
-              <h3 className="font-semibold text-lg mb-2">Summary</h3>
+              <h3 className="font-semibold text-lg mb-2">Summary of Your Request</h3>
               <p className="text-muted-foreground italic">"{triageResult.summary}"</p>
             </div>
           </CardContent>
