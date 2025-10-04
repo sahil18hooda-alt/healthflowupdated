@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Calendar, Pill, Stethoscope } from 'lucide-react';
+import { Calendar, Pill, Stethoscope, Bot, Beaker } from 'lucide-react';
 import Link from 'next/link';
 import { getPatientAppointments, mockMedications } from '@/lib/mock-data';
 import { useMemo } from 'react';
@@ -81,8 +81,10 @@ export default function PatientDashboard({ name }: { name: string }) {
             <CardDescription>Your health shortcuts</CardDescription>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-4">
-            <QuickLink icon={<Calendar className="h-6 w-6 text-primary" />} title="Book Appointment" href="/appointments" />
+            <QuickLink icon={<Calendar className="h-6 w-6 text-primary" />} title="Book Appointment" href="/appointments?tab=book" />
             <QuickLink icon={<Stethoscope className="h-6 w-6 text-primary" />} title="Find a Doctor" href="/doctors" />
+             <QuickLink icon={<Bot className="h-6 w-6 text-primary" />} title="Symptom Analyzer" href="/symptom-analyzer" />
+            <QuickLink icon={<Beaker className="h-6 w-6 text-primary" />} title="Interaction Checker" href="/medication-checker" />
           </CardContent>
         </Card>
       </div>
