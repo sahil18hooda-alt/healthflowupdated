@@ -151,3 +151,16 @@ export interface MedicationInteractionOutput {
     }>;
     disclaimer: string;
 }
+
+export interface QueueManagementInput {
+  queueType: 'Appointments' | 'Lab / Blood Work' | 'Pharmacy';
+  currentTime: string;
+  currentDay: string;
+  queueLength: number;
+  avgServiceTime: number;
+}
+
+export interface QueueManagementOutput {
+  estimatedWaitTime: number;
+  queueStatus: string;
+}

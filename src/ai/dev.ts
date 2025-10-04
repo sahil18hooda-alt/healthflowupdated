@@ -12,4 +12,5 @@ import '@/ai/flows/ai-predictive-risk-model.ts';
 import '@/ai/flows/ai-medical-notes-generation.ts';
 import '@/ai/flows/ai-surgery-scheduling-assistant.ts';
 import '@/ai/flows/ai-lab-report-analyzer.ts';
-import '@/ai/flows/ai-medication-interaction-checker.ts';
+import '@/ai_flows/ai-medication-interaction-checker.ts';
+import '@/ai/flows/ai-queue-management.ts';

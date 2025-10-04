@@ -1,4 +1,5 @@
 {
   "/(app)/lab-report-analyzer/page": "app/(app)/lab-report-analyzer/page.js",
+  "/(app)/medication-checker/page": "app/(app)/medication-checker/page.js",
   "/page": "app/page.js"
 }
