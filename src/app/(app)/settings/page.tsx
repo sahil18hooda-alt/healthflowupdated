@@ -1,33 +1,22 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { useAuth } from '@/hooks/use-auth';
 import { ThemeToggle } from '@/components/theme-toggle';
-import { Separator } from '@/components/ui/separator';
 import { toast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 
 export default function SettingsPage() {
-  const { user, updateUser } = useAuth();
-  const [name, setName] = useState(user?.name || '');
+  const [name, setName] = useState('Guest');
   const [isSaving, setIsSaving] = useState(false);
 
-  useEffect(() => {
-    if (user) {
-      setName(user.name);
-    }
-  }, [user]);
-  
   const handleSaveChanges = () => {
-    if (!user) return;
     setIsSaving(true);
-    updateUser({ name });
     setTimeout(() => {
         toast({
             title: "Success!",
@@ -58,7 +47,7 @@ export default function SettingsPage() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" value={user?.email} disabled />
+            <Input id="email" type="email" value="guest@example.com" disabled />
           </div>
         </CardContent>
       </Card>

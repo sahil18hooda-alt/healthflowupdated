@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot, Route, Lightbulb } from 'lucide-react';
+import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot, Route } from 'lucide-react';
 
 import {
   Accordion,
@@ -20,8 +20,6 @@ import {
   SidebarMenuButton,
   SidebarFooter,
 } from '@/components/ui/sidebar';
-import { useAuth } from '@/hooks/use-auth';
-import { Button } from '../ui/button';
 
 const patientNavGroups = [
     {
@@ -29,7 +27,6 @@ const patientNavGroups = [
         items: [
             { href: '/symptom-analyzer', icon: <Bot />, label: 'Symptom Analyzer' },
             { href: '/ai-therapist', icon: <BrainCircuit />, label: 'AI Therapist' },
-            { href: '/health-tips', icon: <Lightbulb />, label: 'Health Tips' },
         ]
     },
     {
@@ -56,9 +53,7 @@ const employeeNavGroups = [
 
 export default function AppSidebar() {
   const pathname = usePathname();
-  const { user } = useAuth();
-
-  const isPatient = user?.role === 'patient';
+  const isPatient = true; // Defaulting to patient view as there's no login
   const navGroups = isPatient ? patientNavGroups : employeeNavGroups;
 
   const isNavItemActive = (href: string) => {

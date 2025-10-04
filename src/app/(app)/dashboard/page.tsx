@@ -2,15 +2,10 @@
 
 import PatientDashboard from '@/components/dashboard/patient-dashboard';
 import EmployeeDashboard from '@/components/dashboard/employee-dashboard';
-import { useAuth } from '@/hooks/use-auth';
 
 export default function DashboardPage() {
-  const { user } = useAuth();
-  
-  if (!user) {
-    // This can be a simple loading state or null, as the layout will handle the main loading UI
-    return null;
-  }
-
-  return user.role === 'patient' ? <PatientDashboard name={user.name}/> : <EmployeeDashboard name={user.name} />;
+  // Since there's no login, we can't determine the role.
+  // For now, let's default to the patient dashboard.
+  // In a real scenario, you might have a different default view.
+  return <PatientDashboard name="Guest"/>;
 }
