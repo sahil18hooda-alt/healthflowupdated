@@ -46,7 +46,6 @@ const employeeNavGroups = [
             { href: '/requests', icon: <Bell />, label: 'Requests' },
             { href: '/attendance', icon: <Clock />, label: 'Attendance' },
             { href: '/inquiries', icon: <Route />, label: 'Patient Inquiries' },
-            { href: '/fraud-detection', icon: <ShieldAlert />, label: 'Fraud Detection' },
         ]
     }
 ];
