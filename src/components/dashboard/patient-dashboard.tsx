@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 import { format } from 'date-fns';
 
 const QuickLink = ({ icon, title, href }: { icon: React.ReactNode, title: string, href: string }) => (
-    <Link href={href} className="flex flex-col items-center justify-center gap-2 rounded-lg bg-accent/10 p-4 text-center transition-colors hover:bg-accent/20">
+    <Link href={href} className="flex flex-col items-center justify-center gap-2 rounded-lg bg-accent/10 p-4 text-center transition-colors hover:bg-accent/20 flex-1">
         <>
             <div className="rounded-full bg-background p-3">{icon}</div>
             <span className="text-sm font-medium text-foreground">{title}</span>
@@ -38,7 +38,7 @@ export default function PatientDashboard({ name }: { name: string }) {
         <p className="text-muted-foreground">Here&apos;s a summary of your health dashboard.</p>
       </div>
       
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2">
         <Card className="flex flex-col">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Upcoming Appointment</CardTitle>
@@ -74,20 +74,20 @@ export default function PatientDashboard({ name }: { name: string }) {
             )}
           </CardContent>
         </Card>
+      </div>
         
-        <Card className="flex flex-col">
-          <CardHeader>
+      <Card>
+        <CardHeader>
             <CardTitle>Quick Links</CardTitle>
             <CardDescription>Your health shortcuts</CardDescription>
-          </CardHeader>
-          <CardContent className="grid grid-cols-2 gap-4">
+        </CardHeader>
+        <CardContent className="flex flex-row gap-4">
             <QuickLink icon={<Calendar className="h-6 w-6 text-primary" />} title="Book Appointment" href="/appointments?tab=book" />
             <QuickLink icon={<Stethoscope className="h-6 w-6 text-primary" />} title="Find a Doctor" href="/doctors" />
-             <QuickLink icon={<Bot className="h-6 w-6 text-primary" />} title="Symptom Analyzer" href="/symptom-analyzer" />
+            <QuickLink icon={<Bot className="h-6 w-6 text-primary" />} title="Symptom Analyzer" href="/symptom-analyzer" />
             <QuickLink icon={<Beaker className="h-6 w-6 text-primary" />} title="Interaction Checker" href="/medication-checker" />
-          </CardContent>
-        </Card>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
