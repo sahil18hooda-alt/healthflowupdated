@@ -40,6 +40,7 @@ function DoctorsContent() {
             <Card key={doctor.id} className="flex flex-col">
               <CardHeader className="items-center text-center">
                 {placeholder && (
+                  <div>
                     <Image
                         src={placeholder.imageUrl}
                         alt={`Photo of ${doctor.name}`}
@@ -48,6 +49,7 @@ function DoctorsContent() {
                         className="rounded-full border-4 border-primary/20 shadow-lg"
                         data-ai-hint={placeholder.imageHint}
                     />
+                  </div>
                 )}
               </CardHeader>
               <CardContent className="flex-1 text-center">

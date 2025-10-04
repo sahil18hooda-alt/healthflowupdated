@@ -300,12 +300,10 @@ function PatientAppointments({ onAppointmentRequest }: { onAppointmentRequest: (
   );
 }
 
-const MemoizedPatientRequests = ({ appointmentRequests, user }: { appointmentRequests: AppointmentRequest[], user: { name: string, role: UserRole } }) => {
-    const [userRequests, setUserRequests] = useState<AppointmentRequest[]>([]);
-    
-    useEffect(() => {
-        setUserRequests(appointmentRequests.filter(req => req.patientName === user.name));
-    }, [appointmentRequests, user]);
+function PatientRequests({ appointmentRequests, user }: { appointmentRequests: AppointmentRequest[], user: { name: string, role: UserRole } }) {
+    const userRequests = useMemo(() => {
+        return appointmentRequests.filter(req => req.patientName === user.name)
+    }, [appointmentRequests, user.name]);
 
     return (
         <TabsContent value="requests">
@@ -353,8 +351,6 @@ const MemoizedPatientRequests = ({ appointmentRequests, user }: { appointmentReq
         </TabsContent>
     );
 }
-
-const PatientRequests = MemoizedPatientRequests;
 
 
 function AppointmentsPageContent() {
