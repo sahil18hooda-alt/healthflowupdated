@@ -1,19 +1,4 @@
 {
-  "/(app)/ai-therapist/page": "app/(app)/ai-therapist/page.js",
-  "/(app)/appointments/page": "app/(app)/appointments/page.js",
-  "/(app)/dashboard/page": "app/(app)/dashboard/page.js",
-  "/(app)/decision-support/page": "app/(app)/decision-support/page.js",
-  "/(app)/fraud-detection/page": "app/(app)/fraud-detection/page.js",
-  "/(app)/health-tips/page": "app/(app)/health-tips/page.js",
-  "/(app)/inquiries/page": "app/(app)/inquiries/page.js",
   "/(app)/lab-report-analyzer/page": "app/(app)/lab-report-analyzer/page.js",
-  "/(app)/medical-notes/page": "app/(app)/medical-notes/page.js",
-  "/(app)/predictive-risk-model/page": "app/(app)/predictive-risk-model/page.js",
-  "/(app)/requests/page": "app/(app)/requests/page.js",
-  "/(app)/schedule-assistant/page": "app/(app)/schedule-assistant/page.js",
-  "/(app)/symptom-analyzer/page": "app/(app)/symptom-analyzer/page.js",
-  "/(auth)/login/page": "app/(auth)/login/page.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js"
 }

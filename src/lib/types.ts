@@ -137,3 +137,17 @@ export interface LabReportAnalysisOutput {
     }>;
     disclaimer: string;
 }
+
+export interface MedicationInteractionInput {
+    medications: string[];
+}
+
+export interface MedicationInteractionOutput {
+    summary: string;
+    interactions: Array<{
+        medications: string[];
+        severity: 'Minor' | 'Moderate' | 'Major';
+        description: string;
+    }>;
+    disclaimer: string;
+}

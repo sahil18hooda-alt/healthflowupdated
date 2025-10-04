@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot, Route, ShieldAlert, Activity, FilePlus, CalendarClock, TestTube } from 'lucide-react';
+import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot, Route, ShieldAlert, Activity, FilePlus, CalendarClock, TestTube, Cross, Beaker } from 'lucide-react';
 
 import {
   Accordion,
@@ -29,6 +29,7 @@ const patientNavGroups = [
             { href: '/ai-therapist', icon: <BrainCircuit />, label: 'AI Therapist' },
             { href: '/inquiries', icon: <Route />, label: 'Inquiry Assistant' },
             { href: '/lab-report-analyzer', icon: <TestTube />, label: 'Lab Report Analyzer' },
+            { href: '/medication-checker', icon: <Beaker />, label: 'Interaction Checker' },
         ]
     },
     {
@@ -56,7 +57,6 @@ const employeeNavGroups = [
              { href: '/predictive-risk-model', icon: <Activity />, label: 'Predictive Risk' },
              { href: '/medical-notes', icon: <FilePlus />, label: 'Medical Notes' },
              { href: '/schedule-assistant', icon: <CalendarClock />, label: 'Schedule Assistant' },
-             { href: '/decision-support', icon: <Bot />, label: 'Decision Support' },
         ]
     }
 ];
