@@ -25,14 +25,11 @@ export const FraudDetectionOutputSchema = z.object({
 export type FraudDetectionOutput = z.infer<typeof FraudDetectionOutputSchema>;
 
 export async function fraudDetection(input: FraudDetectionInput): Promise<FraudDetectionOutput> {
-  return fraudDetectionFlow(input);
-}
-
-const prompt = ai.definePrompt({
-  name: 'fraudDetectionPrompt',
-  input: {schema: FraudDetectionInputSchema},
-  output: {schema: FraudDetectionOutputSchema},
-  prompt: `You are an expert in healthcare fraud detection. Analyze the provided {{{dataType}}} data for any signs of fraudulent activity.
+  const prompt = ai.definePrompt({
+    name: 'fraudDetectionPrompt',
+    input: {schema: FraudDetectionInputSchema},
+    output: {schema: FraudDetectionOutputSchema},
+    prompt: `You are an expert in healthcare fraud detection. Analyze the provided {{{dataType}}} data for any signs of fraudulent activity.
 
 Data:
 \`\`\`json
@@ -48,16 +45,18 @@ Look for common red flags such as:
 - Mismatched patient information, provider details, or dates.
 
 Based on your analysis, determine if the activity is suspicious, provide a risk score (0-100), list the specific reasons for your conclusion, and give a brief summary. If no fraud is detected, state that clearly.`,
-});
+  });
 
-const fraudDetectionFlow = ai.defineFlow(
-  {
-    name: 'fraudDetectionFlow',
-    inputSchema: FraudDetectionInputSchema,
-    outputSchema: FraudDetectionOutputSchema,
-  },
-  async input => {
-    const {output} = await prompt(input);
-    return output!;
-  }
-);
+  const fraudDetectionFlow = ai.defineFlow(
+    {
+      name: 'fraudDetectionFlow',
+      inputSchema: FraudDetectionInputSchema,
+      outputSchema: FraudDetectionOutputSchema,
+    },
+    async input => {
+      const {output} = await prompt(input);
+      return output!;
+    }
+  );
+  return fraudDetectionFlow(input);
+}

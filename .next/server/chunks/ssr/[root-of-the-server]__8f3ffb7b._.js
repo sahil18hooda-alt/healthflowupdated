@@ -311,15 +311,17 @@ const aiChatbotAssistantFlow = __TURBOPACK__imported__module__$5b$project$5d2f$s
 
 var { g: global, __dirname } = __turbopack_context__;
 {
-/* __next_internal_action_entry_do_not_use__ [{"4091b7cd9f6b70952336b3b25b4c531a656beb1e56":"fraudDetection"},"",""] */ __turbopack_context__.s({
+/* __next_internal_action_entry_do_not_use__ [{"4091b7cd9f6b70952336b3b25b4c531a656beb1e56":"fraudDetection","7f2e2df44bf4028271dbcdab1c96306dc40e13f3b3":"FraudDetectionOutputSchema","7fa4cae8c394e0450b736a65e14b25eb49ef550610":"FraudDetectionInputSchema"},"",""] */ __turbopack_context__.s({
+    "FraudDetectionInputSchema": (()=>FraudDetectionInputSchema),
+    "FraudDetectionOutputSchema": (()=>FraudDetectionOutputSchema),
     "fraudDetection": (()=>fraudDetection)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/webpack/loaders/next-flight-loader/server-reference.js [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$app$2d$render$2f$encryption$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/app-render/encryption.js [app-rsc] (ecmascript)");
 /**
- * @fileOverview An AI flow for detecting fraudulent activity in medical claims and prescriptions.
+ * @fileOverview An AI-powered fraud detection flow for analyzing medical claims and prescriptions.
  *
- * - fraudDetection - A function that handles the fraud detection process.
+ * - fraudDetection - A function that handles the fraud detection analysis.
  * - FraudDetectionInput - The input type for the fraudDetection function.
  * - FraudDetectionOutput - The return type for the fraudDetection function.
  */ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/ai/genkit.ts [app-rsc] (ecmascript)");
@@ -335,57 +337,58 @@ const FraudDetectionInputSchema = __TURBOPACK__imported__module__$5b$project$5d2
         'Insurance Claim',
         'Prescription Log'
     ]),
-    jsonData: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('A JSON string representing an array of claims or logs to be analyzed.')
+    data: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('The JSON data of the claim or log to be analyzed.')
 });
 const FraudDetectionOutputSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].object({
-    isSuspicious: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].boolean().describe('A flag indicating if the data is suspicious.'),
-    riskScore: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].number().min(0).max(100).describe('A numerical score from 0 to 100 indicating the likelihood of fraud.'),
+    isSuspicious: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].boolean().describe('Whether the data is flagged as suspicious.'),
+    riskScore: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].number().describe('A numerical score from 0 to 100 indicating the likelihood of fraud.'),
     reasons: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].array(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string()).describe('A list of specific reasons why the data was flagged as suspicious.'),
     summary: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('A concise, high-level summary of the findings.')
 });
 async function fraudDetection(input) {
+    const prompt = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"].definePrompt({
+        name: 'fraudDetectionPrompt',
+        input: {
+            schema: FraudDetectionInputSchema
+        },
+        output: {
+            schema: FraudDetectionOutputSchema
+        },
+        prompt: `You are an expert in healthcare fraud detection. Analyze the provided {{{dataType}}} data for any signs of fraudulent activity.
+
+Data:
+\`\`\`json
+{{{data}}}
+\`\`\`
+
+Look for common red flags such as:
+- Duplicate claims for the same service, patient, and date.
+- Billing for services not rendered or "phantom billing".
+- Upcoding: billing for a more expensive service than what was actually provided.
+- Unbundling: billing services separately that should be a single service.
+- Prescription patterns like "doctor shopping" for controlled substances.
+- Mismatched patient information, provider details, or dates.
+
+Based on your analysis, determine if the activity is suspicious, provide a risk score (0-100), list the specific reasons for your conclusion, and give a brief summary. If no fraud is detected, state that clearly.`
+    });
+    const fraudDetectionFlow = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"].defineFlow({
+        name: 'fraudDetectionFlow',
+        inputSchema: FraudDetectionInputSchema,
+        outputSchema: FraudDetectionOutputSchema
+    }, async (input)=>{
+        const { output } = await prompt(input);
+        return output;
+    });
     return fraudDetectionFlow(input);
 }
-const prompt = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"].definePrompt({
-    name: 'fraudDetectionPrompt',
-    input: {
-        schema: FraudDetectionInputSchema
-    },
-    output: {
-        schema: FraudDetectionOutputSchema
-    },
-    prompt: `You are an expert AI healthcare fraud detection analyst. Your task is to analyze the provided JSON data, which represents either an 'Insurance Claim' or a 'Prescription Log', and identify any signs of fraudulent activity.
-
-  Analyze the following data. Note that the data is provided as an array containing one or more records.
-  Data Type: {{{dataType}}}
-  Data:
-  \`\`\`json
-  {{{jsonData}}}
-  \`\`\`
-
-  Look for common red flags, including but not limited to:
-  - For Insurance Claims: Duplicate claims, billing for services not rendered, upcoding (billing for a more expensive service), or inconsistent patient information.
-  - For Prescription Logs: Overlapping prescriptions for controlled substances from multiple doctors (doctor shopping), unusually high quantities, or frequent early refills.
-
-  Based on your analysis:
-  1. Set 'isSuspicious' to true if you find any credible red flags, otherwise set it to false.
-  2. Provide a 'riskScore' from 0 (no risk) to 100 (high certainty of fraud).
-  3. List the specific 'reasons' for your suspicion in a clear, itemized format. If not suspicious, provide a reason for the low risk.
-  4. Write a brief 'summary' of your overall findings.
-  `
-});
-const fraudDetectionFlow = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"].defineFlow({
-    name: 'fraudDetectionFlow',
-    inputSchema: FraudDetectionInputSchema,
-    outputSchema: FraudDetectionOutputSchema
-}, async (input)=>{
-    const { output } = await prompt(input);
-    return output;
-});
 ;
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$validate$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ensureServerEntryExports"])([
+    FraudDetectionInputSchema,
+    FraudDetectionOutputSchema,
     fraudDetection
 ]);
+(0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(FraudDetectionInputSchema, "7fa4cae8c394e0450b736a65e14b25eb49ef550610", null);
+(0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(FraudDetectionOutputSchema, "7f2e2df44bf4028271dbcdab1c96306dc40e13f3b3", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(fraudDetection, "4091b7cd9f6b70952336b3b25b4c531a656beb1e56", null);
 }}),
 "[project]/.next-internal/server/app/(app)/fraud-detection/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-fraud-detection.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript) <locals>": ((__turbopack_context__) => {
