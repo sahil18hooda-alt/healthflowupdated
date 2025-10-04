@@ -256,6 +256,23 @@ export const updateAppointmentRequestStatus = (id: string, status: 'Accepted' | 
     return undefined;
 };
 
+export const addAppointment = (appointment: Omit<Appointment, 'id' | 'status'>) => {
+    const allAppointments = getStoredData<Appointment[]>('allAppointments', [...initialPatientAppointments, ...initialEmployeeAppointments]);
+    const newAppointment: Appointment = {
+        ...appointment,
+        id: `app${Date.now()}`,
+        status: 'Upcoming',
+    };
+    
+    if (newAppointment.type === 'Online' && !newAppointment.meetingLink) {
+        const randomString = Math.random().toString(36).substring(2, 11).replace(/\d/g, '').match(/.{1,3}/g)!.join('-');
+        newAppointment.meetingLink = `https://meet.google.com/${randomString}`;
+    }
+    
+    setStoredData('allAppointments', [...allAppointments, newAppointment]);
+    return newAppointment;
+};
+
 
 export const mockAttendance: AttendanceRecord[] = [
     {

@@ -17,6 +17,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 import { DateRange } from 'react-day-picker';
+import { addAppointment } from '@/lib/mock-data';
+import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
   doctor: z.string().min(1, 'Doctor is required.'),
@@ -39,6 +41,7 @@ export default function ScheduleAssistantPage() {
   const [analysis, setAnalysis] = useState<ScheduleAppointmentOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -75,6 +78,31 @@ export default function ScheduleAssistantPage() {
       setIsLoading(false);
     }
   };
+
+  const handleConfirmSchedule = () => {
+    if (!analysis || !analysis.suggestedAppointmentSlot || analysis.suggestedAppointmentSlot.includes("No available slot")) {
+        return;
+    }
+
+    const [startString] = analysis.suggestedAppointmentSlot.split(' - ');
+    const startDate = new Date(startString);
+    const formValues = form.getValues();
+
+    addAppointment({
+        doctorName: formValues.doctor,
+        patientName: formValues.patient,
+        date: format(startDate, 'yyyy-MM-dd'),
+        time: format(startDate, 'HH:mm'),
+        type: 'Hospital', // Assuming hospital, could be made dynamic
+        problemSummary: formValues.appointmentType
+    });
+
+    toast({
+        title: "Appointment Scheduled!",
+        description: `Booked for ${formValues.patient} with ${formValues.doctor} on ${format(startDate, 'PPP p')}.`,
+    });
+    setAnalysis(null);
+  }
 
   return (
     <div className="space-y-6">
@@ -236,7 +264,7 @@ export default function ScheduleAssistantPage() {
               <p className="text-sm text-muted-foreground italic">"{analysis.reasoning}"</p>
             </div>
             {!analysis.suggestedAppointmentSlot.includes("No available slot") &&
-                <Button>Confirm and Schedule</Button>
+                <Button onClick={handleConfirmSchedule}>Confirm and Schedule</Button>
             }
           </CardContent>
         </Card>

@@ -9,6 +9,7 @@
   "/(app)/medical-notes/page": "app/(app)/medical-notes/page.js",
   "/(app)/predictive-risk-model/page": "app/(app)/predictive-risk-model/page.js",
   "/(app)/requests/page": "app/(app)/requests/page.js",
+  "/(app)/schedule-assistant/page": "app/(app)/schedule-assistant/page.js",
   "/(app)/symptom-analyzer/page": "app/(app)/symptom-analyzer/page.js",
   "/(auth)/login/page": "app/(auth)/login/page.js",
   "/_not-found/page": "app/_not-found/page.js",
