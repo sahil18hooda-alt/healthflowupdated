@@ -122,3 +122,18 @@ export interface ScheduleAppointmentOutput {
   suggestedAppointmentSlot: string;
   reasoning: string;
 }
+
+export interface LabReportAnalysisInput {
+    reportImage: string;
+}
+
+export interface LabReportAnalysisOutput {
+    summary: string;
+    keyMetrics: Array<{
+        metric: string;
+        value: string;
+        normalRange: string;
+        interpretation: "High" | "Low" | "Normal" | "Borderline High" | "Borderline Low" | "N/A";
+    }>;
+    disclaimer: string;
+}

@@ -510,6 +510,12 @@ __turbopack_context__.s({
     "mockReviews": (()=>mockReviews),
     "updateAppointmentRequestStatus": (()=>updateAppointmentRequestStatus)
 });
+// Custom event for storage updates
+const dispatchStorageEvent = (key)=>{
+    if ("TURBOPACK compile-time falsy", 0) {
+        "TURBOPACK unreachable";
+    }
+};
 // Helper to get data from localStorage or use initial mock data
 function getStoredData(key, initialData) {
     if ("TURBOPACK compile-time truthy", 1) {

@@ -1334,6 +1334,10 @@ body {
   border-color: #0000;
 }
 
+.border-border {
+  border-color: hsl(var(--border));
+}
+
 .border-l-transparent {
   border-left-color: #0000;
 }
@@ -1515,6 +1519,10 @@ body {
   fill: #facc15;
 }
 
+.object-contain {
+  object-fit: contain;
+}
+
 .p-0 {
   padding: 0;
 }
@@ -1541,6 +1549,10 @@ body {
 
 .p-\[1px\] {
   padding: 1px;
+}
+
+.p-12 {
+  padding: 3rem;
 }
 
 .px-2 {

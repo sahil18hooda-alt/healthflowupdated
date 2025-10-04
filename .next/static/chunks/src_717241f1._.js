@@ -640,6 +640,16 @@ __turbopack_context__.s({
     "mockReviews": (()=>mockReviews),
     "updateAppointmentRequestStatus": (()=>updateAppointmentRequestStatus)
 });
+// Custom event for storage updates
+const dispatchStorageEvent = (key)=>{
+    if ("TURBOPACK compile-time truthy", 1) {
+        window.dispatchEvent(new CustomEvent('storage-update', {
+            detail: {
+                key
+            }
+        }));
+    }
+};
 // Helper to get data from localStorage or use initial mock data
 function getStoredData(key, initialData) {
     if ("TURBOPACK compile-time falsy", 0) {
@@ -660,6 +670,7 @@ function setStoredData(key, data) {
     }
     try {
         window.localStorage.setItem(key, JSON.stringify(data));
+        dispatchStorageEvent(key);
     } catch (error) {
         console.error(`Error writing ${key} to localStorage`, error);
     }
