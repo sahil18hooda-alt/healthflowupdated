@@ -19,7 +19,7 @@ import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { AppointmentRequest, Appointment, UserRole } from '@/lib/types';
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, useMemo } from 'react';
 import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
 import { inquiryTriage } from '@/ai/flows/inquiry-triage-flow';
@@ -290,13 +290,12 @@ function PatientAppointments({ onAppointmentRequest }: { onAppointmentRequest: (
   );
 }
 
-function PatientRequests({ appointmentRequests }: { appointmentRequests: AppointmentRequest[] }) {
-    const user = { name: 'Guest' };
+function PatientRequests({ appointmentRequests, user }: { appointmentRequests: AppointmentRequest[], user: { name: string } }) {
     const [userRequests, setUserRequests] = useState<AppointmentRequest[]>([]);
     
     useEffect(() => {
         if(user) {
-            setUserRequests(appointmentRequests.filter(req => req.patientName === user?.name));
+            setUserRequests(appointmentRequests.filter(req => req.patientName === user.name));
         }
     }, [appointmentRequests, user]);
 
@@ -350,7 +349,7 @@ function PatientRequests({ appointmentRequests }: { appointmentRequests: Appoint
 
 
 function AppointmentsPageContent() {
-    const user = { name: 'Guest', role: 'patient' as UserRole };
+    const user = useMemo(() => ({ name: 'Guest', role: 'patient' as UserRole }), []);
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [appointmentRequests, setAppointmentRequests] = useState<AppointmentRequest[]>([]);
     const searchParams = useSearchParams();
@@ -413,7 +412,7 @@ function AppointmentsPageContent() {
                         </Card>
                     )}
                 </TabsContent>
-                {user?.role === 'patient' && <PatientRequests appointmentRequests={appointmentRequests} />}
+                {user?.role === 'patient' && <PatientRequests appointmentRequests={appointmentRequests} user={user} />}
                 {user?.role === 'patient' && <PatientAppointments onAppointmentRequest={handleNewRequest} />}
             </Tabs>
         </div>
@@ -427,5 +426,3 @@ export default function AppointmentsPage() {
         </Suspense>
     )
 }
-
-    
