@@ -8,14 +8,14 @@ import { Bot, Loader2, ShieldAlert, ShieldCheck, FileJson } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { fraudDetection, FraudDetectionOutput } from '@/ai/flows/ai-fraud-detection';
+import { fraudDetection } from '@/ai/flows/ai-fraud-detection';
+import type { FraudDetectionOutput } from '@/lib/types';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
-
-type DataType = 'Insurance Claim' | 'Prescription Log';
+import { Label } from '@/components/ui/label';
 
 const formSchema = z.object({
   dataType: z.enum(['Insurance Claim', 'Prescription Log']),

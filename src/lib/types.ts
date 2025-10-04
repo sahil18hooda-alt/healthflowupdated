@@ -78,3 +78,15 @@ export type HealthProfile = {
   stressLevel: 'low' | 'moderate' | 'high';
   updatedAt: string; // ISO 8601 date string
 };
+
+export interface FraudDetectionInput {
+  dataType: 'Insurance Claim' | 'Prescription Log';
+  data: string;
+}
+
+export interface FraudDetectionOutput {
+  isSuspicious: boolean;
+  riskScore: number;
+  reasons: string[];
+  summary: string;
+}
