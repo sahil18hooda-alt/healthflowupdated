@@ -14,6 +14,10 @@
           "moduleId": "[project]/.next-internal/server/app/(app)/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
+        "app/(app)/fraud-detection/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/fraud-detection/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-fraud-detection.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        },
         "app/(app)/health-tips/page": {
           "moduleId": "[project]/.next-internal/server/app/(app)/health-tips/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/personalized-health-tips-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
@@ -31,6 +35,7 @@
         "app/(app)/ai-therapist/page": "action-browser",
         "app/(app)/appointments/page": "action-browser",
         "app/(app)/dashboard/page": "action-browser",
+        "app/(app)/fraud-detection/page": "action-browser",
         "app/(app)/health-tips/page": "action-browser",
         "app/(app)/requests/page": "action-browser",
         "app/(app)/symptom-analyzer/page": "action-browser"
@@ -78,6 +83,17 @@
       },
       "layer": {
         "app/(app)/appointments/page": "action-browser"
+      }
+    },
+    "4091b7cd9f6b70952336b3b25b4c531a656beb1e56": {
+      "workers": {
+        "app/(app)/fraud-detection/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/fraud-detection/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-fraud-detection.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(app)/fraud-detection/page": "action-browser"
       }
     }
   },

@@ -2,6 +2,7 @@
   "/(app)/ai-therapist/page": "app/(app)/ai-therapist/page.js",
   "/(app)/appointments/page": "app/(app)/appointments/page.js",
   "/(app)/dashboard/page": "app/(app)/dashboard/page.js",
+  "/(app)/fraud-detection/page": "app/(app)/fraud-detection/page.js",
   "/(app)/health-tips/page": "app/(app)/health-tips/page.js",
   "/(app)/requests/page": "app/(app)/requests/page.js",
   "/(app)/symptom-analyzer/page": "app/(app)/symptom-analyzer/page.js",

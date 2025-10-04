@@ -12,7 +12,7 @@ import {z} from 'genkit';
 
 const FraudDetectionInputSchema = z.object({
   dataType: z.enum(['Insurance Claim', 'Prescription Log']),
-  jsonData: z.string().describe('The JSON data of the claim or log to be analyzed.'),
+  jsonData: z.string().describe('A JSON string representing an array of claims or logs to be analyzed.'),
 });
 export type FraudDetectionInput = z.infer<typeof FraudDetectionInputSchema>;
 
@@ -34,7 +34,7 @@ const prompt = ai.definePrompt({
   output: {schema: FraudDetectionOutputSchema},
   prompt: `You are an expert AI healthcare fraud detection analyst. Your task is to analyze the provided JSON data, which represents either an 'Insurance Claim' or a 'Prescription Log', and identify any signs of fraudulent activity.
 
-  Analyze the following data:
+  Analyze the following data. Note that the data is provided as an array containing one or more records.
   Data Type: {{{dataType}}}
   Data:
   \`\`\`json
