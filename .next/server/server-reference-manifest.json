@@ -30,6 +30,10 @@
           "moduleId": "[project]/.next-internal/server/app/(app)/inquiries/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/inquiry-triage-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
+        "app/(app)/lab-report-analyzer/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/lab-report-analyzer/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-lab-report-analyzer.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        },
         "app/(app)/medical-notes/page": {
           "moduleId": "[project]/.next-internal/server/app/(app)/medical-notes/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-medical-notes-generation.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
@@ -59,6 +63,7 @@
         "app/(app)/fraud-detection/page": "action-browser",
         "app/(app)/health-tips/page": "action-browser",
         "app/(app)/inquiries/page": "action-browser",
+        "app/(app)/lab-report-analyzer/page": "action-browser",
         "app/(app)/medical-notes/page": "action-browser",
         "app/(app)/predictive-risk-model/page": "action-browser",
         "app/(app)/requests/page": "action-browser",
@@ -168,6 +173,17 @@
       },
       "layer": {
         "app/(app)/schedule-assistant/page": "action-browser"
+      }
+    },
+    "406b4951e3fa52aa5134ddaa55491ce7808b5d4900": {
+      "workers": {
+        "app/(app)/lab-report-analyzer/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/lab-report-analyzer/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-lab-report-analyzer.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(app)/lab-report-analyzer/page": "action-browser"
       }
     }
   },

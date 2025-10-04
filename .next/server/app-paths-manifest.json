@@ -6,6 +6,7 @@
   "/(app)/fraud-detection/page": "app/(app)/fraud-detection/page.js",
   "/(app)/health-tips/page": "app/(app)/health-tips/page.js",
   "/(app)/inquiries/page": "app/(app)/inquiries/page.js",
+  "/(app)/lab-report-analyzer/page": "app/(app)/lab-report-analyzer/page.js",
   "/(app)/medical-notes/page": "app/(app)/medical-notes/page.js",
   "/(app)/predictive-risk-model/page": "app/(app)/predictive-risk-model/page.js",
   "/(app)/requests/page": "app/(app)/requests/page.js",
