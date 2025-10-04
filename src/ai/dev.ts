@@ -8,5 +8,4 @@ import '@/ai/flows/ai-doctor-photos.ts';
 import '@/ai/flows/symptom-analyzer-flow.ts';
 import '@/ai/flows/ai-therapist-flow.ts';
 import '@/ai/flows/inquiry-triage-flow.ts';
-import '@/ai/flows/ai-symptom-analysis.ts';
 import '@/ai/flows/ai-predictive-risk-model.ts';

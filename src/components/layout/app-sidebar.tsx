@@ -53,7 +53,6 @@ const employeeNavGroups = [
         items: [
              { href: '/fraud-detection', icon: <ShieldAlert />, label: 'Fraud Detection' },
              { href: '/predictive-risk-model', icon: <Activity />, label: 'Predictive Risk' },
-             { href: '/decision-support', icon: <Bot />, label: 'Decision Support' },
         ]
     }
 ];
