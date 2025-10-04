@@ -14,6 +14,10 @@
           "moduleId": "[project]/.next-internal/server/app/(app)/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
+        "app/(app)/decision-support/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/decision-support/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-symptom-analysis.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        },
         "app/(app)/fraud-detection/page": {
           "moduleId": "[project]/.next-internal/server/app/(app)/fraud-detection/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-fraud-detection.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
@@ -43,6 +47,7 @@
         "app/(app)/ai-therapist/page": "action-browser",
         "app/(app)/appointments/page": "action-browser",
         "app/(app)/dashboard/page": "action-browser",
+        "app/(app)/decision-support/page": "action-browser",
         "app/(app)/fraud-detection/page": "action-browser",
         "app/(app)/health-tips/page": "action-browser",
         "app/(app)/inquiries/page": "action-browser",
@@ -120,6 +125,17 @@
       },
       "layer": {
         "app/(app)/predictive-risk-model/page": "action-browser"
+      }
+    },
+    "40451d9abdb192312e21e5a466b426684226c33b8c": {
+      "workers": {
+        "app/(app)/decision-support/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/decision-support/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-symptom-analysis.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(app)/decision-support/page": "action-browser"
       }
     }
   },
