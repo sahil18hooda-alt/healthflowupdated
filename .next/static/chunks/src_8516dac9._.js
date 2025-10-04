@@ -920,6 +920,15 @@ const patientNavGroups = [
                     columnNumber: 44
                 }, this),
                 label: 'AI Therapist'
+            },
+            {
+                href: '/inquiries',
+                icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$route$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Route$3e$__["Route"], {}, void 0, false, {
+                    fileName: "[project]/src/components/layout/app-sidebar.tsx",
+                    lineNumber: 30,
+                    columnNumber: 41
+                }, this),
+                label: 'Inquiry Assistant'
             }
         ]
     },
@@ -930,7 +939,7 @@ const patientNavGroups = [
                 href: '/appointments',
                 icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__["Calendar"], {}, void 0, false, {
                     fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                    lineNumber: 35,
+                    lineNumber: 36,
                     columnNumber: 44
                 }, this),
                 label: 'My Appointments'
@@ -939,7 +948,7 @@ const patientNavGroups = [
                 href: '/doctors',
                 icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$stethoscope$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Stethoscope$3e$__["Stethoscope"], {}, void 0, false, {
                     fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                    lineNumber: 36,
+                    lineNumber: 37,
                     columnNumber: 39
                 }, this),
                 label: 'Find a Doctor'
@@ -955,7 +964,7 @@ const employeeNavGroups = [
                 href: '/appointments',
                 icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__["Calendar"], {}, void 0, false, {
                     fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                    lineNumber: 45,
+                    lineNumber: 46,
                     columnNumber: 44
                 }, this),
                 label: 'Appointments'
@@ -964,7 +973,7 @@ const employeeNavGroups = [
                 href: '/requests',
                 icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Bell$3e$__["Bell"], {}, void 0, false, {
                     fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                    lineNumber: 46,
+                    lineNumber: 47,
                     columnNumber: 40
                 }, this),
                 label: 'Requests'
@@ -973,7 +982,7 @@ const employeeNavGroups = [
                 href: '/attendance',
                 icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__["Clock"], {}, void 0, false, {
                     fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                    lineNumber: 47,
+                    lineNumber: 48,
                     columnNumber: 42
                 }, this),
                 label: 'Attendance'
@@ -983,15 +992,6 @@ const employeeNavGroups = [
     {
         title: 'AI Tools',
         items: [
-            {
-                href: '/inquiries',
-                icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$route$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Route$3e$__["Route"], {}, void 0, false, {
-                    fileName: "[project]/src/components/layout/app-sidebar.tsx",
-                    lineNumber: 53,
-                    columnNumber: 42
-                }, this),
-                label: 'Inquiry Triage'
-            },
             {
                 href: '/fraud-detection',
                 icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShieldAlert$3e$__["ShieldAlert"], {}, void 0, false, {

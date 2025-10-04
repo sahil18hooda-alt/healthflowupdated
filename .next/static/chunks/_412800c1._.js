@@ -373,7 +373,7 @@ function InquiryTriagePage() {
             setTriageResult(result);
         } catch (err) {
             console.error(err);
-            setError('An error occurred while triaging the inquiry. Please try again.');
+            setError('An error occurred while analyzing your inquiry. Please try again.');
         } finally{
             setIsLoading(false);
         }
@@ -391,7 +391,7 @@ function InquiryTriagePage() {
                                 lineNumber: 47,
                                 columnNumber: 13
                             }, this),
-                            " Automated Patient Inquiry Triage"
+                            " Inquiry Assistant"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(app)/inquiries/page.tsx",
@@ -400,7 +400,7 @@ function InquiryTriagePage() {
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         className: "text-muted-foreground",
-                        children: "Analyze patient messages to route them to the correct department."
+                        children: "Not sure where to send your question? Our AI can help route you to the right place."
                     }, void 0, false, {
                         fileName: "[project]/src/app/(app)/inquiries/page.tsx",
                         lineNumber: 49,
@@ -417,14 +417,14 @@ function InquiryTriagePage() {
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardHeader"], {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardTitle"], {
-                                children: "New Patient Inquiry"
+                                children: "Submit Your Question"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(app)/inquiries/page.tsx",
                                 lineNumber: 56,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
-                                children: "Enter a patient's message below to begin the triage process."
+                                children: "Enter your question below, and we'll suggest the best department to handle it."
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(app)/inquiries/page.tsx",
                                 lineNumber: 57,
@@ -461,7 +461,7 @@ function InquiryTriagePage() {
                                         lineNumber: 68,
                                         columnNumber: 27
                                     }, this),
-                                    isLoading ? 'Analyzing...' : 'Triage Inquiry'
+                                    isLoading ? 'Analyzing...' : 'Analyze Inquiry'
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(app)/inquiries/page.tsx",
@@ -515,14 +515,14 @@ function InquiryTriagePage() {
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardHeader"], {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardTitle"], {
-                                children: "Triage Analysis"
+                                children: "Analysis Complete"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(app)/inquiries/page.tsx",
                                 lineNumber: 85,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
-                                children: "The patient's message has been automatically analyzed and categorized."
+                                children: "Here's where we recommend sending your inquiry for the fastest response."
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(app)/inquiries/page.tsx",
                                 lineNumber: 86,
@@ -628,7 +628,7 @@ function InquiryTriagePage() {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                         className: "font-semibold text-lg mb-2",
-                                        children: "Summary"
+                                        children: "Summary of Your Request"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(app)/inquiries/page.tsx",
                                         lineNumber: 107,

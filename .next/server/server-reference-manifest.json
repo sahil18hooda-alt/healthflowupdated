@@ -26,6 +26,10 @@
           "moduleId": "[project]/.next-internal/server/app/(app)/inquiries/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/inquiry-triage-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
+        "app/(app)/predictive-risk-model/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/predictive-risk-model/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-predictive-risk-model.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        },
         "app/(app)/requests/page": {
           "moduleId": "[project]/.next-internal/server/app/(app)/requests/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
@@ -42,6 +46,7 @@
         "app/(app)/fraud-detection/page": "action-browser",
         "app/(app)/health-tips/page": "action-browser",
         "app/(app)/inquiries/page": "action-browser",
+        "app/(app)/predictive-risk-model/page": "action-browser",
         "app/(app)/requests/page": "action-browser",
         "app/(app)/symptom-analyzer/page": "action-browser"
       }
@@ -104,6 +109,17 @@
       },
       "layer": {
         "app/(app)/fraud-detection/page": "action-browser"
+      }
+    },
+    "40eef05bf2771ad790baf6043321d08ec8a6e0f8c4": {
+      "workers": {
+        "app/(app)/predictive-risk-model/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/predictive-risk-model/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-predictive-risk-model.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(app)/predictive-risk-model/page": "action-browser"
       }
     }
   },
