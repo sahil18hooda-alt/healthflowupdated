@@ -1,8 +1,4 @@
 {
   "/(app)/dashboard/page": "app/(app)/dashboard/page.js",
-  "/(app)/lab-report-analyzer/page": "app/(app)/lab-report-analyzer/page.js",
-  "/(app)/medication-checker/page": "app/(app)/medication-checker/page.js",
-  "/(app)/queue-status/page": "app/(app)/queue-status/page.js",
-  "/(app)/symptom-analyzer/page": "app/(app)/symptom-analyzer/page.js",
   "/page": "app/page.js"
 }
