@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Bot, User, Loader2, Send, ArrowLeft, Paperclip } from 'lucide-react';
+import { Bot, User, Loader2, Send, ArrowLeft, Paperclip, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getMessages, addMessage, ChatMessage } from '@/lib/mock-data';
+import { getMessages, addMessage, deleteMessage, ChatMessage } from '@/lib/mock-data';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -107,6 +107,14 @@ function DoctorChatContent() {
     }
   };
 
+  const handleDelete = (messageId: string) => {
+    deleteMessage(messageId);
+    toast({
+        title: 'Message Deleted',
+        description: 'The message has been removed from the conversation.',
+    });
+  }
+
 
   return (
     <div className="flex flex-col h-[calc(100vh-10rem)]">
@@ -133,10 +141,15 @@ function DoctorChatContent() {
               <div
                 key={message.id}
                 className={cn(
-                  'flex items-end gap-3',
+                  'group flex items-end gap-3',
                   message.sender === senderName ? 'justify-end' : 'justify-start'
                 )}
               >
+                {message.sender === senderName && (
+                     <Button variant="ghost" size="icon" className="h-6 w-6 invisible group-hover:visible" onClick={() => handleDelete(message.id)}>
+                        <Trash2 className="h-4 w-4 text-destructive" />
+                    </Button>
+                )}
                 {message.sender !== senderName && (
                   <Avatar className="h-8 w-8">
                      {receiverAvatar && <AvatarImage src={receiverAvatar} alt={receiverName} />}
@@ -164,6 +177,11 @@ function DoctorChatContent() {
                     {senderAvatar && <AvatarImage src={senderAvatar} alt={senderName} />}
                     <AvatarFallback><User /></AvatarFallback>
                   </Avatar>
+                )}
+                {message.sender !== senderName && (
+                    <Button variant="ghost" size="icon" className="h-6 w-6 invisible group-hover:visible" onClick={() => handleDelete(message.id)}>
+                        <Trash2 className="h-4 w-4 text-destructive" />
+                    </Button>
                 )}
               </div>
             ))}

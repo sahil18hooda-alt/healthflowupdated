@@ -225,6 +225,12 @@ export const addMessage = (sender: string, receiver: string, content: string, at
     return newMessage;
 };
 
+export const deleteMessage = (messageId: string) => {
+    const messages = getMessages();
+    const updatedMessages = messages.filter(msg => msg.id !== messageId);
+    setStoredData('chatMessages', updatedMessages);
+};
+
 
 // !! IMPORTANT !!
 // Replace this with your actual n8n webhook URL.
