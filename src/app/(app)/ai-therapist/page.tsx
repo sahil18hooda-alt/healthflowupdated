@@ -17,10 +17,10 @@ type Message = {
 
 const welcomeMessage: Message = {
     role: 'model',
-    content: "Hello! I see you have some questions about your AI imaging report. I'm here to help. What's on your mind?"
+    content: "Hello, I'm here to listen. This is a safe space for you to share whatever is on your mind. How are you feeling today?"
 }
 
-export default function DoctorChatPage() {
+export default function AiTherapistPage() {
   const [messages, setMessages] = useState<Message[]>([welcomeMessage]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -67,10 +67,10 @@ export default function DoctorChatPage() {
     <div className="flex flex-col h-[calc(100vh-10rem)]">
         <div className="mb-4">
             <h1 className="text-3xl font-bold flex items-center gap-2">
-                <MessageSquare /> Chat with Doctor
+                <MessageSquare /> AI Therapist
             </h1>
             <p className="text-muted-foreground">
-                Discuss your AI imaging report with a medical professional.
+                A safe space to talk about what's on your mind.
             </p>
         </div>
 
@@ -78,7 +78,7 @@ export default function DoctorChatPage() {
             <AlertTriangle className="h-4 w-4" />
             <AlertTitle>Important Disclaimer</AlertTitle>
             <AlertDescription>
-            This is an AI-powered simulation for demonstration purposes. For professional medical advice, please consult one of our qualified healthcare providers. If you are in a crisis, please contact an emergency service.
+            This is an AI-powered simulation for demonstration purposes and is not a substitute for professional medical advice. If you are in a crisis, please contact an emergency service.
             </AlertDescription>
         </Alert>
 
