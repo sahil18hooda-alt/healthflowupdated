@@ -210,14 +210,15 @@ export const getMessages = () => {
     return getStoredData<ChatMessage[]>('chatMessages', initialChatMessages);
 }
 
-export const addMessage = (sender: string, receiver: string, content: string): ChatMessage => {
+export const addMessage = (sender: string, receiver: string, content: string, attachment?: string): ChatMessage => {
     const messages = getMessages();
     const newMessage: ChatMessage = {
         id: `msg${Date.now()}`,
         sender,
         receiver,
         content,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        attachment: attachment
     };
     const updatedMessages = [...messages, newMessage];
     setStoredData('chatMessages', updatedMessages);

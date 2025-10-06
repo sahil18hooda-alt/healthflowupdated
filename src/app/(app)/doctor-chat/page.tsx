@@ -7,14 +7,17 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import Image from 'next/image';
 import Link from 'next/link';
 import { getMessages, addMessage, ChatMessage } from '@/lib/mock-data';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import { useToast } from '@/hooks/use-toast';
+
 
 function DoctorChatContent() {
   const searchParams = useSearchParams();
+  const { toast } = useToast();
   const role = searchParams.get('role');
   const isDoctor = role === 'employee';
 
@@ -22,14 +25,15 @@ function DoctorChatContent() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
-  const doctorImage = PlaceHolderImages.find(p => p.id === 'doctor-2');
+  const doctorImage = `https://images.unsplash.com/photo-1612349316228-5942a9b489c2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxkb2N0b3J8ZW58MHx8fHwxNzIyMzgxODg5fDA&ixlib=rb-4.1.0&q=80&w=1080`;
   const patientImage = `https://avatar.vercel.sh/guest.png`;
 
   const senderName = isDoctor ? 'Dr. Arjun Sharma' : 'Guest';
   const receiverName = isDoctor ? 'Guest' : 'Dr. Arjun Sharma';
-  const senderAvatar = isDoctor ? doctorImage?.imageUrl : patientImage;
-  const receiverAvatar = isDoctor ? patientImage : doctorImage?.imageUrl;
+  const senderAvatar = isDoctor ? doctorImage : patientImage;
+  const receiverAvatar = isDoctor ? patientImage : doctorImage;
 
   const fetchMessages = useCallback(() => {
     setMessages(getMessages());
@@ -69,12 +73,40 @@ function DoctorChatContent() {
 
   const handleSend = async () => {
     if (input.trim() === '' || isLoading) return;
-
-    // The addMessage function will save to localStorage and dispatch the event
     addMessage(senderName, receiverName, input);
-    // The event listener will pick up the change and update the state, so we don't need to manually setMessages here.
     setInput('');
   };
+  
+  const handleAttachmentClick = () => {
+    fileInputRef.current?.click();
+  }
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    
+    if (file.size > 2 * 1024 * 1024) { // 2MB limit
+        toast({
+            title: "File Too Large",
+            description: "Please select an image smaller than 2MB.",
+            variant: "destructive"
+        });
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const imageBase64 = e.target?.result as string;
+        addMessage(senderName, receiverName, '', imageBase64);
+    };
+    reader.readAsDataURL(file);
+    
+    // Reset file input value
+    if(fileInputRef.current) {
+        fileInputRef.current.value = '';
+    }
+  };
+
 
   return (
     <div className="flex flex-col h-[calc(100vh-10rem)]">
@@ -113,13 +145,18 @@ function DoctorChatContent() {
                 )}
                 <div
                   className={cn(
-                    'max-w-md rounded-lg px-4 py-2 text-sm',
+                    'max-w-md rounded-lg px-3 py-2 text-sm',
                     message.sender === senderName
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-muted'
                   )}
                 >
-                  <p className="whitespace-pre-wrap">{message.content}</p>
+                  {message.attachment && (
+                    <div className="mb-2">
+                        <Image src={message.attachment} alt="Attachment" width={200} height={200} className="rounded-md object-cover"/>
+                    </div>
+                  )}
+                  {message.content && <p className="whitespace-pre-wrap">{message.content}</p>}
                   <p className="text-xs text-right mt-1 opacity-70">{new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                 </div>
                 {message.sender === senderName && (
@@ -134,7 +171,8 @@ function DoctorChatContent() {
         </ScrollArea>
         <div className="border-t p-4 bg-background/50 rounded-b-lg">
           <div className="flex items-center gap-2">
-            <Button size="icon" variant="ghost">
+            <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
+            <Button size="icon" variant="ghost" onClick={handleAttachmentClick}>
                 <Paperclip className="h-5 w-5"/>
             </Button>
             <div className="relative flex-1">

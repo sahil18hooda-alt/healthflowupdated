@@ -135,7 +135,7 @@ const initialPatientAppointments = [
     {
         id: '1',
         doctorName: 'Dr. Arjun Sharma',
-        patientName: 'Patient Zero',
+        patientName: 'Guest',
         date: '2024-08-10',
         time: '10:00 AM',
         type: 'Hospital',
@@ -144,7 +144,7 @@ const initialPatientAppointments = [
     {
         id: '2',
         doctorName: 'Dr. Rohan Patel',
-        patientName: 'Patient Zero',
+        patientName: 'Guest',
         date: '2024-08-15',
         time: '02:30 PM',
         type: 'Online',
@@ -154,7 +154,7 @@ const initialPatientAppointments = [
     {
         id: '3',
         doctorName: 'Dr. Sunita Gupta',
-        patientName: 'Patient Zero',
+        patientName: 'Guest',
         date: '2024-07-05',
         time: '09:00 AM',
         type: 'Hospital',
@@ -163,8 +163,8 @@ const initialPatientAppointments = [
 ];
 const initialEmployeeAppointments = [
     {
-        id: '1',
-        doctorName: 'Dr. Employee',
+        id: 'emp1',
+        doctorName: 'Dr. Arjun Sharma',
         patientName: 'Ravi Kumar',
         date: '2024-08-10',
         time: '11:00 AM',
@@ -172,8 +172,8 @@ const initialEmployeeAppointments = [
         status: 'Upcoming'
     },
     {
-        id: '2',
-        doctorName: 'Dr. Employee',
+        id: 'emp2',
+        doctorName: 'Dr. Arjun Sharma',
         patientName: 'Sunita Devi',
         date: '2024-08-11',
         time: '03:00 PM',
@@ -182,8 +182,8 @@ const initialEmployeeAppointments = [
         meetingLink: 'https://meet.google.com/vwx-yza-bcd'
     },
     {
-        id: '3',
-        doctorName: 'Dr. Employee',
+        id: 'emp3',
+        doctorName: 'Dr. Arjun Sharma',
         patientName: 'Amit Patel',
         date: '2024-07-08',
         time: '01:00 PM',
@@ -489,7 +489,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navi
 ;
 ;
 ;
-function DoctorChatPage() {
+;
+function DoctorChatContent() {
     const searchParams = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSearchParams"])();
     const role = searchParams.get('role');
     const isDoctor = role === 'employee';
@@ -515,8 +516,11 @@ function DoctorChatPage() {
             }
         };
         window.addEventListener('storage-update', handleStorageUpdate);
+        // Fallback polling
+        const interval = setInterval(fetchMessages, 5000);
         return ()=>{
             window.removeEventListener('storage-update', handleStorageUpdate);
+            clearInterval(interval);
         };
     }, [
         fetchMessages
@@ -535,11 +539,9 @@ function DoctorChatPage() {
     ]);
     const handleSend = async ()=>{
         if (input.trim() === '' || isLoading) return;
-        const newMessage = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$mock$2d$data$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addMessage"])(senderName, receiverName, input);
-        setMessages((prev)=>[
-                ...prev,
-                newMessage
-            ]);
+        // The addMessage function will save to localStorage and dispatch the event
+        (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$mock$2d$data$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["addMessage"])(senderName, receiverName, input);
+        // The event listener will pick up the change and update the state, so we don't need to manually setMessages here.
         setInput('');
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -558,17 +560,17 @@ function DoctorChatPage() {
                                 href: isDoctor ? "/dashboard?role=employee" : "/appointments",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$left$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowLeft$3e$__["ArrowLeft"], {}, void 0, false, {
                                     fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                    lineNumber: 79,
+                                    lineNumber: 85,
                                     columnNumber: 21
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                lineNumber: 78,
+                                lineNumber: 84,
                                 columnNumber: 17
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                            lineNumber: 77,
+                            lineNumber: 83,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Avatar"], {
@@ -578,20 +580,20 @@ function DoctorChatPage() {
                                     alt: receiverName
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                    lineNumber: 83,
+                                    lineNumber: 89,
                                     columnNumber: 36
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AvatarFallback"], {
                                     children: receiverName.charAt(0)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                    lineNumber: 84,
+                                    lineNumber: 90,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                            lineNumber: 82,
+                            lineNumber: 88,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -601,7 +603,7 @@ function DoctorChatPage() {
                                     children: receiverName
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                    lineNumber: 87,
+                                    lineNumber: 93,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -609,19 +611,19 @@ function DoctorChatPage() {
                                     children: "Online now"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                    lineNumber: 88,
+                                    lineNumber: 94,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                            lineNumber: 86,
+                            lineNumber: 92,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                    lineNumber: 76,
+                    lineNumber: 82,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$scroll$2d$area$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollArea"], {
@@ -640,20 +642,20 @@ function DoctorChatPage() {
                                                 alt: receiverName
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                                lineNumber: 104,
+                                                lineNumber: 110,
                                                 columnNumber: 41
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AvatarFallback"], {
                                                 children: receiverName.charAt(0)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                                lineNumber: 105,
+                                                lineNumber: 111,
                                                 columnNumber: 22
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                        lineNumber: 103,
+                                        lineNumber: 109,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -664,7 +666,7 @@ function DoctorChatPage() {
                                                 children: message.content
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                                lineNumber: 116,
+                                                lineNumber: 122,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -675,13 +677,13 @@ function DoctorChatPage() {
                                                 })
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                                lineNumber: 117,
+                                                lineNumber: 123,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                        lineNumber: 108,
+                                        lineNumber: 114,
                                         columnNumber: 17
                                     }, this),
                                     message.sender === senderName && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Avatar"], {
@@ -692,40 +694,40 @@ function DoctorChatPage() {
                                                 alt: senderName
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                                lineNumber: 121,
+                                                lineNumber: 127,
                                                 columnNumber: 38
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AvatarFallback"], {
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {}, void 0, false, {
                                                     fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                                    lineNumber: 122,
+                                                    lineNumber: 128,
                                                     columnNumber: 37
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                                lineNumber: 122,
+                                                lineNumber: 128,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                        lineNumber: 120,
+                                        lineNumber: 126,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, message.id, true, {
                                 fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                lineNumber: 95,
+                                lineNumber: 101,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                        lineNumber: 93,
+                        lineNumber: 99,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                    lineNumber: 92,
+                    lineNumber: 98,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -740,12 +742,12 @@ function DoctorChatPage() {
                                     className: "h-5 w-5"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                    lineNumber: 132,
+                                    lineNumber: 138,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                lineNumber: 131,
+                                lineNumber: 137,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -761,7 +763,7 @@ function DoctorChatPage() {
                                         className: "pr-12"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                        lineNumber: 135,
+                                        lineNumber: 141,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -774,41 +776,61 @@ function DoctorChatPage() {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                            lineNumber: 151,
+                                            lineNumber: 157,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                        lineNumber: 144,
+                                        lineNumber: 150,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                                lineNumber: 134,
+                                lineNumber: 140,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                        lineNumber: 130,
+                        lineNumber: 136,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-                    lineNumber: 129,
+                    lineNumber: 135,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-            lineNumber: 75,
+            lineNumber: 81,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
-        lineNumber: 74,
+        lineNumber: 80,
         columnNumber: 5
+    }, this);
+}
+function DoctorChatPage() {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Suspense"], {
+        fallback: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            children: "Loading..."
+        }, void 0, false, {
+            fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
+            lineNumber: 169,
+            columnNumber: 29
+        }, void 0),
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(DoctorChatContent, {}, void 0, false, {
+            fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
+            lineNumber: 170,
+            columnNumber: 13
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/src/app/(app)/doctor-chat/page.tsx",
+        lineNumber: 169,
+        columnNumber: 9
     }, this);
 }
 }}),

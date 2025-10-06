@@ -74,6 +74,7 @@ export type ChatMessage = {
   receiver: string;
   content: string;
   timestamp: string;
+  attachment?: string; // data URL for image
 }
 
 export type WearableData = {
