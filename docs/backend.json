@@ -130,7 +130,53 @@
         }
       },
       "required": ["id", "userId", "primaryGoal", "activityLevel", "sleepHours", "stressLevel", "updatedAt"]
-    }
+    },
+    "ImagingReport": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Imaging Report",
+        "type": "object",
+        "description": "Stores the results of an AI-powered medical imaging analysis.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the imaging report."
+          },
+          "userId": {
+            "type": "string",
+            "description": "The ID of the user this report belongs to."
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "The URL of the uploaded medical image in Firebase Storage."
+          },
+          "createdAt": {
+              "type": "string",
+              "format": "date-time",
+              "description": "The timestamp when the analysis was performed."
+          },
+          "analysis": {
+              "type": "object",
+              "properties": {
+                  "potentialConditions": {
+                      "type": "array",
+                      "items": {
+                          "type": "object",
+                          "properties": {
+                              "condition": {"type": "string"},
+                              "confidence": {"type": "number"}
+                          },
+                          "required": ["condition", "confidence"]
+                      }
+                  },
+                  "summary": {"type": "string"},
+                  "observations": {"type": "string"},
+                  "disclaimer": {"type": "string"}
+              },
+              "required": ["potentialConditions", "summary", "observations", "disclaimer"]
+          }
+        },
+        "required": ["id", "userId", "imageUrl", "createdAt", "analysis"]
+      }
   },
   "auth": {
     "providers": [
@@ -172,6 +218,26 @@
                 {
                     "name": "profileId",
                     "description": "The unique identifier of the health profile, same as userId."
+                }
+            ]
+        }
+      },
+       {
+        "path": "users/{userId}/imagingReports/{reportId}",
+        "definition": {
+            "entityName": "ImagingReport",
+            "schema": {
+                "$ref": "#/backend/entities/ImagingReport"
+            },
+            "description": "Stores AI-generated diagnostic reports for a user's medical images.",
+            "params": [
+                {
+                    "name": "userId",
+                    "description": "The unique identifier of the user."
+                },
+                {
+                    "name": "reportId",
+                    "description": "The unique identifier for the imaging report."
                 }
             ]
         }
@@ -225,6 +291,6 @@
         }
       }
     ],
-    "reasoning": "This Firestore structure is designed to support the HealthFlow application, focusing on secure authentication, role-based access control, and data organization for patients and employees. It prioritizes authorization independence and efficient data retrieval. \n\n**Authorization Independence (Denormalization):**\n\n*   `users/{userId}`: The `role` field is directly stored within the user document. This denormalization allows simple, role-based access control rules without requiring complex `get()` calls to other collections.\n*   `appointments/{appointmentId}`: The `patientId` and `doctorId` are stored within the appointment document. This denormalization avoids the need to perform additional lookups to authorize appointment access based on user roles.\n\n**Structural Segregation (Homogeneous Security Posture):**\n\n*   The structure segregates user data (`users/{userId}`), appointment data (`appointments/{appointmentId}`), and review data (`reviews/{reviewId}`). This segregation ensures that each collection can have its own distinct security rules, avoiding the need for complex conditional logic within the rules themselves.\n*   The `healthProfile` is stored in a subcollection under the user, ensuring that this sensitive data has its own security scope and can only be accessed in the context of the parent user.\n\n**Access Modeling:**\n\n*   **User Data:** User profiles, including roles, are stored directly under the `users/{userId}` collection. This path-based ownership simplifies user authentication and authorization.\n*   **Appointment Data:** Appointments are stored under `appointments/{appointmentId}`, with relevant user IDs (`patientId`, `doctorId`) denormalized within each document. This structure supports efficient queries for appointments and simplifies authorization rules based on user roles.\n*   **Review Data:** Reviews are stored under `reviews/{reviewId}`, with `hospitalId` and `patientId` denormalized within each document. This structure is designed to manage user-generated reviews.\n\n**QAPs (Rules are not Filters):**\n\nThe structure supports secure `list` operations by avoiding dependencies on external data for authorization. Because the role is stored directly in the user document, listing users is inherently secure. Similarly, listing reviews or appointments can be secured based on the denormalized `patientId` and `doctorId` fields, without requiring additional `get()` calls. The path segregation strategy also ensures that listing operations remain secure and efficient, as rules can be applied at the collection level.\n\n**Data Clarity and Predictability:**\n\n*   The structure uses explicit field names and consistent data types. This clarity enhances debuggability and maintainability.\n"
+    "reasoning": "This Firestore structure is designed to support the HealthFlow application, focusing on secure authentication, role-based access control, and data organization for patients and employees. It prioritizes authorization independence and efficient data retrieval. \n\n**Authorization Independence (Denormalization):**\n\n*   `users/{userId}`: The `role` field is directly stored within the user document. This denormalization allows simple, role-based access control rules without requiring complex `get()` calls to other collections.\n*   `appointments/{appointmentId}`: The `patientId` and `doctorId` are stored within the appointment document. This denormalization avoids the need to perform additional lookups to authorize appointment access based on user roles.\n\n**Structural Segregation (Homogeneous Security Posture):**\n\n*   The structure segregates user data (`users/{userId}`), appointment data (`appointments/{appointmentId}`), and review data (`reviews/{reviewId}`). This segregation ensures that each collection can have its own distinct security rules, avoiding the need for complex conditional logic within the rules themselves.\n*   The `healthProfile` and `imagingReports` are stored in subcollections under the user, ensuring that this sensitive data has its own security scope and can only be accessed in the context of the parent user.\n\n**Access Modeling:**\n\n*   **User Data:** User profiles, including roles, are stored directly under the `users/{userId}` collection. This path-based ownership simplifies user authentication and authorization.\n*   **Appointment Data:** Appointments are stored under `appointments/{appointmentId}`, with relevant user IDs (`patientId`, `doctorId`) denormalized within each document. This structure supports efficient queries for appointments and simplifies authorization rules based on user roles.\n*   **Review Data:** Reviews are stored under `reviews/{reviewId}`, with `hospitalId` and `patientId` denormalized within each document. This structure is designed to manage user-generated reviews.\n\n**QAPs (Rules are not Filters):**\n\nThe structure supports secure `list` operations by avoiding dependencies on external data for authorization. Because the role is stored directly in the user document, listing users is inherently secure. Similarly, listing reviews or appointments can be secured based on the denormalized `patientId` and `doctorId` fields, without requiring additional `get()` calls. The path segregation strategy also ensures that listing operations remain secure and efficient, as rules can be applied at the collection level.\n\n**Data Clarity and Predictability:**\n\n*   The structure uses explicit field names and consistent data types. This clarity enhances debuggability and maintainability.\n"
   }
 }

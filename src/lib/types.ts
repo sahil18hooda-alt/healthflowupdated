@@ -1,3 +1,4 @@
+
 export type UserRole = 'patient' | 'employee';
 
 export type User = {
@@ -163,4 +164,26 @@ export interface QueueManagementInput {
 export interface QueueManagementOutput {
   estimatedWaitTime: number;
   queueStatus: string;
+}
+
+export interface ImagingDiagnosisInput {
+  image: string; // data URI
+}
+
+export interface ImagingDiagnosisOutput {
+  potentialConditions: Array<{
+    condition: string;
+    confidence: number; // e.g., 95 for 95%
+  }>;
+  summary: string;
+  observations: string;
+  disclaimer: string;
+}
+
+export type ImagingReport = {
+    id: string;
+    userId: string;
+    imageUrl: string;
+    analysis: ImagingDiagnosisOutput;
+    createdAt: string;
 }
