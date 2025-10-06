@@ -3,7 +3,7 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Image from 'next/image';
-import { Bot, Loader2, UploadCloud, ScanSearch, AlertTriangle, Trash2, Download, MessageSquare } from 'lucide-react';
+import { Bot, Loader2, UploadCloud, ScanSearch, AlertTriangle, Trash2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -17,8 +17,6 @@ import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 
 function ImagingDiagnosisContent() {
   const [image, setImage] = useState<string | null>(null);
@@ -27,13 +25,6 @@ function ImagingDiagnosisContent() {
   const [error, setError] = useState<string | null>(null);
   const [hasConsented, setHasConsented] = useState(false);
   const { toast } = useToast();
-  const searchParams = useSearchParams();
-
-  const createLink = (href: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    return `${href}?${params.toString()}`;
-  }
-
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
@@ -262,12 +253,6 @@ function ImagingDiagnosisContent() {
                     <Button onClick={handleDownloadReport} disabled={!analysis}>
                         <Download className="mr-2 h-4 w-4" />
                         Download Report (PDF)
-                    </Button>
-                    <Button asChild variant="outline" disabled={!analysis}>
-                      <Link href={createLink("/ai-therapist")}>
-                        <MessageSquare className="mr-2 h-4 w-4" />
-                        Chat with Doctor
-                      </Link>
                     </Button>
                 </CardFooter>
             )}
