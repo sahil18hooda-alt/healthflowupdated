@@ -1,6 +1,7 @@
 {
   "/(app)/fitness-coach/page": "app/(app)/fitness-coach/page.js",
   "/(app)/imaging-diagnosis/page": "app/(app)/imaging-diagnosis/page.js",
+  "/(app)/symptom-analyzer/page": "app/(app)/symptom-analyzer/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js"
 }

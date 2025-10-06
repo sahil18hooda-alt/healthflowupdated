@@ -9,11 +9,16 @@
         "app/(app)/imaging-diagnosis/page": {
           "moduleId": "[project]/.next-internal/server/app/(app)/imaging-diagnosis/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-imaging-diagnosis-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
+        },
+        "app/(app)/symptom-analyzer/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/symptom-analyzer/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/symptom-analyzer-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
         }
       },
       "layer": {
         "app/(app)/fitness-coach/page": "action-browser",
-        "app/(app)/imaging-diagnosis/page": "action-browser"
+        "app/(app)/imaging-diagnosis/page": "action-browser",
+        "app/(app)/symptom-analyzer/page": "action-browser"
       }
     },
     "402b4e0f193ee8f6402e99a71b433a4f5f58113cd4": {
@@ -36,6 +41,17 @@
       },
       "layer": {
         "app/(app)/fitness-coach/page": "action-browser"
+      }
+    },
+    "40ced92d6316d188fabe7797365b6289b00fc0ca1f": {
+      "workers": {
+        "app/(app)/symptom-analyzer/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/symptom-analyzer/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/symptom-analyzer-flow.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(app)/symptom-analyzer/page": "action-browser"
       }
     }
   },
