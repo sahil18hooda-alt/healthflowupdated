@@ -60,6 +60,7 @@ const employeeNavGroups = [
              { href: '/predictive-risk-model', icon: <Activity />, label: 'Predictive Risk' },
              { href: '/medical-notes', icon: <FilePlus />, label: 'Medical Notes' },
              { href: '/schedule-assistant', icon: <CalendarClock />, label: 'Schedule Assistant' },
+             { href: '/decision-support', icon: <Bot />, label: 'Decision Support' },
         ]
     }
 ];
