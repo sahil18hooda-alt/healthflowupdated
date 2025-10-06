@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot, Route, ShieldAlert, Activity, FilePlus, CalendarClock, TestTube, Cross, Beaker, Users as UsersIcon, ScanSearch, Dumbbell } from 'lucide-react';
+import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot, Route, ShieldAlert, Activity, FilePlus, CalendarClock, TestTube, Cross, Beaker, Users as UsersIcon, ScanSearch, Dumbbell, MessageSquare } from 'lucide-react';
 
 import {
   Accordion,
@@ -40,6 +40,7 @@ const patientNavGroups = [
         items: [
             { href: '/appointments', icon: <Calendar />, label: 'My Appointments' },
             { href: '/doctors', icon: <Stethoscope />, label: 'Find a Doctor' },
+            { href: '/doctor-chat', icon: <MessageSquare />, label: 'Chat with Doctor' },
         ]
     },
 ];

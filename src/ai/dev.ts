@@ -16,3 +16,4 @@ import '@/ai/flows/ai-medication-interaction-checker.ts';
 import '@/ai/flows/ai-queue-management.ts';
 import '@/ai/flows/ai-imaging-diagnosis-flow.ts';
 import '@/ai/flows/ai-fitness-coach-flow.ts';
+import '@/ai/flows/doctor-chat-flow.ts';
