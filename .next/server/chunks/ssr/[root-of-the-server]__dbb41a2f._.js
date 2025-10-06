@@ -393,7 +393,7 @@ const diagnoseImageFlow = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f
     inputSchema: ImagingDiagnosisInputSchema,
     outputSchema: ImagingDiagnosisOutputSchema
 }, async (flowInput)=>{
-    // Run text analysis and heatmap generation in parallel
+    // Run text analysis and heatmap generation in parallel for efficiency
     const [textAnalysisResult, heatmapResult] = await Promise.all([
         textAnalysisPrompt(flowInput),
         generateHeatmapFlow(flowInput)

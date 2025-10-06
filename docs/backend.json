@@ -92,14 +92,6 @@
       "type": "object",
       "description": "Stores detailed health and lifestyle information for a patient.",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the Health Profile, same as the user ID."
-        },
-        "userId": {
-          "type": "string",
-          "description": "The ID of the user this profile belongs to."
-        },
         "primaryGoal": {
           "type": "string",
           "enum": ["lose-weight", "gain-muscle", "improve-endurance", "reduce-stress", "eat-healthier", "improve-sleep"]
@@ -122,14 +114,9 @@
         "stressLevel": {
           "type": "string",
           "enum": ["low", "moderate", "high"]
-        },
-        "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "description": "The timestamp when the profile was last updated."
         }
       },
-      "required": ["id", "userId", "primaryGoal", "activityLevel", "sleepHours", "stressLevel", "updatedAt"]
+      "required": ["primaryGoal", "activityLevel", "sleepHours", "stressLevel"]
     },
     "ImagingReport": {
         "$schema": "http://json-schema.org/draft-07/schema#",

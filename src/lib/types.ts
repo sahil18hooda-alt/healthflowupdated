@@ -1,4 +1,5 @@
 
+
 export type UserRole = 'patient' | 'employee';
 
 export type User = {
@@ -68,16 +69,11 @@ export type Medication = {
 };
 
 export type HealthProfile = {
-  id: string;
-  userId: string;
-  age: number;
-  gender: 'male' | 'female' | 'other' | 'prefer-not-to-say';
-  primaryGoal: 'lose-weight' | 'gain-muscle' | 'improve-endurance' | 'reduce-stress' | 'eat-healthier' | 'improve-sleep';
-  activityLevel: 'sedentary' | 'lightly-active' | 'moderately-active' | 'very-active';
+  primaryGoal: 'lose-weight' | 'gain-muscle' | 'improve-endurance' | 'reduce-stress' | 'eat-healthier' | 'improve-sleep' | '';
+  activityLevel: 'sedentary' | 'lightly-active' | 'moderately-active' | 'very-active' | '';
   dietaryPreferences: Array<'vegetarian' | 'vegan' | 'gluten-free' | 'dairy-free' | 'none'>;
   sleepHours: number;
-  stressLevel: 'low' | 'moderate' | 'high';
-  updatedAt: string; // ISO 8601 date string
+  stressLevel: 'low' | 'moderate' | 'high' | '';
 };
 
 export interface FraudDetectionInput {
@@ -187,4 +183,15 @@ export type ImagingReport = {
     imageUrl: string;
     analysis: ImagingDiagnosisOutput;
     createdAt: string;
+}
+
+export interface FitnessCoachOutput {
+  weeklySummary: {
+    theme: string;
+    motivationalQuote: string;
+  };
+  actionableTips: Array<{
+    category: 'Fitness' | 'Nutrition' | 'Wellness' | 'Sleep';
+    tip: string;
+  }>;
 }
