@@ -1,19 +1,18 @@
 'use client';
 
-import { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Dumbbell, Target, Zap, Utensils, Bed, Smile, Bot, Loader2, Lightbulb, Activity, BrainCircuit, Heart } from 'lucide-react';
+import { Dumbbell, Target, Zap, Utensils, Bed, Smile, Loader2, Lightbulb, BrainCircuit, Heart, Activity, Flame, Footprints, RefreshCw, Watch } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
-import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import type { HealthProfile, FitnessCoachOutput } from '@/lib/types';
+import type { HealthProfile, FitnessCoachOutput, WearableData } from '@/lib/types';
 import { getFitnessPlan } from '@/ai/flows/ai-fitness-coach-flow';
 
 const healthProfileSchema = z.object({
@@ -54,10 +53,25 @@ const categoryIcons = {
     Sleep: <Bed className="h-5 w-5 text-purple-500" />,
 }
 
+// Function to generate realistic random data
+const generateSimulatedData = (): WearableData => ({
+    steps: Math.floor(Math.random() * 8000) + 2000, // 2,000 - 10,000 steps
+    heartRate: Math.floor(Math.random() * 30) + 60, // 60 - 90 bpm resting
+    calories: Math.floor(Math.random() * 1000) + 1800, // 1,800 - 2,800 calories
+    activeMinutes: Math.floor(Math.random() * 90) + 15, // 15 - 105 active minutes
+});
+
 export default function FitnessCoachPage() {
   const [recommendations, setRecommendations] = useState<FitnessCoachOutput | null>(null);
+  const [wearableData, setWearableData] = useState<WearableData>(generateSimulatedData());
   const [isLoading, setIsLoading] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Initial data generation on client mount
+    setWearableData(generateSimulatedData());
+  }, []);
 
   const form = useForm<z.infer<typeof healthProfileSchema>>({
     resolver: zodResolver(healthProfileSchema),
@@ -70,13 +84,25 @@ export default function FitnessCoachPage() {
     },
   });
 
+  const handleSyncData = () => {
+      setIsSyncing(true);
+      setTimeout(() => {
+          setWearableData(generateSimulatedData());
+          setIsSyncing(false);
+      }, 500); // Simulate network delay
+  }
+
   const handleGetRecommendations = async (values: z.infer<typeof healthProfileSchema>) => {
     setIsLoading(true);
     setError(null);
     setRecommendations(null);
 
     try {
-      const profile: HealthProfile = { ...values, dietaryPreferences: values.dietaryPreferences || [] };
+      const profile: HealthProfile = { 
+        ...values, 
+        dietaryPreferences: values.dietaryPreferences || [],
+        ...wearableData
+      };
       const result = await getFitnessPlan(profile);
       setRecommendations(result);
     } catch (err) {
@@ -94,9 +120,44 @@ export default function FitnessCoachPage() {
           <Dumbbell /> AI Fitness Coach
         </h1>
         <p className="text-muted-foreground">
-          Your personalized guide to a healthier lifestyle.
+          Your personalized guide to a healthier lifestyle, powered by your data.
         </p>
       </div>
+
+       <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                    <CardTitle className="flex items-center gap-2"><Watch /> Today's Activity</CardTitle>
+                    <CardDescription>Simulated data from your connected wearable device.</CardDescription>
+                </div>
+                 <Button onClick={handleSyncData} disabled={isSyncing} variant="outline" size="sm">
+                    <RefreshCw className={`mr-2 h-4 w-4 ${isSyncing ? 'animate-spin' : ''}`} />
+                    Sync Data
+                </Button>
+            </CardHeader>
+            <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div className="p-4 bg-muted/50 rounded-lg">
+                    <Footprints className="h-6 w-6 mx-auto text-primary" />
+                    <p className="text-2xl font-bold">{wearableData.steps.toLocaleString()}</p>
+                    <p className="text-xs text-muted-foreground">Steps</p>
+                </div>
+                <div className="p-4 bg-muted/50 rounded-lg">
+                    <Flame className="h-6 w-6 mx-auto text-orange-500" />
+                    <p className="text-2xl font-bold">{wearableData.calories.toLocaleString()}</p>
+                    <p className="text-xs text-muted-foreground">Calories Burned</p>
+                </div>
+                 <div className="p-4 bg-muted/50 rounded-lg">
+                    <Activity className="h-6 w-6 mx-auto text-green-500" />
+                    <p className="text-2xl font-bold">{wearableData.activeMinutes}</p>
+                    <p className="text-xs text-muted-foreground">Active Minutes</p>
+                </div>
+                 <div className="p-4 bg-muted/50 rounded-lg">
+                    <Heart className="h-6 w-6 mx-auto text-red-500" />
+                    <p className="text-2xl font-bold">{wearableData.heartRate}</p>
+                    <p className="text-xs text-muted-foreground">Resting Heart Rate</p>
+                </div>
+            </CardContent>
+        </Card>
 
       <Card>
         <CardHeader>
@@ -245,10 +306,11 @@ export default function FitnessCoachPage() {
         <Card>
           <CardHeader>
             <CardTitle>Your AI-Powered Weekly Plan</CardTitle>
+             <CardDescription>Generated based on your profile and today's activity.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <Alert>
-                <Heart className="h-4 w-4" />
+                <Lightbulb className="h-4 w-4" />
                 <AlertTitle>{recommendations.weeklySummary.theme}</AlertTitle>
                 <AlertDescription className="italic">
                     "{recommendations.weeklySummary.motivationalQuote}"

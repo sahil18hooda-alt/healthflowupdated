@@ -6,7 +6,7 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
+import { z } from 'zod';
 import type { HealthProfile, FitnessCoachOutput } from '@/lib/types';
 
 const HealthProfileSchema = z.object({
@@ -15,6 +15,10 @@ const HealthProfileSchema = z.object({
     dietaryPreferences: z.array(z.string()),
     sleepHours: z.number(),
     stressLevel: z.enum(['low', 'moderate', 'high', '']),
+    // Wearable Data
+    steps: z.number().optional(),
+    calories: z.number().optional(),
+    activeMinutes: z.number().optional(),
 });
 
 const FitnessCoachOutputSchema = z.object({
@@ -33,7 +37,7 @@ const prompt = ai.definePrompt({
     name: 'fitnessCoachPrompt',
     input: { schema: HealthProfileSchema },
     output: { schema: FitnessCoachOutputSchema },
-    prompt: `You are an expert AI fitness and wellness coach. Your goal is to create a supportive, encouraging, and effective plan for the user based on their unique health profile.
+    prompt: `You are an expert AI fitness and wellness coach (a "Smart Coach"). Your goal is to create a supportive, encouraging, and effective plan for the user based on their unique health profile and recent activity from their wearable device.
 
 User's Health Profile:
 - Primary Goal: {{{primaryGoal}}}
@@ -42,7 +46,12 @@ User's Health Profile:
 - Average Sleep: {{{sleepHours}}} hours/night
 - Stress Level: {{{stressLevel}}}
 
-Based on this profile, generate a 'weeklySummary' and a set of 'actionableTips'.
+Today's Wearable Data:
+- Steps: {{{steps}}}
+- Calories Burned: {{{calories}}}
+- Active Minutes: {{{activeMinutes}}}
+
+Based on this complete profile, generate a 'weeklySummary' and a set of 'actionableTips'.
 
 1.  **Weekly Summary**:
     -   Create a concise 'theme' for the week that aligns with the user's primary goal.
@@ -51,7 +60,8 @@ Based on this profile, generate a 'weeklySummary' and a set of 'actionableTips'.
 2.  **Actionable Tips**:
     -   Provide at least four practical and personalized tips.
     -   Ensure the tips cover a range of categories: 'Fitness', 'Nutrition', 'Wellness', and 'Sleep'.
-    -   The tips must be highly relevant to the user's 'primaryGoal'. For example, if the goal is 'lose-weight', nutrition tips should focus on calorie deficit and fitness tips on calorie expenditure. If the goal is 'reduce-stress', wellness tips should focus on mindfulness and relaxation techniques.
+    -   The tips must be highly relevant to the user's 'primaryGoal'.
+    -   **Crucially, incorporate today's wearable data into your tips.** For example, if 'activeMinutes' are low and the goal is 'lose-weight', suggest a short evening walk. If steps are high, congratulate them and suggest a good recovery stretch. Your advice should feel timely and responsive to their daily performance.
 
 Your tone should be positive, knowledgeable, and motivating.
 `,

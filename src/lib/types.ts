@@ -68,12 +68,22 @@ export type Medication = {
   time: string[];
 };
 
+export type WearableData = {
+    steps: number;
+    heartRate: number;
+    calories: number;
+    activeMinutes: number;
+}
+
 export type HealthProfile = {
   primaryGoal: 'lose-weight' | 'gain-muscle' | 'improve-endurance' | 'reduce-stress' | 'eat-healthier' | 'improve-sleep' | '';
   activityLevel: 'sedentary' | 'lightly-active' | 'moderately-active' | 'very-active' | '';
   dietaryPreferences: Array<'vegetarian' | 'vegan' | 'gluten-free' | 'dairy-free' | 'none'>;
   sleepHours: number;
   stressLevel: 'low' | 'moderate' | 'high' | '';
+  steps?: number;
+  calories?: number;
+  activeMinutes?: number;
 };
 
 export interface FraudDetectionInput {
