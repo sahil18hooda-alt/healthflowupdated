@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Bot, User, Loader2, BrainCircuit, Send, AlertTriangle } from 'lucide-react';
+import { Bot, User, Loader2, MessageSquare, Send, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -15,8 +15,13 @@ type Message = {
   content: string;
 };
 
-export default function AITherapistPage() {
-  const [messages, setMessages] = useState<Message[]>([]);
+const welcomeMessage: Message = {
+    role: 'model',
+    content: "Hello! I see you have some questions about your AI imaging report. I'm here to help. What's on your mind?"
+}
+
+export default function DoctorChatPage() {
+  const [messages, setMessages] = useState<Message[]>([welcomeMessage]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -47,7 +52,7 @@ export default function AITherapistPage() {
       const assistantMessage: Message = { role: 'model', content: result.response };
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
-      console.error('Error with AI therapist:', error);
+      console.error('Error with AI chat:', error);
       const errorMessage: Message = {
         role: 'model',
         content: "I'm sorry, I'm having trouble connecting right now. Please try again later.",
@@ -62,10 +67,10 @@ export default function AITherapistPage() {
     <div className="flex flex-col h-[calc(100vh-10rem)]">
         <div className="mb-4">
             <h1 className="text-3xl font-bold flex items-center gap-2">
-                <BrainCircuit /> AI Therapist
+                <MessageSquare /> Chat with Doctor
             </h1>
             <p className="text-muted-foreground">
-                A safe space to talk about your feelings.
+                Discuss your AI imaging report with a medical professional.
             </p>
         </div>
 
@@ -73,7 +78,7 @@ export default function AITherapistPage() {
             <AlertTriangle className="h-4 w-4" />
             <AlertTitle>Important Disclaimer</AlertTitle>
             <AlertDescription>
-            This AI is for supportive conversations. For professional medical or psychiatric advice, please contact one of our local therapists. If you are in a crisis, please contact an emergency service.
+            This is an AI-powered simulation for demonstration purposes. For professional medical advice, please consult one of our qualified healthcare providers. If you are in a crisis, please contact an emergency service.
             </AlertDescription>
         </Alert>
 
@@ -120,12 +125,6 @@ export default function AITherapistPage() {
                   Thinking...
                 </div>
               </div>
-            )}
-            {messages.length === 0 && !isLoading && (
-                <div className="text-center text-muted-foreground pt-16">
-                    <BrainCircuit className="h-12 w-12 mx-auto mb-2" />
-                    <p>Tell me what's on your mind. I'm here to listen.</p>
-                </div>
             )}
           </div>
         </ScrollArea>

@@ -17,14 +17,23 @@ import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
-export default function ImagingDiagnosisPage() {
+function ImagingDiagnosisContent() {
   const [image, setImage] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<ImagingDiagnosisOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasConsented, setHasConsented] = useState(false);
   const { toast } = useToast();
+  const searchParams = useSearchParams();
+
+  const createLink = (href: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    return `${href}?${params.toString()}`;
+  }
+
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
@@ -254,9 +263,11 @@ export default function ImagingDiagnosisPage() {
                         <Download className="mr-2 h-4 w-4" />
                         Download Report (PDF)
                     </Button>
-                    <Button variant="outline" disabled={!analysis}>
+                    <Button asChild variant="outline" disabled={!analysis}>
+                      <Link href={createLink("/ai-therapist")}>
                         <MessageSquare className="mr-2 h-4 w-4" />
                         Chat with Doctor
+                      </Link>
                     </Button>
                 </CardFooter>
             )}
@@ -264,4 +275,13 @@ export default function ImagingDiagnosisPage() {
       )}
     </div>
   );
+}
+
+export default function ImagingDiagnosisPage() {
+    return (
+        // Suspense is needed because we are using useSearchParams
+        <React.Suspense fallback={<div>Loading...</div>}>
+            <ImagingDiagnosisContent />
+        </React.Suspense>
+    )
 }
