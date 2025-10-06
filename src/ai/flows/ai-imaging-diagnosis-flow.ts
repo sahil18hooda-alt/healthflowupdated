@@ -25,10 +25,11 @@ const ImagingDiagnosisOutputSchema = z.object({
     summary: z.string().describe('A high-level summary of the overall findings, written in clear, accessible language.'),
     observations: z.string().describe('A more detailed, point-by-point breakdown of what the AI observed in the image (e.g., "Observed an opacity in the lower left lung lobe.").'),
     disclaimer: z.string().describe('A mandatory warning that this analysis is not a substitute for a professional diagnosis.'),
+    heatmapDataUri: z.string().optional().describe('A data URI of the generated heatmap visualization.'),
 });
 
-const prompt = ai.definePrompt({
-    name: 'imagingDiagnosisPrompt',
+const textAnalysisPrompt = ai.definePrompt({
+    name: 'imagingDiagnosisTextPrompt',
     input: {schema: ImagingDiagnosisInputSchema},
     output: {schema: ImagingDiagnosisOutputSchema},
     prompt: `You are an expert AI radiology assistant. Your task is to analyze a medical image and provide a preliminary diagnostic report for informational purposes.
@@ -45,6 +46,28 @@ If the image does not appear to be a medical scan or is unclear, state that in t
 `,
 });
 
+const generateHeatmapFlow = ai.defineFlow(
+    {
+        name: 'generateHeatmapFlow',
+        inputSchema: ImagingDiagnosisInputSchema,
+        outputSchema: z.string(),
+    },
+    async (flowInput) => {
+        const {media} = await ai.generate({
+            model: 'googleai/gemini-2.5-flash-image-preview',
+            prompt: [
+                {media: {url: flowInput.image}},
+                {text: 'Based on the provided medical image (like an X-ray or CT scan), generate a simulated Grad-CAM heatmap. The heatmap should be a plausible visualization of where an AI might focus its attention to make a diagnosis. Overlay this heatmap onto the original image. The heatmap should use a color scale from yellow (low attention) to red (high attention) and be semi-transparent.'},
+            ],
+            config: {
+                responseModalities: ['TEXT', 'IMAGE'],
+            },
+        });
+        return media!.url;
+    }
+);
+
+
 const diagnoseImageFlow = ai.defineFlow(
     {
         name: 'diagnoseImageFlow',
@@ -52,8 +75,22 @@ const diagnoseImageFlow = ai.defineFlow(
         outputSchema: ImagingDiagnosisOutputSchema,
     },
     async (flowInput) => {
-        const {output} = await prompt(flowInput);
-        return output!;
+        // Run text analysis and heatmap generation in parallel
+        const [textAnalysisResult, heatmapResult] = await Promise.all([
+            textAnalysisPrompt(flowInput),
+            generateHeatmapFlow(flowInput)
+        ]);
+        
+        const { output } = textAnalysisResult;
+        
+        if (!output) {
+            throw new Error('Text analysis failed to produce an output.');
+        }
+
+        return {
+            ...output,
+            heatmapDataUri: heatmapResult,
+        };
     }
 );
 

@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 import { diagnoseImage } from '@/ai/flows/ai-imaging-diagnosis-flow';
 import type { ImagingDiagnosisOutput } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function ImagingDiagnosisPage() {
   const [image, setImage] = useState<string | null>(null);
@@ -138,58 +139,80 @@ export default function ImagingDiagnosisPage() {
         </Alert>
       )}
 
-      {analysis && (
+      {(isLoading || analysis) && (
         <Card>
           <CardHeader>
             <CardTitle>AI Diagnostic Report</CardTitle>
             <CardDescription>This is a preliminary analysis. Please review with your doctor.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div>
-                <h3 className="font-semibold text-lg mb-2">Overall Summary</h3>
-                <p className="text-sm text-muted-foreground">{analysis.summary}</p>
-            </div>
-
-            <div className="space-y-4">
-                <h3 className="font-semibold text-lg">Potential Conditions</h3>
-                {analysis.potentialConditions.length > 0 ? analysis.potentialConditions.map((item, index) => (
-                    <div key={index} className="space-y-2">
-                         <div className="flex justify-between items-center">
-                            <p className="font-medium">{item.condition}</p>
-                            <span className="font-bold text-primary">{item.confidence}% Confidence</span>
-                        </div>
-                        <Progress value={item.confidence} className="h-2" />
+            {!analysis ? (
+                <div className="space-y-6">
+                    <Skeleton className="h-8 w-3/4" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-5/6" />
+                    <div className="space-y-4 pt-4">
+                        <Skeleton className="h-8 w-1/2" />
+                        <Skeleton className="h-10 w-full" />
+                        <Skeleton className="h-10 w-full" />
                     </div>
-                )) : <p className="text-sm text-muted-foreground">No specific conditions identified with high confidence.</p>}
-            </div>
-            
-             <div>
-                <h3 className="font-semibold text-lg mb-2">Key Observations</h3>
-                 <div className="prose prose-sm max-w-none text-muted-foreground rounded-md border p-4 bg-muted/50">
-                    <ul className="list-disc pl-5">
-                       {analysis.observations.split('\n').map((obs, i) => obs.trim() && <li key={i}>{obs.replace(/^- /, '')}</li>)}
-                    </ul>
-                 </div>
-            </div>
+                </div>
+            ) : (
+                <>
+                    <div>
+                        <h3 className="font-semibold text-lg mb-2">Overall Summary</h3>
+                        <p className="text-sm text-muted-foreground">{analysis.summary}</p>
+                    </div>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>AI Confidence Visualization</CardTitle>
-                    <CardDescription>Placeholder for Grad-CAM heatmap overlay showing which parts of the image the AI focused on.</CardDescription>
-                </CardHeader>
-                <CardContent className="flex items-center justify-center bg-gray-200 dark:bg-gray-800 rounded-md aspect-video">
-                    <p className="text-muted-foreground">Heatmap visualization would appear here.</p>
-                </CardContent>
-            </Card>
+                    <div className="space-y-4">
+                        <h3 className="font-semibold text-lg">Potential Conditions</h3>
+                        {analysis.potentialConditions.length > 0 ? analysis.potentialConditions.map((item, index) => (
+                            <div key={index} className="space-y-2">
+                                <div className="flex justify-between items-center">
+                                    <p className="font-medium">{item.condition}</p>
+                                    <span className="font-bold text-primary">{item.confidence}% Confidence</span>
+                                </div>
+                                <Progress value={item.confidence} className="h-2" />
+                            </div>
+                        )) : <p className="text-sm text-muted-foreground">No specific conditions identified with high confidence.</p>}
+                    </div>
+                    
+                    <div>
+                        <h3 className="font-semibold text-lg mb-2">Key Observations</h3>
+                        <div className="prose prose-sm max-w-none text-muted-foreground rounded-md border p-4 bg-muted/50">
+                            <ul className="list-disc pl-5">
+                            {analysis.observations.split('\n').map((obs, i) => obs.trim() && <li key={i}>{obs.replace(/^- /, '')}</li>)}
+                            </ul>
+                        </div>
+                    </div>
 
-            <Alert variant="destructive">
-              <AlertTriangle className="h-4 w-4" />
-              <AlertTitle>Disclaimer</AlertTitle>
-              <AlertDescription>{analysis.disclaimer}</AlertDescription>
-            </Alert>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>AI Confidence Visualization (Simulated)</CardTitle>
+                            <CardDescription>This is a generated heatmap showing which parts of the image the AI may have focused on.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="flex items-center justify-center bg-black rounded-md aspect-video p-2">
+                            {analysis.heatmapDataUri ? (
+                                <Image src={analysis.heatmapDataUri} alt="AI Heatmap Visualization" width={512} height={512} className="rounded-md object-contain aspect-square mx-auto" />
+                            ) : (
+                                <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                                    <Loader2 className="h-8 w-8 animate-spin" />
+                                    <p>Generating visualization...</p>
+                                </div>
+                            )}
+                        </CardContent>
+                    </Card>
+
+                    <Alert variant="destructive">
+                        <AlertTriangle className="h-4 w-4" />
+                        <AlertTitle>Disclaimer</AlertTitle>
+                        <AlertDescription>{analysis.disclaimer}</AlertDescription>
+                    </Alert>
+                </>
+            )}
           </CardContent>
            <CardFooter>
-                <Button onClick={handleDownloadReport}>
+                <Button onClick={handleDownloadReport} disabled={!analysis}>
                     <Download className="mr-2 h-4 w-4" />
                     Download Report (PDF)
                 </Button>
