@@ -30,34 +30,34 @@ const chartData = [
 const chartConfig = {
     new: {
       label: 'New Patients',
-      color: 'hsl(var(--chart-1))',
+      color: 'hsl(var(--primary))',
     },
     recurring: {
       label: 'Recurring Patients',
-      color: 'hsl(var(--chart-2))',
+      color: 'hsl(var(--accent))',
     },
 }
 
 function EngagementChart() {
     return (
-        <Card>
+        <Card className="lg:col-span-2">
             <CardHeader>
                 <CardTitle>Patient Engagement</CardTitle>
                 <CardDescription>New vs. Recurring Patients (Last 6 Months)</CardDescription>
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig} className="h-[250px] w-full">
-                    <BarChart accessibilityLayer data={chartData} margin={{ top: 20 }}>
+                    <BarChart accessibilityLayer data={chartData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
                         <CartesianGrid vertical={false} />
                         <XAxis
-                        dataKey="month"
-                        tickLine={false}
-                        tickMargin={10}
-                        axisLine={false}
-                        tickFormatter={(value) => value.slice(0, 3)}
+                          dataKey="month"
+                          tickLine={false}
+                          tickMargin={10}
+                          axisLine={false}
+                          tickFormatter={(value) => value.slice(0, 3)}
                         />
-                        <YAxis />
-                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <YAxis tickLine={false} axisLine={false} />
+                        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
                         <ChartLegend content={<ChartLegendContent />} />
                         <Bar dataKey="new" fill="var(--color-new)" radius={4} />
                         <Bar dataKey="recurring" fill="var(--color-recurring)" radius={4} />
@@ -110,14 +110,14 @@ export default function EmployeeDashboard({ name }: { name: string }) {
     return requests.filter(req => req.status === 'Pending').length;
   }, [requests]);
   
-  const lastMessage = useMemo(() => messages[messages.length - 1], [messages]);
+  const lastMessage = useMemo(() => messages.filter(m => m.receiver === name).pop(), [messages, name]);
   const patientImage = `https://avatar.vercel.sh/guest.png`;
 
 
   return (
     <div className="grid gap-6">
       <div className="space-y-1.5">
-        <h1 className="text-3xl font-bold">Welcome, {name}!</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Welcome, {name}!</h1>
         <p className="text-muted-foreground">Here is your daily brief for today.</p>
       </div>
 
@@ -165,32 +165,38 @@ export default function EmployeeDashboard({ name }: { name: string }) {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <EngagementChart />
         
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><MessageSquare /> Recent Messages</CardTitle>
+            <CardTitle className="flex items-center gap-2"><MessageSquare /> Recent Message</CardTitle>
           </CardHeader>
           <CardContent>
             {lastMessage ? (
               <div className="space-y-4">
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-4 p-4 rounded-md bg-muted/50">
                   <Avatar>
-                    <AvatarImage src={lastMessage.sender === name ? undefined : patientImage} />
+                    <AvatarImage src={patientImage} />
                     <AvatarFallback>{lastMessage.sender.charAt(0)}</AvatarFallback>
                   </Avatar>
-                  <div className="space-y-1">
-                    <p className="font-semibold">{lastMessage.sender}</p>
-                    <p className="text-sm text-muted-foreground truncate">{lastMessage.content}</p>
+                  <div className="space-y-1 flex-1">
+                    <div className="flex items-center justify-between">
+                         <p className="font-semibold text-sm">{lastMessage.sender}</p>
+                         <p className="text-xs text-muted-foreground">{format(new Date(lastMessage.timestamp), 'p')}</p>
+                    </div>
+                    <p className="text-sm text-muted-foreground truncate">{lastMessage.content || 'Image attachment'}</p>
                   </div>
                 </div>
                 <Button variant="outline" asChild className="w-full">
-                  <Link href="/doctor-chat?role=employee">View All Messages</Link>
+                  <Link href="/doctor-chat?role=employee">Open Chat</Link>
                 </Button>
               </div>
             ) : (
-              <p className="text-muted-foreground text-center">No new messages.</p>
+              <div className="text-center py-8">
+                <MessageSquare className="h-10 w-10 text-muted-foreground mx-auto" />
+                <p className="mt-4 text-muted-foreground">No new messages.</p>
+              </div>
             )}
           </CardContent>
         </Card>

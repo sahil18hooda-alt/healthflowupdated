@@ -306,7 +306,7 @@ const ChartLegendContent = React.forwardRef<
                   }}
                 />
               )}
-              {itemConfig?.label}
+              <span className="text-muted-foreground">{itemConfig?.label}</span>
             </div>
           )
         })}

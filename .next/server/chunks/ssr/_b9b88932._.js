@@ -83,7 +83,7 @@ AlertDescription.displayName = "AlertDescription";
 var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "default": (()=>DoctorChatPage)
+    "default": (()=>AiTherapistPage)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
@@ -113,9 +113,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$a
 ;
 const welcomeMessage = {
     role: 'model',
-    content: "Hello! I see you have some questions about your AI imaging report. I'm here to help. What's on your mind?"
+    content: "Hello, I'm here to listen. This is a safe space for you to share whatever is on your mind. How are you feeling today?"
 };
-function DoctorChatPage() {
+function AiTherapistPage() {
     const [messages, setMessages] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([
         welcomeMessage
     ]);
@@ -188,7 +188,7 @@ function DoctorChatPage() {
                                 lineNumber: 70,
                                 columnNumber: 17
                             }, this),
-                            " Chat with Doctor"
+                            " AI Therapist"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(app)/ai-therapist/page.tsx",
@@ -197,7 +197,7 @@ function DoctorChatPage() {
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         className: "text-muted-foreground",
-                        children: "Discuss your AI imaging report with a medical professional."
+                        children: "A safe space to talk about what's on your mind."
                     }, void 0, false, {
                         fileName: "[project]/src/app/(app)/ai-therapist/page.tsx",
                         lineNumber: 72,
@@ -228,7 +228,7 @@ function DoctorChatPage() {
                         columnNumber: 13
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$alert$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDescription"], {
-                        children: "This is an AI-powered simulation for demonstration purposes. For professional medical advice, please consult one of our qualified healthcare providers. If you are in a crisis, please contact an emergency service."
+                        children: "This is an AI-powered simulation for demonstration purposes and is not a substitute for professional medical advice. If you are in a crisis, please contact an emergency service."
                     }, void 0, false, {
                         fileName: "[project]/src/app/(app)/ai-therapist/page.tsx",
                         lineNumber: 80,

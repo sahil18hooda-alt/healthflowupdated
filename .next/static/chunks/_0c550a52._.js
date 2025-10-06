@@ -99,7 +99,7 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "default": (()=>DoctorChatPage)
+    "default": (()=>AiTherapistPage)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
@@ -130,9 +130,9 @@ var _s = __turbopack_context__.k.signature();
 ;
 const welcomeMessage = {
     role: 'model',
-    content: "Hello! I see you have some questions about your AI imaging report. I'm here to help. What's on your mind?"
+    content: "Hello, I'm here to listen. This is a safe space for you to share whatever is on your mind. How are you feeling today?"
 };
-function DoctorChatPage() {
+function AiTherapistPage() {
     _s();
     const [messages, setMessages] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([
         welcomeMessage
@@ -141,20 +141,20 @@ function DoctorChatPage() {
     const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const scrollAreaRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "DoctorChatPage.useEffect": ()=>{
+        "AiTherapistPage.useEffect": ()=>{
             if (scrollAreaRef.current) {
                 // A bit of a hack to scroll to the bottom.
                 setTimeout({
-                    "DoctorChatPage.useEffect": ()=>{
+                    "AiTherapistPage.useEffect": ()=>{
                         const viewport = scrollAreaRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
                         if (viewport) {
                             viewport.scrollTop = viewport.scrollHeight;
                         }
                     }
-                }["DoctorChatPage.useEffect"], 100);
+                }["AiTherapistPage.useEffect"], 100);
             }
         }
-    }["DoctorChatPage.useEffect"], [
+    }["AiTherapistPage.useEffect"], [
         messages
     ]);
     const handleSend = async ()=>{
@@ -210,7 +210,7 @@ function DoctorChatPage() {
                                 lineNumber: 70,
                                 columnNumber: 17
                             }, this),
-                            " Chat with Doctor"
+                            " AI Therapist"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(app)/ai-therapist/page.tsx",
@@ -219,7 +219,7 @@ function DoctorChatPage() {
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         className: "text-muted-foreground",
-                        children: "Discuss your AI imaging report with a medical professional."
+                        children: "A safe space to talk about what's on your mind."
                     }, void 0, false, {
                         fileName: "[project]/src/app/(app)/ai-therapist/page.tsx",
                         lineNumber: 72,
@@ -250,7 +250,7 @@ function DoctorChatPage() {
                         columnNumber: 13
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$alert$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDescription"], {
-                        children: "This is an AI-powered simulation for demonstration purposes. For professional medical advice, please consult one of our qualified healthcare providers. If you are in a crisis, please contact an emergency service."
+                        children: "This is an AI-powered simulation for demonstration purposes and is not a substitute for professional medical advice. If you are in a crisis, please contact an emergency service."
                     }, void 0, false, {
                         fileName: "[project]/src/app/(app)/ai-therapist/page.tsx",
                         lineNumber: 80,
@@ -446,10 +446,10 @@ function DoctorChatPage() {
         columnNumber: 5
     }, this);
 }
-_s(DoctorChatPage, "KN0DryIvErEbQoflSp6MgWSmqU4=");
-_c = DoctorChatPage;
+_s(AiTherapistPage, "KN0DryIvErEbQoflSp6MgWSmqU4=");
+_c = AiTherapistPage;
 var _c;
-__turbopack_context__.k.register(_c, "DoctorChatPage");
+__turbopack_context__.k.register(_c, "AiTherapistPage");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }
