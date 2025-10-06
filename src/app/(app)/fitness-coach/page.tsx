@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Dumbbell, Target, Zap, Utensils, Bed, Smile, Loader2, Lightbulb, BrainCircuit, Heart, Activity, Flame, Footprints, RefreshCw, Watch } from 'lucide-react';
+import { Dumbbell, Target, Zap, Utensils, Bed, Smile, Loader2, Lightbulb, BrainCircuit, Heart, Activity, Flame, Footprints, RefreshCw, Watch, CheckCircle, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -45,13 +45,6 @@ const dietOptions = [
   { id: 'dairy-free', label: 'Dairy-Free' },
   { id: 'none', label: 'None' },
 ];
-
-const categoryIcons = {
-    Fitness: <Dumbbell className="h-5 w-5 text-primary" />,
-    Nutrition: <Utensils className="h-5 w-5 text-green-500" />,
-    Wellness: <BrainCircuit className="h-5 w-5 text-yellow-500" />,
-    Sleep: <Bed className="h-5 w-5 text-purple-500" />,
-}
 
 // Function to generate realistic random data
 const generateSimulatedData = (): WearableData => ({
@@ -317,22 +310,36 @@ export default function FitnessCoachPage() {
                 </AlertDescription>
             </Alert>
             
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Your Actionable Tips</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {recommendations.actionableTips.map((item, index) => (
-                  <Card key={index}>
-                    <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
-                      {categoryIcons[item.category]}
-                      <CardTitle className="text-base">{item.category}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground">{item.tip}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
+            <Card className="bg-muted/30">
+              <CardHeader>
+                  <CardTitle className="text-lg">Today's AI Analysis</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-sm text-muted-foreground italic">
+                    "{recommendations.dailyAnalysis.feedback}"
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="flex items-center gap-3 rounded-lg border bg-background p-4">
+                        <div className="rounded-full bg-green-100 p-2 dark:bg-green-900/50">
+                            <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
+                        </div>
+                        <div>
+                            <p className="text-xs text-muted-foreground">New Step Goal</p>
+                            <p className="text-base font-semibold">{recommendations.dailyAnalysis.revisedTargets.steps}</p>
+                        </div>
+                    </div>
+                     <div className="flex items-center gap-3 rounded-lg border bg-background p-4">
+                        <div className="rounded-full bg-green-100 p-2 dark:bg-green-900/50">
+                            <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
+                        </div>
+                        <div>
+                            <p className="text-xs text-muted-foreground">New Calorie Goal</p>
+                            <p className="text-base font-semibold">{recommendations.dailyAnalysis.revisedTargets.calories}</p>
+                        </div>
+                    </div>
+                </div>
+              </CardContent>
+            </Card>
           </CardContent>
         </Card>
       )}

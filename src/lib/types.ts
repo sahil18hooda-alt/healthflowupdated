@@ -200,8 +200,11 @@ export interface FitnessCoachOutput {
     theme: string;
     motivationalQuote: string;
   };
-  actionableTips: Array<{
-    category: 'Fitness' | 'Nutrition' | 'Wellness' | 'Sleep';
-    tip: string;
-  }>;
+  dailyAnalysis: {
+    feedback: string;
+    revisedTargets: {
+      steps: string;
+      calories: string;
+    };
+  };
 }

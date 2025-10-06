@@ -26,10 +26,13 @@ const FitnessCoachOutputSchema = z.object({
     theme: z.string().describe("A central theme for the week, like 'Foundation Building' or 'Mindful Movement'."),
     motivationalQuote: z.string().describe("An inspiring quote to keep the user motivated."),
   }),
-  actionableTips: z.array(z.object({
-    category: z.enum(['Fitness', 'Nutrition', 'Wellness', 'Sleep']),
-    tip: z.string().describe("A specific, actionable tip for the user to follow."),
-  })).describe("A list of personalized tips across different health categories."),
+  dailyAnalysis: z.object({
+      feedback: z.string().describe("A summary of today's performance, comparing wearable data to the user's primary goal."),
+      revisedTargets: z.object({
+          steps: z.string().describe("A specific, numerical target for today's steps. E.g., 'Aim for 2,000 more steps' or 'You've hit your goal! Great job!'"),
+          calories: z.string().describe("A specific, numerical target for today's calorie intake. E.g., 'You have room for a 300-calorie snack' or 'Try to stick to your current calorie count.'"),
+      }),
+  }),
 });
 
 
@@ -51,17 +54,17 @@ Today's Wearable Data:
 - Calories Burned: {{{calories}}}
 - Active Minutes: {{{activeMinutes}}}
 
-Based on this complete profile, generate a 'weeklySummary' and a set of 'actionableTips'.
+Based on this complete profile, generate a 'weeklySummary' and a 'dailyAnalysis'.
 
 1.  **Weekly Summary**:
     -   Create a concise 'theme' for the week that aligns with the user's primary goal.
     -   Provide a short, powerful 'motivationalQuote'.
 
-2.  **Actionable Tips**:
-    -   Provide at least four practical and personalized tips.
-    -   Ensure the tips cover a range of categories: 'Fitness', 'Nutrition', 'Wellness', and 'Sleep'.
-    -   The tips must be highly relevant to the user's 'primaryGoal'.
-    -   **Crucially, incorporate today's wearable data into your tips.** For example, if 'activeMinutes' are low and the goal is 'lose-weight', suggest a short evening walk. If steps are high, congratulate them and suggest a good recovery stretch. Your advice should feel timely and responsive to their daily performance.
+2.  **Daily Analysis**:
+    -   Write a 'feedback' summary that directly compares today's wearable data against what would be expected for their 'primaryGoal'.
+    -   **Crucially, calculate and provide specific, numerical 'revisedTargets' for today.**
+        - For 'steps', if the user is below a typical 10,000 step goal, calculate the difference and suggest it (e.g., "Aim for 2,500 more steps to hit your goal"). If they've met it, congratulate them.
+        - For 'calories', analyze their burn vs. a standard target (approx. 2000-2500, adjusted for activity level). If their goal is 'lose-weight' and they have a calorie deficit, tell them how much room they have. If their goal is 'gain-muscle', suggest a calorie surplus. Provide a concrete number.
 
 Your tone should be positive, knowledgeable, and motivating.
 `,
