@@ -392,9 +392,13 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$flows$2f$data$3a$0ddb08__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$text$2f$javascript$3e$__ = __turbopack_context__.i("[project]/src/ai/flows/data:0ddb08 [app-client] (ecmascript) <text/javascript>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$use$2d$toast$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/hooks/use-toast.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$skeleton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/skeleton.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$jspdf$2f$dist$2f$jspdf$2e$es$2e$min$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/jspdf/dist/jspdf.es.min.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$html2canvas$2f$dist$2f$html2canvas$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/html2canvas/dist/html2canvas.js [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 'use client';
+;
+;
 ;
 ;
 ;
@@ -460,12 +464,38 @@ function ImagingDiagnosisPage() {
         }
     };
     const handleDownloadReport = ()=>{
-        // In a real app, this would generate and download a PDF
+        const reportElement = document.getElementById('ai-report-card');
+        if (!reportElement || !analysis) {
+            toast({
+                title: "Error",
+                description: "Cannot download report right now. Please try again.",
+                variant: "destructive"
+            });
+            return;
+        }
         toast({
-            title: "Download Initiated",
+            title: "Generating PDF...",
             description: "Your report is being prepared for download."
         });
-        console.log("Simulating PDF report download for:", analysis);
+        (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$html2canvas$2f$dist$2f$html2canvas$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])(reportElement, {
+            scale: 2
+        }).then((canvas)=>{
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$jspdf$2f$dist$2f$jspdf$2e$es$2e$min$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]('p', 'px', 'a4');
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
+            const ratio = canvasWidth / canvasHeight;
+            const width = pdfWidth;
+            const height = width / ratio;
+            let position = 0;
+            if (height < pdfHeight) {
+                position = (pdfHeight - height) / 2;
+            }
+            pdf.addImage(imgData, 'PNG', 0, position, width, height);
+            pdf.save(`HealthFlow_Imaging_Report_${new Date().toISOString().split('T')[0]}.pdf`);
+        });
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "space-y-6",
@@ -477,14 +507,14 @@ function ImagingDiagnosisPage() {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$scan$2d$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ScanSearch$3e$__["ScanSearch"], {}, void 0, false, {
                                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                lineNumber: 76,
+                                lineNumber: 106,
                                 columnNumber: 11
                             }, this),
                             " AI Imaging & Diagnosis"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                        lineNumber: 75,
+                        lineNumber: 105,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -492,13 +522,13 @@ function ImagingDiagnosisPage() {
                         children: "Upload a medical image for a preliminary, AI-powered diagnostic analysis."
                     }, void 0, false, {
                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                        lineNumber: 78,
+                        lineNumber: 108,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                lineNumber: 74,
+                lineNumber: 104,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$alert$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Alert"], {
@@ -508,27 +538,27 @@ function ImagingDiagnosisPage() {
                         className: "h-4 w-4"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                        lineNumber: 84,
+                        lineNumber: 114,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$alert$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertTitle"], {
                         children: "For Informational Use Only"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                        lineNumber: 85,
+                        lineNumber: 115,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$alert$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDescription"], {
                         children: "This AI analysis is not a medical diagnosis. Always consult a qualified healthcare professional for any health concerns and to interpret your medical images."
                     }, void 0, false, {
                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                        lineNumber: 86,
+                        lineNumber: 116,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                lineNumber: 83,
+                lineNumber: 113,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -539,20 +569,20 @@ function ImagingDiagnosisPage() {
                                 children: "Upload Medical Image"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                lineNumber: 93,
+                                lineNumber: 123,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
                                 children: "Upload an X-ray, CT scan, or MRI image (JPG, PNG). DICOM support is experimental."
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                lineNumber: 94,
+                                lineNumber: 124,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                        lineNumber: 92,
+                        lineNumber: 122,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -566,14 +596,14 @@ function ImagingDiagnosisPage() {
                                         ...getInputProps()
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                        lineNumber: 105,
+                                        lineNumber: 135,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cloud$2d$upload$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__UploadCloud$3e$__["UploadCloud"], {
                                         className: "h-12 w-12 text-muted-foreground"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                        lineNumber: 106,
+                                        lineNumber: 136,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -581,13 +611,13 @@ function ImagingDiagnosisPage() {
                                         children: isDragActive ? 'Drop the image here...' : "Drag 'n' drop an image, or click to select"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                        lineNumber: 107,
+                                        lineNumber: 137,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                lineNumber: 98,
+                                lineNumber: 128,
                                 columnNumber: 13
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "relative w-full max-w-md mx-auto bg-black rounded-md p-2",
@@ -600,7 +630,7 @@ function ImagingDiagnosisPage() {
                                         className: "rounded-md object-contain aspect-square mx-auto"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                        lineNumber: 113,
+                                        lineNumber: 143,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -612,18 +642,18 @@ function ImagingDiagnosisPage() {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                            lineNumber: 115,
+                                            lineNumber: 145,
                                             columnNumber: 21
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                        lineNumber: 114,
+                                        lineNumber: 144,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                lineNumber: 112,
+                                lineNumber: 142,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -635,7 +665,7 @@ function ImagingDiagnosisPage() {
                                         onCheckedChange: (checked)=>setHasConsented(!!checked)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                        lineNumber: 121,
+                                        lineNumber: 151,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
@@ -644,13 +674,13 @@ function ImagingDiagnosisPage() {
                                         children: "I consent to have this image analyzed by the AI for informational purposes."
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                        lineNumber: 122,
+                                        lineNumber: 152,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                lineNumber: 120,
+                                lineNumber: 150,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -661,26 +691,26 @@ function ImagingDiagnosisPage() {
                                         className: "mr-2 h-4 w-4 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                        lineNumber: 128,
+                                        lineNumber: 158,
                                         columnNumber: 27
                                     }, this),
                                     isLoading ? 'Analyzing...' : 'Run AI Analysis'
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                lineNumber: 127,
+                                lineNumber: 157,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                        lineNumber: 96,
+                        lineNumber: 126,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                lineNumber: 91,
+                lineNumber: 121,
                 columnNumber: 7
             }, this),
             error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$alert$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Alert"], {
@@ -690,30 +720,31 @@ function ImagingDiagnosisPage() {
                         className: "h-4 w-4"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                        lineNumber: 136,
+                        lineNumber: 166,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$alert$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertTitle"], {
                         children: "Analysis Failed"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                        lineNumber: 137,
+                        lineNumber: 167,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$alert$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDescription"], {
                         children: error
                     }, void 0, false, {
                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                        lineNumber: 138,
+                        lineNumber: 168,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                lineNumber: 135,
+                lineNumber: 165,
                 columnNumber: 9
             }, this),
             (isLoading || analysis) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                id: "ai-report-card",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardHeader"], {
                         children: [
@@ -721,20 +752,20 @@ function ImagingDiagnosisPage() {
                                 children: "AI Diagnostic Report"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                lineNumber: 145,
+                                lineNumber: 175,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
                                 children: "This is a preliminary analysis. Please review with your doctor."
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                lineNumber: 146,
+                                lineNumber: 176,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                        lineNumber: 144,
+                        lineNumber: 174,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -746,21 +777,21 @@ function ImagingDiagnosisPage() {
                                     className: "h-8 w-3/4"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                    lineNumber: 151,
+                                    lineNumber: 181,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$skeleton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Skeleton"], {
                                     className: "h-4 w-full"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                    lineNumber: 152,
+                                    lineNumber: 182,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$skeleton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Skeleton"], {
                                     className: "h-4 w-5/6"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                    lineNumber: 153,
+                                    lineNumber: 183,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -770,33 +801,33 @@ function ImagingDiagnosisPage() {
                                             className: "h-8 w-1/2"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                            lineNumber: 155,
+                                            lineNumber: 185,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$skeleton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Skeleton"], {
                                             className: "h-10 w-full"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                            lineNumber: 156,
+                                            lineNumber: 186,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$skeleton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Skeleton"], {
                                             className: "h-10 w-full"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                            lineNumber: 157,
+                                            lineNumber: 187,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                    lineNumber: 154,
+                                    lineNumber: 184,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                            lineNumber: 150,
+                            lineNumber: 180,
                             columnNumber: 17
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                             children: [
@@ -807,7 +838,7 @@ function ImagingDiagnosisPage() {
                                             children: "Overall Summary"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                            lineNumber: 163,
+                                            lineNumber: 193,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -815,13 +846,13 @@ function ImagingDiagnosisPage() {
                                             children: analysis.summary
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                            lineNumber: 164,
+                                            lineNumber: 194,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                    lineNumber: 162,
+                                    lineNumber: 192,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -832,7 +863,7 @@ function ImagingDiagnosisPage() {
                                             children: "Potential Conditions"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                            lineNumber: 168,
+                                            lineNumber: 198,
                                             columnNumber: 25
                                         }, this),
                                         analysis.potentialConditions.length > 0 ? analysis.potentialConditions.map((item, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -846,7 +877,7 @@ function ImagingDiagnosisPage() {
                                                                 children: item.condition
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                                                lineNumber: 172,
+                                                                lineNumber: 202,
                                                                 columnNumber: 37
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -857,13 +888,13 @@ function ImagingDiagnosisPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                                                lineNumber: 173,
+                                                                lineNumber: 203,
                                                                 columnNumber: 37
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                                        lineNumber: 171,
+                                                        lineNumber: 201,
                                                         columnNumber: 33
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$progress$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Progress"], {
@@ -871,26 +902,26 @@ function ImagingDiagnosisPage() {
                                                         className: "h-2"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                                        lineNumber: 175,
+                                                        lineNumber: 205,
                                                         columnNumber: 33
                                                     }, this)
                                                 ]
                                             }, index, true, {
                                                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                                lineNumber: 170,
+                                                lineNumber: 200,
                                                 columnNumber: 29
                                             }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                             className: "text-sm text-muted-foreground",
                                             children: "No specific conditions identified with high confidence."
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                            lineNumber: 177,
+                                            lineNumber: 207,
                                             columnNumber: 30
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                    lineNumber: 167,
+                                    lineNumber: 197,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -900,7 +931,7 @@ function ImagingDiagnosisPage() {
                                             children: "Key Observations"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                            lineNumber: 181,
+                                            lineNumber: 211,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -911,23 +942,23 @@ function ImagingDiagnosisPage() {
                                                         children: obs.replace(/^- /, '')
                                                     }, i, false, {
                                                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                                        lineNumber: 184,
+                                                        lineNumber: 214,
                                                         columnNumber: 94
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                                lineNumber: 183,
+                                                lineNumber: 213,
                                                 columnNumber: 29
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                            lineNumber: 182,
+                                            lineNumber: 212,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                    lineNumber: 180,
+                                    lineNumber: 210,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -938,20 +969,20 @@ function ImagingDiagnosisPage() {
                                                     children: "AI Confidence Visualization (Simulated)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                                    lineNumber: 191,
+                                                    lineNumber: 221,
                                                     columnNumber: 29
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
                                                     children: "This is a generated heatmap showing which parts of the image the AI may have focused on."
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                                    lineNumber: 192,
+                                                    lineNumber: 222,
                                                     columnNumber: 29
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                            lineNumber: 190,
+                                            lineNumber: 220,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -964,7 +995,7 @@ function ImagingDiagnosisPage() {
                                                 className: "rounded-md object-contain aspect-square mx-auto"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                                lineNumber: 196,
+                                                lineNumber: 226,
                                                 columnNumber: 33
                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "flex flex-col items-center gap-2 text-muted-foreground",
@@ -973,31 +1004,31 @@ function ImagingDiagnosisPage() {
                                                         className: "h-8 w-8 animate-spin"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                                        lineNumber: 199,
+                                                        lineNumber: 229,
                                                         columnNumber: 37
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                         children: "Generating visualization..."
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                                        lineNumber: 200,
+                                                        lineNumber: 230,
                                                         columnNumber: 37
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                                lineNumber: 198,
+                                                lineNumber: 228,
                                                 columnNumber: 33
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                            lineNumber: 194,
+                                            lineNumber: 224,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                    lineNumber: 189,
+                                    lineNumber: 219,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$alert$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Alert"], {
@@ -1007,34 +1038,34 @@ function ImagingDiagnosisPage() {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                            lineNumber: 207,
+                                            lineNumber: 237,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$alert$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertTitle"], {
                                             children: "Disclaimer"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                            lineNumber: 208,
+                                            lineNumber: 238,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$alert$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDescription"], {
                                             children: analysis.disclaimer
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                            lineNumber: 209,
+                                            lineNumber: 239,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                    lineNumber: 206,
+                                    lineNumber: 236,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                        lineNumber: 148,
+                        lineNumber: 178,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardFooter"], {
@@ -1046,31 +1077,31 @@ function ImagingDiagnosisPage() {
                                     className: "mr-2 h-4 w-4"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                                    lineNumber: 216,
+                                    lineNumber: 246,
                                     columnNumber: 21
                                 }, this),
                                 "Download Report (PDF)"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                            lineNumber: 215,
+                            lineNumber: 245,
                             columnNumber: 17
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                        lineNumber: 214,
+                        lineNumber: 244,
                         columnNumber: 12
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-                lineNumber: 143,
+                lineNumber: 173,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(app)/imaging-diagnosis/page.tsx",
-        lineNumber: 73,
+        lineNumber: 103,
         columnNumber: 5
     }, this);
 }

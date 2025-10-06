@@ -75,7 +75,7 @@ const diagnoseImageFlow = ai.defineFlow(
         outputSchema: ImagingDiagnosisOutputSchema,
     },
     async (flowInput) => {
-        // Run text analysis and heatmap generation in parallel
+        // Run text analysis and heatmap generation in parallel for efficiency
         const [textAnalysisResult, heatmapResult] = await Promise.all([
             textAnalysisPrompt(flowInput),
             generateHeatmapFlow(flowInput)

@@ -176,7 +176,7 @@ export default function ImagingDiagnosisPage() {
             <CardDescription>This is a preliminary analysis. Please review with your doctor.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            {!analysis ? (
+            {isLoading && !analysis ? (
                 <div className="space-y-6">
                     <Skeleton className="h-8 w-3/4" />
                     <Skeleton className="h-4 w-full" />
@@ -187,7 +187,7 @@ export default function ImagingDiagnosisPage() {
                         <Skeleton className="h-10 w-full" />
                     </div>
                 </div>
-            ) : (
+            ) : analysis && (
                 <>
                     <div>
                         <h3 className="font-semibold text-lg mb-2">Overall Summary</h3>
@@ -211,7 +211,7 @@ export default function ImagingDiagnosisPage() {
                         <h3 className="font-semibold text-lg mb-2">Key Observations</h3>
                         <div className="prose prose-sm max-w-none text-muted-foreground rounded-md border p-4 bg-muted/50">
                             <ul className="list-disc pl-5">
-                            {analysis.observations.split('\n').map((obs, i) => obs.trim() && <li key={i}>{obs.replace(/^- /, '')}</li>)}
+                            {analysis.observations.split('\n').map((obs, i) => obs.trim().length > 1 && <li key={i}>{obs.replace(/^- /, '')}</li>)}
                             </ul>
                         </div>
                     </div>
@@ -241,12 +241,14 @@ export default function ImagingDiagnosisPage() {
                 </>
             )}
           </CardContent>
-           <CardFooter>
-                <Button onClick={handleDownloadReport} disabled={!analysis}>
-                    <Download className="mr-2 h-4 w-4" />
-                    Download Report (PDF)
-                </Button>
-            </CardFooter>
+           {analysis && (
+            <CardFooter>
+                    <Button onClick={handleDownloadReport} disabled={!analysis}>
+                        <Download className="mr-2 h-4 w-4" />
+                        Download Report (PDF)
+                    </Button>
+                </CardFooter>
+            )}
         </Card>
       )}
     </div>
