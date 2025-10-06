@@ -78,7 +78,7 @@ export type WearableData = {
 export type HealthProfile = {
   primaryGoal: 'lose-weight' | 'gain-muscle' | 'improve-endurance' | 'reduce-stress' | 'eat-healthier' | 'improve-sleep' | '';
   activityLevel: 'sedentary' | 'lightly-active' | 'moderately-active' | 'very-active' | '';
-  dietaryPreferences: Array<'vegetarian' | 'vegan' | 'gluten-free' | 'dairy-free' | 'none'>;
+  dietaryPreferences: Array<string>;
   sleepHours: number;
   stressLevel: 'low' | 'moderate' | 'high' | '';
   steps?: number;
