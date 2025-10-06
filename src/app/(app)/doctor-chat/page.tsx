@@ -1,30 +1,35 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Bot, User, Loader2, MessageSquare, Send, AlertTriangle } from 'lucide-react';
+import { Bot, User, Loader2, MessageSquare, Send, AlertTriangle, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
-import { doctorChat } from '@/ai/flows/doctor-chat-flow';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
+import Link from 'next/link';
 
 type Message = {
   role: 'user' | 'model';
   content: string;
+  timestamp: string;
 };
 
-const welcomeMessage: Message = {
-    role: 'model',
-    content: "Hello! I'm your AI Doctor Assistant. Feel free to ask any questions about your health, symptoms, or treatment plans. How can I help you today?"
-}
+const mockConversation: Message[] = [
+    { role: 'model', content: "Hello! I've reviewed the report you sent over. I'm happy to discuss the results with you. What's on your mind?", timestamp: "10:30 AM"},
+    { role: 'user', content: "Thanks, Doctor. I was a bit worried about the 'minor opacity' mentioned in the summary. What does that mean?", timestamp: "10:32 AM"},
+    { role: 'model', content: "That's a very common question. An 'opacity' is just a term for an area that looks lighter on an X-ray. In your case, it's very small and likely just some leftover inflammation from a past cold. It's not something to be concerned about at this stage.", timestamp: "10:34 AM"},
+];
+
 
 export default function DoctorChatPage() {
-  const [messages, setMessages] = useState<Message[]>([welcomeMessage]);
+  const [messages, setMessages] = useState<Message[]>(mockConversation);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const doctorImage = PlaceHolderImages.find(p => p.id === 'doctor-2');
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -41,61 +46,51 @@ export default function DoctorChatPage() {
   const handleSend = async () => {
     if (input.trim() === '' || isLoading) return;
 
-    const userMessage: Message = { role: 'user', content: input };
-    const newMessages = [...messages, userMessage];
-    setMessages(newMessages);
+    const userMessage: Message = { role: 'user', content: input, timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
+    setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
 
-    try {
-      const result = await doctorChat({ history: newMessages });
-      const assistantMessage: Message = { role: 'model', content: result.response };
+    // Simulate doctor's response
+    setTimeout(() => {
+      const assistantMessage: Message = { role: 'model', content: "Thank you for your question. I will get back to you shortly.", timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
       setMessages((prev) => [...prev, assistantMessage]);
-    } catch (error) {
-      console.error('Error with AI chat:', error);
-      const errorMessage: Message = {
-        role: 'model',
-        content: "I'm sorry, I'm having trouble connecting right now. Please try again later.",
-      };
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
       setIsLoading(false);
-    }
+    }, 1500);
   };
 
   return (
     <div className="flex flex-col h-[calc(100vh-10rem)]">
-        <div className="mb-4">
-            <h1 className="text-3xl font-bold flex items-center gap-2">
-                <MessageSquare /> Chat with Doctor
-            </h1>
-            <p className="text-muted-foreground">
-                Get answers to your health questions from our AI assistant.
-            </p>
-        </div>
-
-        <Alert variant="destructive" className="mb-4">
-            <AlertTriangle className="h-4 w-4" />
-            <AlertTitle>Important Disclaimer</AlertTitle>
-            <AlertDescription>
-            This is an AI-powered simulation for demonstration purposes. For professional medical advice, please consult one of our qualified healthcare providers. If you are in a crisis, please contact an emergency service.
-            </AlertDescription>
-        </Alert>
-
+        
       <div className="flex-1 flex flex-col bg-card border rounded-lg shadow-sm">
+        <header className="flex items-center gap-4 p-4 border-b">
+            <Button variant="ghost" size="icon" asChild>
+                <Link href="/appointments"><ArrowLeft/></Link>
+            </Button>
+            <Avatar>
+                {doctorImage && <AvatarImage src={doctorImage.imageUrl} alt="Dr. Sharma" />}
+                <AvatarFallback>AS</AvatarFallback>
+            </Avatar>
+            <div>
+                <h2 className="font-semibold text-lg">Dr. Arjun Sharma</h2>
+                <p className="text-sm text-muted-foreground">Online now</p>
+            </div>
+        </header>
+        
         <ScrollArea className="flex-1 p-6" ref={scrollAreaRef}>
           <div className="space-y-6">
             {messages.map((message, index) => (
               <div
                 key={index}
                 className={cn(
-                  'flex items-start gap-3',
+                  'flex items-end gap-3',
                   message.role === 'user' ? 'justify-end' : 'justify-start'
                 )}
               >
                 {message.role === 'model' && (
                   <Avatar className="h-8 w-8">
-                    <AvatarFallback><Bot /></AvatarFallback>
+                     {doctorImage && <AvatarImage src={doctorImage.imageUrl} alt="Dr. Sharma" />}
+                     <AvatarFallback>AS</AvatarFallback>
                   </Avatar>
                 )}
                 <div
@@ -107,6 +102,7 @@ export default function DoctorChatPage() {
                   )}
                 >
                   <p className="whitespace-pre-wrap">{message.content}</p>
+                  <p className="text-xs text-right mt-1 opacity-70">{message.timestamp}</p>
                 </div>
                 {message.role === 'user' && (
                   <Avatar className="h-8 w-8">
@@ -122,7 +118,7 @@ export default function DoctorChatPage() {
                 </Avatar>
                 <div className="bg-muted rounded-lg px-4 py-2 text-sm flex items-center">
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  Thinking...
+                  Sending...
                 </div>
               </div>
             )}

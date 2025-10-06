@@ -1,5 +1,7 @@
 {
   "/(app)/ai-therapist/page": "app/(app)/ai-therapist/page.js",
+  "/(app)/dashboard/page": "app/(app)/dashboard/page.js",
+  "/(app)/doctor-chat/page": "app/(app)/doctor-chat/page.js",
   "/(app)/fitness-coach/page": "app/(app)/fitness-coach/page.js",
   "/(app)/imaging-diagnosis/page": "app/(app)/imaging-diagnosis/page.js",
   "/(app)/symptom-analyzer/page": "app/(app)/symptom-analyzer/page.js",
