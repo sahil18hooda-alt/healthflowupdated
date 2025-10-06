@@ -11,8 +11,9 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
 import { getMessages, addMessage, ChatMessage } from '@/lib/mock-data';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-export default function DoctorChatPage() {
+function DoctorChatContent() {
   const searchParams = useSearchParams();
   const role = searchParams.get('role');
   const isDoctor = role === 'employee';
@@ -45,8 +46,12 @@ export default function DoctorChatPage() {
     };
     window.addEventListener('storage-update', handleStorageUpdate);
 
+    // Fallback polling
+    const interval = setInterval(fetchMessages, 5000);
+
     return () => {
         window.removeEventListener('storage-update', handleStorageUpdate);
+        clearInterval(interval);
     };
   }, [fetchMessages]);
 
@@ -65,8 +70,9 @@ export default function DoctorChatPage() {
   const handleSend = async () => {
     if (input.trim() === '' || isLoading) return;
 
-    const newMessage = addMessage(senderName, receiverName, input);
-    setMessages(prev => [...prev, newMessage]);
+    // The addMessage function will save to localStorage and dispatch the event
+    addMessage(senderName, receiverName, input);
+    // The event listener will pick up the change and update the state, so we don't need to manually setMessages here.
     setInput('');
   };
 
@@ -156,4 +162,12 @@ export default function DoctorChatPage() {
       </div>
     </div>
   );
+}
+
+export default function DoctorChatPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <DoctorChatContent />
+        </Suspense>
+    )
 }

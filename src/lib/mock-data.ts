@@ -117,7 +117,7 @@ const initialPatientAppointments: Appointment[] = [
     {
         id: '1',
         doctorName: 'Dr. Arjun Sharma',
-        patientName: 'Patient Zero',
+        patientName: 'Guest',
         date: '2024-08-10',
         time: '10:00 AM',
         type: 'Hospital',
@@ -126,7 +126,7 @@ const initialPatientAppointments: Appointment[] = [
     {
         id: '2',
         doctorName: 'Dr. Rohan Patel',
-        patientName: 'Patient Zero',
+        patientName: 'Guest',
         date: '2024-08-15',
         time: '02:30 PM',
         type: 'Online',
@@ -136,7 +136,7 @@ const initialPatientAppointments: Appointment[] = [
     {
         id: '3',
         doctorName: 'Dr. Sunita Gupta',
-        patientName: 'Patient Zero',
+        patientName: 'Guest',
         date: '2024-07-05',
         time: '09:00 AM',
         type: 'Hospital',
@@ -146,8 +146,8 @@ const initialPatientAppointments: Appointment[] = [
 
 const initialEmployeeAppointments: Appointment[] = [
     {
-        id: '1',
-        doctorName: 'Dr. Employee',
+        id: 'emp1',
+        doctorName: 'Dr. Arjun Sharma',
         patientName: 'Ravi Kumar',
         date: '2024-08-10',
         time: '11:00 AM',
@@ -155,8 +155,8 @@ const initialEmployeeAppointments: Appointment[] = [
         status: 'Upcoming',
     },
     {
-        id: '2',
-        doctorName: 'Dr. Employee',
+        id: 'emp2',
+        doctorName: 'Dr. Arjun Sharma',
         patientName: 'Sunita Devi',
         date: '2024-08-11',
         time: '03:00 PM',
@@ -165,8 +165,8 @@ const initialEmployeeAppointments: Appointment[] = [
         meetingLink: 'https://meet.google.com/vwx-yza-bcd'
     },
      {
-        id: '3',
-        doctorName: 'Dr. Employee',
+        id: 'emp3',
+        doctorName: 'Dr. Arjun Sharma',
         patientName: 'Amit Patel',
         date: '2024-07-08',
         time: '01:00 PM',

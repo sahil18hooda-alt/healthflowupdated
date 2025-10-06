@@ -131,7 +131,7 @@ function PatientAppointments({ onAppointmentRequest }: { onAppointmentRequest: (
         let summary: string | undefined;
         if(data.problemDescription) {
             try {
-                const triageResult = await inquiryTriage({ message: data.problemDescription, fileDataUri: fileDataUri });
+                const triageResult = await inquiryTriage({ message: data.problemDescription });
                 summary = triageResult.summary;
             } catch (error) {
                 console.error("Error with AI summary", error);
@@ -356,52 +356,36 @@ function PatientRequests({ appointmentRequests, user }: { appointmentRequests: A
 function AppointmentsPageContent() {
     const searchParams = useSearchParams();
     const role = searchParams.get('role');
-    const user = useMemo(() => ({ name: role === 'employee' ? 'Dr. Employee' : 'Guest', role: (role === 'employee' ? 'employee' : 'patient') as UserRole }), [role]);
+    const user = useMemo(() => ({ name: role === 'employee' ? 'Dr. Arjun Sharma' : 'Guest', role: (role === 'employee' ? 'employee' : 'patient') as UserRole }), [role]);
     
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [appointmentRequests, setAppointmentRequests] = useState<AppointmentRequest[]>([]);
     const tabFromQuery = searchParams.get('tab');
 
-    const fetchAppointments = useCallback(() => {
+    const fetchData = useCallback(() => {
         const allAppointments = user.role === 'patient' ? getPatientAppointments(user.name) : getEmployeeAppointments(user.name);
         setAppointments(allAppointments);
+        setAppointmentRequests(getAppointmentRequests());
     }, [user]);
 
-    const fetchRequests = useCallback(() => {
-        setAppointmentRequests(getAppointmentRequests());
-    }, []);
-
-
     useEffect(() => {
-        fetchAppointments();
-        fetchRequests();
+        fetchData();
 
-        // Listen for custom storage events to update data in real-time
-        window.addEventListener('storage-update', (e) => {
+        const handleStorageUpdate = (e: Event) => {
             const event = e as CustomEvent;
-            if (event.detail.key === 'allAppointments') {
-                fetchAppointments();
+            if (['allAppointments', 'appointmentRequests'].includes(event.detail.key)) {
+                fetchData();
             }
-            if (event.detail.key === 'appointmentRequests') {
-                fetchRequests();
-            }
-        });
+        };
+        window.addEventListener('storage-update', handleStorageUpdate);
 
-        // Fallback polling for other tabs/windows
-        const interval = setInterval(() => {
-            fetchAppointments();
-            fetchRequests();
-        }, 5000); 
+        const interval = setInterval(fetchData, 5000); 
 
         return () => {
-             window.removeEventListener('storage-update', (e) => {
-                const event = e as CustomEvent;
-                if (event.detail.key === 'allAppointments') fetchAppointments();
-                if (event.detail.key === 'appointmentRequests') fetchRequests();
-            });
+             window.removeEventListener('storage-update', handleStorageUpdate);
             clearInterval(interval);
         };
-    }, [fetchAppointments, fetchRequests]);
+    }, [fetchData]);
 
 
     const handleNewRequest = (newRequest: AppointmentRequest) => {

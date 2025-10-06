@@ -12,8 +12,8 @@ import {
     ChartLegendContent,
   } from '@/components/ui/chart';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, Tooltip, ResponsiveContainer } from 'recharts';
-import { getEmployeeAppointments, getAppointmentRequests, getMessages } from '@/lib/mock-data';
-import { useMemo } from 'react';
+import { getEmployeeAppointments, getAppointmentRequests, getMessages, ChatMessage } from '@/lib/mock-data';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 import { format } from 'date-fns';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -69,9 +69,37 @@ function EngagementChart() {
 }
 
 export default function EmployeeDashboard({ name }: { name: string }) {
-  const appointments = getEmployeeAppointments(name);
-  const appointmentRequests = getAppointmentRequests();
-  const messages = getMessages();
+  const [appointments, setAppointments] = useState(() => getEmployeeAppointments(name));
+  const [requests, setRequests] = useState(() => getAppointmentRequests());
+  const [messages, setMessages] = useState(() => getMessages());
+  
+  const fetchData = useCallback(() => {
+    setAppointments(getEmployeeAppointments(name));
+    setRequests(getAppointmentRequests());
+    setMessages(getMessages());
+  }, [name]);
+  
+  useEffect(() => {
+    fetchData();
+
+    const handleStorageUpdate = (e: Event) => {
+        const event = e as CustomEvent;
+        // Check if the update is relevant to any of the data displayed on the dashboard
+        if (['allAppointments', 'appointmentRequests', 'chatMessages'].includes(event.detail.key)) {
+            fetchData();
+        }
+    };
+    window.addEventListener('storage-update', handleStorageUpdate);
+
+    // Fallback polling for other tabs/windows
+    const interval = setInterval(fetchData, 5000); 
+
+    return () => {
+        window.removeEventListener('storage-update', handleStorageUpdate);
+        clearInterval(interval);
+    };
+  }, [fetchData]);
+
 
   const todaysAppointmentsCount = useMemo(() => {
     const today = format(new Date(), 'yyyy-MM-dd');
@@ -79,8 +107,8 @@ export default function EmployeeDashboard({ name }: { name: string }) {
   }, [appointments]);
 
   const pendingRequestsCount = useMemo(() => {
-    return appointmentRequests.filter(req => req.status === 'Pending').length;
-  }, [appointmentRequests]);
+    return requests.filter(req => req.status === 'Pending').length;
+  }, [requests]);
   
   const lastMessage = useMemo(() => messages[messages.length - 1], [messages]);
   const patientImage = `https://avatar.vercel.sh/guest.png`;
