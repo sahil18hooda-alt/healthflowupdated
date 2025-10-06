@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Image from 'next/image';
 import { Bot, Loader2, UploadCloud, ScanSearch, AlertTriangle, Trash2, Download, MessageSquare } from 'lucide-react';
