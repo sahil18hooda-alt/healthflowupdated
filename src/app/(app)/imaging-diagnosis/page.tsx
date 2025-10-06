@@ -15,6 +15,8 @@ import { diagnoseImage } from '@/ai/flows/ai-imaging-diagnosis-flow';
 import type { ImagingDiagnosisOutput } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export default function ImagingDiagnosisPage() {
   const [image, setImage] = useState<string | null>(null);
@@ -61,13 +63,41 @@ export default function ImagingDiagnosisPage() {
   };
   
    const handleDownloadReport = () => {
-    // In a real app, this would generate and download a PDF
-    toast({
-        title: "Download Initiated",
-        description: "Your report is being prepared for download.",
-    });
-    console.log("Simulating PDF report download for:", analysis);
-  };
+        const reportElement = document.getElementById('ai-report-card');
+        if (!reportElement || !analysis) {
+            toast({
+                title: "Error",
+                description: "Cannot download report right now. Please try again.",
+                variant: "destructive"
+            });
+            return;
+        }
+
+        toast({
+            title: "Generating PDF...",
+            description: "Your report is being prepared for download.",
+        });
+
+        html2canvas(reportElement, { scale: 2 }).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('p', 'px', 'a4');
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
+            const ratio = canvasWidth / canvasHeight;
+            const width = pdfWidth;
+            const height = width / ratio;
+
+            let position = 0;
+            if (height < pdfHeight) {
+                position = (pdfHeight - height) / 2;
+            }
+            
+            pdf.addImage(imgData, 'PNG', 0, position, width, height);
+            pdf.save(`HealthFlow_Imaging_Report_${new Date().toISOString().split('T')[0]}.pdf`);
+        });
+    };
 
   return (
     <div className="space-y-6">
@@ -140,7 +170,7 @@ export default function ImagingDiagnosisPage() {
       )}
 
       {(isLoading || analysis) && (
-        <Card>
+        <Card id="ai-report-card">
           <CardHeader>
             <CardTitle>AI Diagnostic Report</CardTitle>
             <CardDescription>This is a preliminary analysis. Please review with your doctor.</CardDescription>

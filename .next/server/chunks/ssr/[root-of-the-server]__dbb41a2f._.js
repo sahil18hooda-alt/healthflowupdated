@@ -338,10 +338,11 @@ const ImagingDiagnosisOutputSchema = __TURBOPACK__imported__module__$5b$project$
     })).describe('A list of potential conditions identified in the image.'),
     summary: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('A high-level summary of the overall findings, written in clear, accessible language.'),
     observations: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('A more detailed, point-by-point breakdown of what the AI observed in the image (e.g., "Observed an opacity in the lower left lung lobe.").'),
-    disclaimer: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('A mandatory warning that this analysis is not a substitute for a professional diagnosis.')
+    disclaimer: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe('A mandatory warning that this analysis is not a substitute for a professional diagnosis.'),
+    heatmapDataUri: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().optional().describe('A data URI of the generated heatmap visualization.')
 });
-const prompt = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"].definePrompt({
-    name: 'imagingDiagnosisPrompt',
+const textAnalysisPrompt = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"].definePrompt({
+    name: 'imagingDiagnosisTextPrompt',
     input: {
         schema: ImagingDiagnosisInputSchema
     },
@@ -361,13 +362,50 @@ Analyze the image for any abnormalities or significant findings.
 If the image does not appear to be a medical scan or is unclear, state that in the summary and observations.
 `
 });
+const generateHeatmapFlow = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"].defineFlow({
+    name: 'generateHeatmapFlow',
+    inputSchema: ImagingDiagnosisInputSchema,
+    outputSchema: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string()
+}, async (flowInput)=>{
+    const { media } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"].generate({
+        model: 'googleai/gemini-2.5-flash-image-preview',
+        prompt: [
+            {
+                media: {
+                    url: flowInput.image
+                }
+            },
+            {
+                text: 'Based on the provided medical image (like an X-ray or CT scan), generate a simulated Grad-CAM heatmap. The heatmap should be a plausible visualization of where an AI might focus its attention to make a diagnosis. Overlay this heatmap onto the original image. The heatmap should use a color scale from yellow (low attention) to red (high attention) and be semi-transparent.'
+            }
+        ],
+        config: {
+            responseModalities: [
+                'TEXT',
+                'IMAGE'
+            ]
+        }
+    });
+    return media.url;
+});
 const diagnoseImageFlow = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"].defineFlow({
     name: 'diagnoseImageFlow',
     inputSchema: ImagingDiagnosisInputSchema,
     outputSchema: ImagingDiagnosisOutputSchema
 }, async (flowInput)=>{
-    const { output } = await prompt(flowInput);
-    return output;
+    // Run text analysis and heatmap generation in parallel
+    const [textAnalysisResult, heatmapResult] = await Promise.all([
+        textAnalysisPrompt(flowInput),
+        generateHeatmapFlow(flowInput)
+    ]);
+    const { output } = textAnalysisResult;
+    if (!output) {
+        throw new Error('Text analysis failed to produce an output.');
+    }
+    return {
+        ...output,
+        heatmapDataUri: heatmapResult
+    };
 });
 async function diagnoseImage(input) {
     return diagnoseImageFlow(input);
