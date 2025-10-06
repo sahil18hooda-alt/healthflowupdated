@@ -185,6 +185,7 @@ export interface ImagingDiagnosisOutput {
   observations: string;
   disclaimer: string;
   heatmapDataUri?: string;
+  recommendedDepartment: string;
 }
 
 export type ImagingReport = {

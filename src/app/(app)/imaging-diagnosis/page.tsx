@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Image from 'next/image';
-import { Bot, Loader2, UploadCloud, ScanSearch, AlertTriangle, Trash2, Download } from 'lucide-react';
+import { Bot, Loader2, UploadCloud, ScanSearch, AlertTriangle, Trash2, Download, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -189,6 +189,13 @@ export default function ImagingDiagnosisPage() {
                 </div>
             ) : analysis && (
                 <>
+                    <Alert variant="default">
+                        <AlertTitle className="text-lg">Recommended Department for Follow-up</AlertTitle>
+                        <AlertDescription className="text-base font-semibold text-primary">
+                            {analysis.recommendedDepartment}
+                        </AlertDescription>
+                    </Alert>
+
                     <div>
                         <h3 className="font-semibold text-lg mb-2">Overall Summary</h3>
                         <p className="text-sm text-muted-foreground">{analysis.summary}</p>
@@ -242,10 +249,14 @@ export default function ImagingDiagnosisPage() {
             )}
           </CardContent>
            {analysis && (
-            <CardFooter>
+            <CardFooter className="gap-4">
                     <Button onClick={handleDownloadReport} disabled={!analysis}>
                         <Download className="mr-2 h-4 w-4" />
                         Download Report (PDF)
+                    </Button>
+                    <Button variant="outline" disabled={!analysis}>
+                        <MessageSquare className="mr-2 h-4 w-4" />
+                        Chat with Doctor
                     </Button>
                 </CardFooter>
             )}

@@ -24,6 +24,7 @@ const ImagingDiagnosisOutputSchema = z.object({
     })).describe('A list of potential conditions identified in the image.'),
     summary: z.string().describe('A high-level summary of the overall findings, written in clear, accessible language.'),
     observations: z.string().describe('A more detailed, point-by-point breakdown of what the AI observed in the image (e.g., "Observed an opacity in the lower left lung lobe.").'),
+    recommendedDepartment: z.string().describe('The single most appropriate medical department for follow-up based on the findings (e.g., "Pulmonology", "Oncology", "Orthopedics").'),
     disclaimer: z.string().describe('A mandatory warning that this analysis is not a substitute for a professional diagnosis.'),
     heatmapDataUri: z.string().optional().describe('A data URI of the generated heatmap visualization.'),
 });
@@ -40,9 +41,10 @@ Analyze the image for any abnormalities or significant findings.
 1.  Identify a list of 'potentialConditions'. For each condition, provide your 'confidence' score as a percentage (0-100).
 2.  Write a concise 'summary' of your findings in simple terms.
 3.  Provide a bulleted list of detailed 'observations'.
-4.  You MUST include the following 'disclaimer': "This AI-generated analysis is for informational purposes only and is NOT a substitute for a professional diagnosis from a qualified radiologist or physician. Please consult with your healthcare provider to review these findings."
+4.  Based on your findings, determine the single most appropriate 'recommendedDepartment' for a follow-up (e.g., "Pulmonology", "Oncology", "Orthopedics").
+5.  You MUST include the following 'disclaimer': "This AI-generated analysis is for informational purposes only and is NOT a substitute for a professional diagnosis from a qualified radiologist or physician. Please consult with your healthcare provider to review these findings."
 
-If the image does not appear to be a medical scan or is unclear, state that in the summary and observations.
+If the image does not appear to be a medical scan or is unclear, state that in the summary and observations, and set the department to "General Practice".
 `,
 });
 
