@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Calendar, Users, Clock, ArrowRight, BarChart3, AlertCircle } from 'lucide-react';
+import { Calendar, Users, Clock, ArrowRight, BarChart3, AlertCircle, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import {
@@ -12,9 +12,11 @@ import {
     ChartLegendContent,
   } from '@/components/ui/chart';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, Tooltip, ResponsiveContainer } from 'recharts';
-import { getEmployeeAppointments, getAppointmentRequests } from '@/lib/mock-data';
+import { getEmployeeAppointments, getAppointmentRequests, getMessages } from '@/lib/mock-data';
 import { useMemo } from 'react';
 import { format } from 'date-fns';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const chartData = [
     { month: 'January', new: 186, recurring: 80 },
@@ -69,6 +71,7 @@ function EngagementChart() {
 export default function EmployeeDashboard({ name }: { name: string }) {
   const appointments = getEmployeeAppointments(name);
   const appointmentRequests = getAppointmentRequests();
+  const messages = getMessages();
 
   const todaysAppointmentsCount = useMemo(() => {
     const today = format(new Date(), 'yyyy-MM-dd');
@@ -78,6 +81,9 @@ export default function EmployeeDashboard({ name }: { name: string }) {
   const pendingRequestsCount = useMemo(() => {
     return appointmentRequests.filter(req => req.status === 'Pending').length;
   }, [appointmentRequests]);
+  
+  const lastMessage = useMemo(() => messages[messages.length - 1], [messages]);
+  const patientImage = `https://avatar.vercel.sh/guest.png`;
 
 
   return (
@@ -131,17 +137,34 @@ export default function EmployeeDashboard({ name }: { name: string }) {
         </Card>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <EngagementChart />
+        
         <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Doctor-Patient Ratio</CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-                <div className="text-2xl font-bold">1:25</div>
-                <p className="text-xs text-muted-foreground">Represents doctors per patient</p>
-            </CardContent>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2"><MessageSquare /> Recent Messages</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {lastMessage ? (
+              <div className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <Avatar>
+                    <AvatarImage src={lastMessage.sender === name ? undefined : patientImage} />
+                    <AvatarFallback>{lastMessage.sender.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div className="space-y-1">
+                    <p className="font-semibold">{lastMessage.sender}</p>
+                    <p className="text-sm text-muted-foreground truncate">{lastMessage.content}</p>
+                  </div>
+                </div>
+                <Button variant="outline" asChild className="w-full">
+                  <Link href="/doctor-chat?role=employee">View All Messages</Link>
+                </Button>
+              </div>
+            ) : (
+              <p className="text-muted-foreground text-center">No new messages.</p>
+            )}
+          </CardContent>
         </Card>
       </div>
     </div>

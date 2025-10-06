@@ -1,6 +1,6 @@
 
 
-import type { Doctor, HospitalReview, Appointment, AttendanceRecord, AppointmentRequest, Medication } from './types';
+import type { Doctor, HospitalReview, Appointment, AttendanceRecord, AppointmentRequest, Medication, ChatMessage } from './types';
 
 // Custom event for storage updates
 const dispatchStorageEvent = (key: string) => {
@@ -200,6 +200,31 @@ const initialAppointmentRequests: AppointmentRequest[] = [
     },
   ];
 
+const initialChatMessages: ChatMessage[] = [
+  { id: 'msg1', sender: 'Dr. Arjun Sharma', receiver: 'Guest', content: "Hello! I've reviewed the report you sent over. I'm happy to discuss the results with you. What's on your mind?", timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString()},
+  { id: 'msg2', sender: 'Guest', receiver: 'Dr. Arjun Sharma', content: "Thanks, Doctor. I was a bit worried about the 'minor opacity' mentioned in the summary. What does that mean?", timestamp: new Date(Date.now() - 1000 * 60 * 3).toISOString()},
+  { id: 'msg3', sender: 'Dr. Arjun Sharma', receiver: 'Guest', content: "That's a very common question. An 'opacity' is just a term for an area that looks lighter on an X-ray. In your case, it's very small and likely just some leftover inflammation from a past cold. It's not something to be concerned about at this stage.", timestamp: new Date(Date.now() - 1000 * 60 * 1).toISOString()},
+];
+
+export const getMessages = () => {
+    return getStoredData<ChatMessage[]>('chatMessages', initialChatMessages);
+}
+
+export const addMessage = (sender: string, receiver: string, content: string): ChatMessage => {
+    const messages = getMessages();
+    const newMessage: ChatMessage = {
+        id: `msg${Date.now()}`,
+        sender,
+        receiver,
+        content,
+        timestamp: new Date().toISOString()
+    };
+    const updatedMessages = [...messages, newMessage];
+    setStoredData('chatMessages', updatedMessages);
+    return newMessage;
+};
+
+
 // !! IMPORTANT !!
 // Replace this with your actual n8n webhook URL.
 const N8N_MEET_WEBHOOK_URL = 'PASTE_YOUR_N8N_WEBHOOK_URL_HERE';
@@ -386,5 +411,3 @@ export const addMedication = (medication: Omit<Medication, 'id'>): Medication =>
     mockMedications.push(newMedication);
     return newMedication;
 };
-
-    

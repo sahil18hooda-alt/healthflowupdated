@@ -68,6 +68,14 @@ export type Medication = {
   time: string[];
 };
 
+export type ChatMessage = {
+  id: string;
+  sender: string;
+  receiver: string;
+  content: string;
+  timestamp: string;
+}
+
 export type WearableData = {
     steps: number;
     heartRate: number;
