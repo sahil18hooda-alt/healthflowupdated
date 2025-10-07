@@ -33,5 +33,95 @@
       "interactions_found": false,
       "details": []
     }
+  },
+  {
+    "id": "interaction_004",
+    "medications": ["Simvastatin", "Grapefruit juice"],
+    "ground_truth": {
+      "interactions_found": true,
+      "details": [
+        {
+          "pair": ["Simvastatin", "Grapefruit juice"],
+          "severity": "Major"
+        }
+      ]
+    }
+  },
+  {
+    "id": "interaction_005",
+    "medications": ["Amoxicillin", "Tylenol"],
+    "ground_truth": {
+      "interactions_found": false,
+      "details": []
+    }
+  },
+  {
+    "id": "interaction_006",
+    "medications": ["Sildenafil", "Nitroglycerin"],
+    "ground_truth": {
+      "interactions_found": true,
+      "details": [
+        {
+          "pair": ["Sildenafil", "Nitroglycerin"],
+          "severity": "Major"
+        }
+      ]
+    }
+  },
+  {
+    "id": "interaction_007",
+    "medications": ["Citalopram", "St. John's Wort"],
+    "ground_truth": {
+      "interactions_found": true,
+      "details": [
+        {
+          "pair": ["Citalopram", "St. John's Wort"],
+          "severity": "Major"
+        }
+      ]
+    }
+  },
+  {
+    "id": "interaction_008",
+    "medications": ["Warfarin", "Aspirin", "Ibuprofen"],
+    "ground_truth": {
+      "interactions_found": true,
+      "details": [
+        {
+          "pair": ["Warfarin", "Aspirin"],
+          "severity": "Major"
+        },
+        {
+          "pair": ["Warfarin", "Ibuprofen"],
+          "severity": "Major"
+        }
+      ]
+    }
+  },
+  {
+    "id": "interaction_009",
+    "medications": ["Metformin", "Glipizide"],
+    "ground_truth": {
+      "interactions_found": true,
+      "details": [
+        {
+          "pair": ["Metformin", "Glipizide"],
+          "severity": "Moderate"
+        }
+      ]
+    }
+  },
+  {
+    "id": "interaction_010",
+    "medications": ["Loratadine", "Benadryl"],
+    "ground_truth": {
+      "interactions_found": true,
+      "details": [
+        {
+          "pair": ["Loratadine", "Benadryl"],
+          "severity": "Minor"
+        }
+      ]
+    }
   }
 ]

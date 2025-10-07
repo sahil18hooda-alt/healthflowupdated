@@ -26,5 +26,86 @@
       "urgency": "Medium",
       "department": "Appointments Desk"
     }
+  },
+  {
+    "id": "inquiry_004",
+    "message": "What are your visiting hours for the general ward?",
+    "ground_truth": {
+      "topic": "Other",
+      "urgency": "Low",
+      "department": "General Info"
+    }
+  },
+  {
+    "id": "inquiry_005",
+    "message": "My son has a fever of 103F and is very drowsy. What should I do?",
+    "ground_truth": {
+      "topic": "Medical Question",
+      "urgency": "High",
+      "department": "Nursing Staff"
+    }
+  },
+  {
+    "id": "inquiry_006",
+    "message": "There seems to be a mistake on my latest bill. I was charged for a service I didn't receive.",
+    "ground_truth": {
+      "topic": "Billing",
+      "urgency": "Medium",
+      "department": "Billing Department"
+    }
+  },
+  {
+    "id": "inquiry_007",
+    "message": "I need to cancel my appointment for tomorrow at 10am with Dr. Patel.",
+    "ground_truth": {
+      "topic": "Scheduling",
+      "urgency": "Medium",
+      "department": "Appointments Desk"
+    }
+  },
+  {
+    "id": "inquiry_008",
+    "message": "My father fell and hit his head, he's bleeding and not responding.",
+    "ground_truth": {
+      "topic": "Medical Question",
+      "urgency": "Emergency",
+      "department": "Nursing Staff"
+    }
+  },
+  {
+    "id": "inquiry_009",
+    "message": "Can the pharmacy deliver my mother's medication to her home?",
+    "ground_truth": {
+      "topic": "Prescription",
+      "urgency": "Low",
+      "department": "Pharmacy"
+    }
+  },
+  {
+    "id": "inquiry_010",
+    "message": "I have a weird rash on my arm. It's been there for a few days and it's itchy.",
+    "ground_truth": {
+      "topic": "Medical Question",
+      "urgency": "Medium",
+      "department": "Nursing Staff"
+    }
+  },
+  {
+    "id": "inquiry_011",
+    "message": "Does my insurance cover a consultation with a neurologist?",
+    "ground_truth": {
+      "topic": "Billing",
+      "urgency": "Low",
+      "department": "Billing Department"
+    }
+  },
+  {
+    "id": "inquiry_012",
+    "message": "Hello, I think I'm having an allergic reaction to a new medication. I have hives all over my body.",
+    "ground_truth": {
+      "topic": "Medical Question",
+      "urgency": "High",
+      "department": "Nursing Staff"
+    }
   }
 ]

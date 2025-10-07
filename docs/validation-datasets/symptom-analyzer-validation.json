@@ -20,5 +20,68 @@
     "ground_truth": {
       "seriousness": "Emergency"
     }
+  },
+  {
+    "id": "symptom_004",
+    "symptoms": "My ankle is swollen and bruised after I twisted it playing soccer. I can't put much weight on it.",
+    "ground_truth": {
+      "seriousness": "Medium"
+    }
+  },
+  {
+    "id": "symptom_005",
+    "symptoms": "I have a constant dull ache in my lower back, and it's been getting worse over the last month.",
+    "ground_truth": {
+      "seriousness": "Medium"
+    }
+  },
+  {
+    "id": "symptom_006",
+    "symptoms": "Sudden vision loss in one eye, with flashing lights and floaters.",
+    "ground_truth": {
+      "seriousness": "Emergency"
+    }
+  },
+  {
+    "id": "symptom_007",
+    "symptoms": "I've been feeling unusually thirsty and have to urinate frequently. I've also lost some weight without trying.",
+    "ground_truth": {
+      "seriousness": "High"
+    }
+  },
+  {
+    "id": "symptom_008",
+    "symptoms": "Just a paper cut on my finger, it bled a little but has stopped now. It's not deep.",
+    "ground_truth": {
+      "seriousness": "Low"
+    }
+  },
+  {
+    "id": "symptom_009",
+    "symptoms": "I feel confused, have a stiff neck, and a severe headache. My eyes are also very sensitive to light.",
+    "ground_truth": {
+      "seriousness": "Emergency"
+    }
+  },
+  {
+    "id": "symptom_010",
+    "symptoms": "Feeling generally under the weather, stuffy nose, and a scratchy throat. No other major issues.",
+    "ground_truth": {
+      "seriousness": "Low"
+    }
+  },
+  {
+    "id": "symptom_011",
+    "symptoms": "I've had a persistent cough for over a month, sometimes with a bit of blood. I'm also sweating a lot at night.",
+    "ground_truth": {
+      "seriousness": "High"
+    }
+  },
+  {
+    "id": "symptom_012",
+    "symptoms": "After eating peanuts, my lips are swelling and I'm having trouble breathing.",
+    "ground_truth": {
+      "seriousness": "Emergency"
+    }
   }
 ]
