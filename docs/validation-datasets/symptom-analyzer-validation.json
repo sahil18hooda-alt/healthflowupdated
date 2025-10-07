@@ -1,0 +1,24 @@
+
+[
+  {
+    "id": "symptom_001",
+    "symptoms": "I have a slight headache and a runny nose, but no fever. It's been like this for a day.",
+    "ground_truth": {
+      "seriousness": "Low"
+    }
+  },
+  {
+    "id": "symptom_002",
+    "symptoms": "I've had a fever of 102°F for three days, a deep cough, and I'm feeling very weak and tired.",
+    "ground_truth": {
+      "seriousness": "High"
+    }
+  },
+  {
+    "id": "symptom_003",
+    "symptoms": "I'm experiencing sudden, severe abdominal pain on my lower right side, and I feel nauseous.",
+    "ground_truth": {
+      "seriousness": "Emergency"
+    }
+  }
+]

@@ -7,6 +7,7 @@
   "/(app)/fitness-coach/page": "app/(app)/fitness-coach/page.js",
   "/(app)/imaging-diagnosis/page": "app/(app)/imaging-diagnosis/page.js",
   "/(app)/lab-report-analyzer/page": "app/(app)/lab-report-analyzer/page.js",
+  "/(app)/model-accuracy/page": "app/(app)/model-accuracy/page.js",
   "/(app)/queue-status/page": "app/(app)/queue-status/page.js",
   "/(app)/requests/page": "app/(app)/requests/page.js",
   "/(app)/reviews/page": "app/(app)/reviews/page.js",

@@ -1,0 +1,30 @@
+
+[
+  {
+    "id": "inquiry_001",
+    "message": "Hi, I need to refill my prescription for lisinopril. Thanks.",
+    "ground_truth": {
+      "topic": "Prescription",
+      "urgency": "Low",
+      "department": "Pharmacy"
+    }
+  },
+  {
+    "id": "inquiry_002",
+    "message": "I can't breathe and I have severe chest pain. I feel like I'm going to pass out.",
+    "ground_truth": {
+      "topic": "Medical Question",
+      "urgency": "Emergency",
+      "department": "Nursing Staff"
+    }
+  },
+  {
+    "id": "inquiry_003",
+    "message": "I want to book an appointment with Dr. Sharma for next week. I also have a question about my last bill.",
+    "ground_truth": {
+      "topic": "Scheduling",
+      "urgency": "Medium",
+      "department": "Appointments Desk"
+    }
+  }
+]

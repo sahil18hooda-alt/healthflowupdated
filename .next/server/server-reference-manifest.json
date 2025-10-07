@@ -34,6 +34,10 @@
           "moduleId": "[project]/.next-internal/server/app/(app)/lab-report-analyzer/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-lab-report-analyzer.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
+        "app/(app)/model-accuracy/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/model-accuracy/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        },
         "app/(app)/queue-status/page": {
           "moduleId": "[project]/.next-internal/server/app/(app)/queue-status/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/ai/flows/ai-queue-management.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
@@ -60,6 +64,7 @@
         "app/(app)/fitness-coach/page": "action-browser",
         "app/(app)/imaging-diagnosis/page": "action-browser",
         "app/(app)/lab-report-analyzer/page": "action-browser",
+        "app/(app)/model-accuracy/page": "action-browser",
         "app/(app)/queue-status/page": "action-browser",
         "app/(app)/requests/page": "action-browser",
         "app/(app)/reviews/page": "action-browser",

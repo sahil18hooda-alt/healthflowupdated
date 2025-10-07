@@ -1,0 +1,37 @@
+
+[
+  {
+    "id": "interaction_001",
+    "medications": ["Lisinopril", "Ibuprofen"],
+    "ground_truth": {
+      "interactions_found": true,
+      "details": [
+        {
+          "pair": ["Lisinopril", "Ibuprofen"],
+          "severity": "Moderate"
+        }
+      ]
+    }
+  },
+  {
+    "id": "interaction_002",
+    "medications": ["Warfarin", "Aspirin"],
+    "ground_truth": {
+      "interactions_found": true,
+      "details": [
+        {
+          "pair": ["Warfarin", "Aspirin"],
+          "severity": "Major"
+        }
+      ]
+    }
+  },
+  {
+    "id": "interaction_003",
+    "medications": ["Metformin", "Vitamin D3"],
+    "ground_truth": {
+      "interactions_found": false,
+      "details": []
+    }
+  }
+]
