@@ -3,21 +3,97 @@
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Image from 'next/image';
-import { Bot, Loader2, UploadCloud, TestTube, AlertTriangle, Trash2 } from 'lucide-react';
+import Link from 'next/link';
+import { Bot, Loader2, UploadCloud, TestTube, AlertTriangle, Trash2, Download, MessageSquare, Plus, Minus, Info, ClipboardList } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
 import { analyzeLabReport } from '@/ai/flows/ai-lab-report-analyzer';
-import type { LabReportAnalysisOutput } from '@/lib/types';
+import type { LabReportAnalysisOutput, LabReportMetric } from '@/lib/types';
+import { useToast } from '@/hooks/use-toast';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
+const MetricDetail = ({ title, content, icon }: { title: string, content: string | undefined, icon: React.ReactNode }) => {
+    if (!content) return null;
+    return (
+        <div className="mt-4">
+            <h4 className="font-semibold text-sm flex items-center gap-2 mb-2">
+                {icon} {title}
+            </h4>
+            <div className="prose prose-sm max-w-none text-muted-foreground pl-6">
+                <ul className="list-disc">
+                    {content.split(/[-•\n]/).map((item, index) => item.trim() && <li key={index}>{item.trim()}</li>)}
+                </ul>
+            </div>
+        </div>
+    )
+}
+
+const ResultCard = ({ metric }: { metric: LabReportMetric }) => {
+  const getInterpretationStyles = (interpretation: string): { card: string, icon: React.ReactNode, text: string } => {
+    const lower = interpretation.toLowerCase();
+    if (lower.includes('high') || lower.includes('low')) {
+        return { card: 'border-red-500/50 bg-red-500/5', icon: <AlertTriangle className="h-5 w-5 text-red-500" />, text: 'text-red-600' };
+    }
+    if (lower.includes('borderline')) {
+        return { card: 'border-yellow-500/50 bg-yellow-500/5', icon: <AlertTriangle className="h-5 w-5 text-yellow-500" />, text: 'text-yellow-600' };
+    }
+    return { card: 'border-green-500/50 bg-green-500/5', icon: <ClipboardList className="h-5 w-5 text-green-500" />, text: 'text-green-600' };
+  };
+
+  const styles = getInterpretationStyles(metric.interpretation);
+  const isNormal = metric.interpretation === 'Normal';
+
+  return (
+    <AccordionItem value={metric.metric} className={cn("rounded-lg border-2 mb-3", styles.card)}>
+      <AccordionTrigger className="p-4 text-left hover:no-underline">
+        <div className="flex items-center justify-between w-full">
+            <div className='flex items-center gap-4'>
+                {styles.icon}
+                <div className="flex-col">
+                    <p className="font-bold text-base">{metric.metric}</p>
+                    <p className="text-sm text-muted-foreground">Normal Range: {metric.normalRange}</p>
+                </div>
+            </div>
+            <div className="text-right">
+                <p className={cn('text-lg font-bold', styles.text)}>{metric.value}</p>
+                <p className={cn('text-sm font-semibold', styles.text)}>{metric.interpretation}</p>
+            </div>
+        </div>
+      </AccordionTrigger>
+      <AccordionContent className="p-4 pt-0">
+          <div className="border-t-2 pt-4">
+              {isNormal ? (
+                <p className="text-sm text-muted-foreground">{metric.explanation}</p>
+              ) : (
+                <>
+                    <p className="text-sm text-muted-foreground mb-4">{metric.explanation}</p>
+                    <MetricDetail title="Possible Reasons" content={metric.possibleCauses} icon={<Info className="h-4 w-4" />} />
+                    <MetricDetail title="What You Can Do" content={metric.recommendedActions} icon={<ClipboardList className="h-4 w-4" />} />
+                    {metric.recommendedDepartment && 
+                        <div className="mt-4">
+                            <h4 className="font-semibold text-sm flex items-center gap-2 mb-2">Recommended Department</h4>
+                            <p className="pl-6 text-primary font-bold">{metric.recommendedDepartment}</p>
+                        </div>
+                    }
+                </>
+              )}
+          </div>
+      </AccordionContent>
+    </AccordionItem>
+  );
+};
+
 
 export default function LabReportAnalyzerPage() {
   const [reportImage, setReportImage] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<LabReportAnalysisOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
@@ -55,26 +131,40 @@ export default function LabReportAnalyzerPage() {
     }
   };
 
-   const getInterpretationVariant = (interpretation: string): "default" | "destructive" | "secondary" => {
-    const lowerCaseInterpretation = interpretation.toLowerCase();
-    if (lowerCaseInterpretation.includes('high') || lowerCaseInterpretation.includes('low')) {
-        return "destructive";
+  const handleDownloadReport = () => {
+    const reportElement = document.getElementById('ai-report');
+    if (!reportElement) {
+        toast({ title: "Error downloading report", variant: "destructive" });
+        return;
     }
-    if (lowerCaseInterpretation.includes('normal')) {
-        return "default";
-    }
-    return "secondary";
+    toast({ title: "Generating PDF..." });
+    html2canvas(reportElement, { scale: 2 }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height;
+        const ratio = imgWidth / imgHeight;
+        let width = pdfWidth;
+        let height = width / ratio;
+        if (height > pdfHeight) {
+            height = pdfHeight;
+            width = height * ratio;
+        }
+        pdf.addImage(imgData, 'PNG', 0, 0, width, height);
+        pdf.save(`Lab_Report_Analysis_${new Date().toISOString().split('T')[0]}.pdf`);
+    });
   };
-
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold flex items-center gap-2">
-          <TestTube /> AI Lab Report Analyzer
+          <TestTube /> Intelligent Lab Report Interpreter
         </h1>
         <p className="text-muted-foreground">
-          Upload a photo of your lab report for an easy-to-understand analysis.
+          Upload a photo of your lab report for a detailed, AI-powered explanation.
         </p>
       </div>
 
@@ -123,43 +213,25 @@ export default function LabReportAnalyzerPage() {
       )}
 
       {analysis && (
-        <Card>
+        <Card id="ai-report">
           <CardHeader>
             <CardTitle>Analysis Results</CardTitle>
             <CardDescription>Here is a summary and breakdown of your lab report.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
+             <Alert>
+                <Bot className="h-4 w-4" />
+                <AlertTitle>Overall Health Summary</AlertTitle>
+                <AlertDescription>{analysis.overallSummary}</AlertDescription>
+            </Alert>
+            
             <div>
-                <h3 className="font-semibold text-lg mb-2">Summary</h3>
-                <p className="text-sm text-muted-foreground">{analysis.summary}</p>
-            </div>
-
-            <div>
-                <h3 className="font-semibold text-lg mb-2">Key Metrics</h3>
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                        <TableHead>Metric</TableHead>
-                        <TableHead>Value</TableHead>
-                        <TableHead>Normal Range</TableHead>
-                        <TableHead>Interpretation</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {analysis.keyMetrics.map((metric, index) => (
-                        <TableRow key={index}>
-                            <TableCell className="font-medium">{metric.metric}</TableCell>
-                            <TableCell>{metric.value}</TableCell>
-                            <TableCell>{metric.normalRange}</TableCell>
-                            <TableCell>
-                                <Badge variant={getInterpretationVariant(metric.interpretation)}>
-                                    {metric.interpretation}
-                                </Badge>
-                            </TableCell>
-                        </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+                <h3 className="font-semibold text-lg mb-4">Detailed Breakdown</h3>
+                <Accordion type="multiple" className="w-full">
+                    {analysis.keyMetrics.map((metric) => (
+                        <ResultCard key={metric.metric} metric={metric} />
+                    ))}
+                </Accordion>
             </div>
             
             <Alert variant="destructive">
@@ -168,6 +240,18 @@ export default function LabReportAnalyzerPage() {
               <AlertDescription>{analysis.disclaimer}</AlertDescription>
             </Alert>
           </CardContent>
+           <CardFooter className="gap-4">
+                <Button onClick={handleDownloadReport}>
+                    <Download className="mr-2 h-4 w-4" />
+                    Download Report (PDF)
+                </Button>
+                <Button variant="outline" asChild>
+                    <Link href="/doctor-chat?role=patient">
+                        <MessageSquare className="mr-2 h-4 w-4" />
+                        Discuss with Doctor
+                    </Link>
+                </Button>
+            </CardFooter>
         </Card>
       )}
     </div>

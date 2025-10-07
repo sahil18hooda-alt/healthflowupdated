@@ -331,8 +331,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 ;
 ;
 const InquiryTriageInputSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].object({
-    message: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe("The patient's inquiry message."),
-    fileDataUri: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().optional().describe("An optional patient report file as a data URI.")
+    message: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].string().describe("The patient's inquiry message.")
 });
 const InquiryTriageOutputSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].object({
     topic: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$common$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["z"].enum([
@@ -371,18 +370,15 @@ const prompt = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genk
     prompt: `You are an AI assistant in a hospital responsible for triaging incoming patient inquiries.
   Your task is to analyze the patient's message and categorize it for efficient routing.
 
-  Analyze the following message and optional attached file:
+  Analyze the following message:
   Message: "{{{message}}}"
-  {{#if fileDataUri}}
-  Attachment: {{media url=fileDataUri}}
-  {{/if}}
 
-  Based on the message and any attachment, determine the topic, urgency level, and the most appropriate department to handle the request. Provide a short, one-sentence summary of the core request.
+  Based on the message, determine the topic, urgency level, and the most appropriate department to handle the request. Provide a short, one-sentence summary of the core request.
   - For prescription refills or questions, route to 'Pharmacy'.
   - For booking, changing, or canceling appointments, route to 'Appointments Desk'.
   - For medical questions, symptoms, or health concerns, route to 'Nursing Staff'.
   - For questions about bills or insurance, route to 'Billing Department'.
-  - If the inquiry is a medical emergency, set urgency to 'Emergency' and route to 'Nursing Staff'.
+  - If the inquiry is a medical emergency (e.g., mentions "severe pain," "can't breathe," "bleeding"), set urgency to 'Emergency' and route to 'Nursing Staff'.
   - For all other general questions, route to 'General Info'.
   `
 });

@@ -1,12 +1,39 @@
 {
   "app": {
+    "[project]/src/app/(app)/ai-therapist/page": [
+      "static/media/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw-s.p.0faac26c.woff2"
+    ],
+    "[project]/src/app/(app)/appointments/page": [
+      "static/media/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw-s.p.0faac26c.woff2"
+    ],
     "[project]/src/app/(app)/dashboard/page": [
       "static/media/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw-s.p.0faac26c.woff2"
     ],
     "[project]/src/app/(app)/doctor-chat/page": [
       "static/media/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw-s.p.0faac26c.woff2"
     ],
+    "[project]/src/app/(app)/doctors/page": [
+      "static/media/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw-s.p.0faac26c.woff2"
+    ],
+    "[project]/src/app/(app)/fitness-coach/page": [
+      "static/media/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw-s.p.0faac26c.woff2"
+    ],
+    "[project]/src/app/(app)/imaging-diagnosis/page": [
+      "static/media/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw-s.p.0faac26c.woff2"
+    ],
+    "[project]/src/app/(app)/lab-report-analyzer/page": [
+      "static/media/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw-s.p.0faac26c.woff2"
+    ],
+    "[project]/src/app/(app)/queue-status/page": [
+      "static/media/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw-s.p.0faac26c.woff2"
+    ],
     "[project]/src/app/(app)/requests/page": [
+      "static/media/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw-s.p.0faac26c.woff2"
+    ],
+    "[project]/src/app/(app)/reviews/page": [
+      "static/media/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw-s.p.0faac26c.woff2"
+    ],
+    "[project]/src/app/(app)/symptom-analyzer/page": [
       "static/media/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw-s.p.0faac26c.woff2"
     ],
     "[project]/src/app/page": [

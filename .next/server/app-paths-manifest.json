@@ -1,7 +1,16 @@
 {
+  "/(app)/ai-therapist/page": "app/(app)/ai-therapist/page.js",
+  "/(app)/appointments/page": "app/(app)/appointments/page.js",
   "/(app)/dashboard/page": "app/(app)/dashboard/page.js",
   "/(app)/doctor-chat/page": "app/(app)/doctor-chat/page.js",
+  "/(app)/doctors/page": "app/(app)/doctors/page.js",
+  "/(app)/fitness-coach/page": "app/(app)/fitness-coach/page.js",
+  "/(app)/imaging-diagnosis/page": "app/(app)/imaging-diagnosis/page.js",
+  "/(app)/lab-report-analyzer/page": "app/(app)/lab-report-analyzer/page.js",
+  "/(app)/queue-status/page": "app/(app)/queue-status/page.js",
   "/(app)/requests/page": "app/(app)/requests/page.js",
+  "/(app)/reviews/page": "app/(app)/reviews/page.js",
+  "/(app)/symptom-analyzer/page": "app/(app)/symptom-analyzer/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js"
 }

@@ -143,14 +143,21 @@ export interface LabReportAnalysisInput {
     reportImage: string;
 }
 
+export type LabReportMetric = {
+    metric: string;
+    value: string;
+    normalRange: string;
+    interpretation: "High" | "Low" | "Normal" | "Borderline High" | "Borderline Low" | "N/A";
+    explanation?: string;
+    possibleCauses?: string;
+    healthImplications?: string;
+    recommendedActions?: string;
+    recommendedDepartment?: string;
+};
+
 export interface LabReportAnalysisOutput {
-    summary: string;
-    keyMetrics: Array<{
-        metric: string;
-        value: string;
-        normalRange: string;
-        interpretation: "High" | "Low" | "Normal" | "Borderline High" | "Borderline Low" | "N/A";
-    }>;
+    overallSummary: string;
+    keyMetrics: LabReportMetric[];
     disclaimer: string;
 }
 
