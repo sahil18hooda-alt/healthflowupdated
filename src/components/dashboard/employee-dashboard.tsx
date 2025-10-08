@@ -40,7 +40,7 @@ const chartConfig = {
 
 function EngagementChart() {
     return (
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-3">
             <CardHeader>
                 <CardTitle>Patient Engagement</CardTitle>
                 <CardDescription>New vs. Recurring Patients (Last 6 Months)</CardDescription>
@@ -124,7 +124,7 @@ export default function EmployeeDashboard({ name }: { name: string }) {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Today&apos;s Appointments</CardTitle>
+            <CardTitle className="text-sm font-medium">Today's Appointments</CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -167,39 +167,6 @@ export default function EmployeeDashboard({ name }: { name: string }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <EngagementChart />
-        
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2"><MessageSquare /> Recent Message</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {lastMessage ? (
-              <div className="space-y-4">
-                <div className="flex items-start gap-4 p-4 rounded-md bg-muted/50">
-                  <Avatar>
-                    <AvatarImage src={patientImage} />
-                    <AvatarFallback>{lastMessage.sender.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div className="space-y-1 flex-1">
-                    <div className="flex items-center justify-between">
-                         <p className="font-semibold text-sm">{lastMessage.sender}</p>
-                         <p className="text-xs text-muted-foreground">{format(new Date(lastMessage.timestamp), 'p')}</p>
-                    </div>
-                    <p className="text-sm text-muted-foreground truncate">{lastMessage.content || 'Image attachment'}</p>
-                  </div>
-                </div>
-                <Button variant="outline" asChild className="w-full">
-                  <Link href="/doctor-chat?role=employee">Open Chat</Link>
-                </Button>
-              </div>
-            ) : (
-              <div className="text-center py-8">
-                <MessageSquare className="h-10 w-10 text-muted-foreground mx-auto" />
-                <p className="mt-4 text-muted-foreground">No new messages.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

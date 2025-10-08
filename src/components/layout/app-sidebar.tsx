@@ -40,7 +40,6 @@ const patientNavGroups = [
         items: [
             { href: '/appointments', icon: <Calendar />, label: 'My Appointments' },
             { href: '/doctors', icon: <Stethoscope />, label: 'Find a Doctor' },
-            { href: '/doctor-chat', icon: <MessageSquare />, label: 'Chat with Doctor' },
         ]
     },
 ];

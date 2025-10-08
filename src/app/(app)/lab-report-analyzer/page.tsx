@@ -245,12 +245,6 @@ export default function LabReportAnalyzerPage() {
                     <Download className="mr-2 h-4 w-4" />
                     Download Report (PDF)
                 </Button>
-                <Button variant="outline" asChild>
-                    <Link href="/doctor-chat?role=patient">
-                        <MessageSquare className="mr-2 h-4 w-4" />
-                        Discuss with Doctor
-                    </Link>
-                </Button>
             </CardFooter>
         </Card>
       )}
