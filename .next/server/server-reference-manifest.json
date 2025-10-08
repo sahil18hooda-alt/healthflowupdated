@@ -5,10 +5,15 @@
         "app/(app)/dashboard/page": {
           "moduleId": "[project]/.next-internal/server/app/(app)/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
+        },
+        "app/(app)/model-accuracy/page": {
+          "moduleId": "[project]/.next-internal/server/app/(app)/model-accuracy/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/ai-chatbot-assistant.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
         }
       },
       "layer": {
-        "app/(app)/dashboard/page": "action-browser"
+        "app/(app)/dashboard/page": "action-browser",
+        "app/(app)/model-accuracy/page": "action-browser"
       }
     }
   },
