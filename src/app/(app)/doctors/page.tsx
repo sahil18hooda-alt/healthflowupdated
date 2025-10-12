@@ -42,20 +42,6 @@ function DoctorsContent() {
           </p>
         </div>
 
-        {/* 🔗 View Live SRM Doctors Button */}
-        <Button
-          asChild
-          variant="outline"
-          className="mt-4 sm:mt-0 bg-accent hover:bg-primary hover:text-primary-foreground transition-colors"
-        >
-          <Link
-            href="https://srmglobalhospitals.com/best-doctors/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View Live SRM Doctors
-          </Link>
-        </Button>
       </div>
 
       {/* Doctor Cards */}

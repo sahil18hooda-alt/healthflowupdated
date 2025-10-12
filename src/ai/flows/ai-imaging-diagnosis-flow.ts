@@ -9,6 +9,10 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import type { ImagingDiagnosisInput, ImagingDiagnosisOutput } from '@/lib/types';
 
+// Detect whether the Google GenAI API key is available so we can gracefully
+// degrade instead of throwing runtime errors in local/dev environments.
+const HAS_GENAI_KEY = !!process.env.GOOGLE_GENAI_API_KEY;
+
 const ImagingDiagnosisInputSchema = z.object({
   image: z
     .string()
@@ -55,17 +59,55 @@ const generateHeatmapFlow = ai.defineFlow(
         outputSchema: z.string(),
     },
     async (flowInput) => {
-        const {media} = await ai.generate({
-            model: 'googleai/gemini-2.5-flash-image-preview',
-            prompt: [
-                {media: {url: flowInput.image}},
-                {text: 'Based on the provided medical image (like an X-ray or CT scan), generate a simulated Grad-CAM heatmap. The heatmap should be a plausible visualization of where an AI might focus its attention to make a diagnosis. Overlay this heatmap onto the original image. The heatmap should use a color scale from yellow (low attention) to red (high attention) and be semi-transparent.'},
-            ],
-            config: {
-                responseModalities: ['TEXT', 'IMAGE'],
-            },
-        });
-        return media!.url;
+        // If no key, skip invoking the model. The caller will handle undefined heatmap
+        // by omitting it from the report.
+        if (!HAS_GENAI_KEY) {
+            // Returning an empty transparent PNG data URI as a benign placeholder.
+            // Consumers can treat empty string as "no heatmap".
+            return '';
+        }
+
+        try {
+            const result: any = await ai.generate({
+                model: 'googleai/gemini-2.5-flash-image-preview',
+                prompt: [
+                    {media: {url: flowInput.image}},
+                    {text: 'Based on the provided medical image (like an X-ray or CT scan), generate a simulated Grad-CAM heatmap. The heatmap should be a plausible visualization of where an AI might focus its attention to make a diagnosis. Overlay this heatmap onto the original image. The heatmap should use a color scale from yellow (low attention) to red (high attention) and be semi-transparent.'},
+                ],
+                config: {
+                    responseModalities: ['TEXT', 'IMAGE'],
+                },
+            });
+
+            // Try to extract an image data URI or URL from a few possible shapes
+            const media = (result && (result.media || result.image || result.images || result.output)) as any;
+
+            const fromMedia = (() => {
+                if (!media) return '';
+                // If a single object with url
+                if (typeof media === 'object' && media !== null && 'url' in media && media.url) return media.url as string;
+                // If an array of media items
+                if (Array.isArray(media) && media.length > 0) {
+                    const first = media[0];
+                    if (first && typeof first === 'object' && 'url' in first && first.url) return first.url as string;
+                }
+                return '';
+            })();
+
+            if (fromMedia && typeof fromMedia === 'string') return fromMedia;
+
+            // Fallback: sometimes models return a data URI in text
+            const text: string | undefined = (result && (result.text || result.outputText || result.response)) as any;
+            if (typeof text === 'string') {
+                const match = text.match(/data:image\/(?:png|jpeg|jpg);base64,[A-Za-z0-9+/=]+/);
+                if (match) return match[0];
+            }
+
+            return '';
+        } catch (e) {
+            // Best-effort heatmap; swallow errors and let caller handle
+            return '';
+        }
     }
 );
 
@@ -77,22 +119,45 @@ const diagnoseImageFlow = ai.defineFlow(
         outputSchema: ImagingDiagnosisOutputSchema,
     },
     async (flowInput) => {
-        // Run text analysis and heatmap generation in parallel for efficiency
-        const [textAnalysisResult, heatmapResult] = await Promise.all([
-            textAnalysisPrompt(flowInput),
-            generateHeatmapFlow(flowInput)
-        ]);
-        
-        const { output } = textAnalysisResult;
-        
-        if (!output) {
-            throw new Error('Text analysis failed to produce an output.');
+        // Helper fallback when AI service is unavailable or fails.
+const fallback = (): ImagingDiagnosisOutput => ({
+            potentialConditions: [],
+            summary: 'AI service is not available. Showing a safe, generic summary based on the uploaded image. Please try again later or contact support if the issue persists.',
+            observations: '- The provided image could not be analyzed by the AI service.\n- Ensure the file is a supported medical image (JPG/PNG).',
+            recommendedDepartment: 'General Practice',
+            disclaimer: 'This AI-generated analysis is for informational purposes only and is NOT a substitute for a professional diagnosis from a qualified radiologist or physician. Please consult with your healthcare provider to review these findings.',
+            heatmapDataUri: undefined,
+            usingFallback: true,
+        });
+
+        // If no API key configured, return a graceful fallback immediately.
+        if (!HAS_GENAI_KEY) {
+            return fallback();
         }
 
-        return {
-            ...output,
-            heatmapDataUri: heatmapResult,
-        };
+        try {
+            // Run text analysis and heatmap generation concurrently. Heatmap is best-effort.
+            const [textAnalysisResult, heatmapMaybe] = await Promise.all([
+                textAnalysisPrompt(flowInput),
+                // Heatmap generation should not fail the entire flow.
+                generateHeatmapFlow(flowInput).catch(() => ''),
+            ]);
+
+            const { output } = textAnalysisResult;
+            if (!output) {
+                // Unexpected: model returned no structured output
+                return fallback();
+            }
+
+return {
+                ...output,
+                heatmapDataUri: heatmapMaybe || undefined,
+                usingFallback: false,
+            };
+        } catch (err) {
+            // Any runtime/model error -> graceful fallback
+            return fallback();
+        }
     }
 );
 

@@ -1,4 +1,10 @@
 
 # environment variables
 .env
+.env.local
 node_modules
+
+# build artifacts
+.next/
+.next-dev-*.log
+.vercel/

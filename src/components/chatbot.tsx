@@ -64,7 +64,7 @@ export default function Chatbot() {
     <>
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
-            <Button variant="primary" size="icon" className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-2xl z-40">
+            <Button variant="default" size="icon" className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-2xl z-40">
                 <MessageSquarePlus className="h-8 w-8" />
             </Button>
         </SheetTrigger>

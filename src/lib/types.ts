@@ -202,6 +202,7 @@ export interface ImagingDiagnosisOutput {
   disclaimer: string;
   heatmapDataUri?: string;
   recommendedDepartment: string;
+  usingFallback?: boolean; // indicates a graceful fallback was used
 }
 
 export type ImagingReport = {

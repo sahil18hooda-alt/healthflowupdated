@@ -124,13 +124,21 @@ export default function DecisionSupportPage() {
         </Alert>
       )}
 
-      {analysis && (
+{analysis && (
         <Card>
           <CardHeader>
             <CardTitle>AI-Generated Analysis</CardTitle>
             <CardDescription>This is a preliminary analysis to support clinical decision-making.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
+            {analysis.usingFallback && (
+              <Alert>
+                <AlertTitle>Showing fallback content</AlertTitle>
+                <AlertDescription>
+                  The AI service wasn’t available. This result is a generic placeholder to keep you unblocked.
+                </AlertDescription>
+              </Alert>
+            )}
             <div>
               <h3 className="font-semibold text-lg mb-2">Possible Conditions</h3>
               <p className="text-sm text-muted-foreground whitespace-pre-wrap">{analysis.possibleConditions}</p>

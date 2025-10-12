@@ -175,7 +175,7 @@ function ImagingDiagnosisContent() {
             <CardTitle>AI Diagnostic Report</CardTitle>
             <CardDescription>This is a preliminary analysis. Please review with your doctor.</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+<CardContent className="space-y-6">
             {isLoading && !analysis ? (
                 <div className="space-y-6">
                     <Skeleton className="h-8 w-3/4" />
@@ -189,6 +189,15 @@ function ImagingDiagnosisContent() {
                 </div>
             ) : analysis && (
                 <>
+                    {analysis.usingFallback && (
+                        <Alert variant="default">
+                            <AlertTitle className="text-lg">Showing a fallback report</AlertTitle>
+                            <AlertDescription>
+                                The AI service isn’t available right now. This report is a generic placeholder and may not reflect your image. Try again later.
+                            </AlertDescription>
+                        </Alert>
+                    )}
+
                     <Alert variant="default">
                         <AlertTitle className="text-lg">Recommended Department for Follow-up</AlertTitle>
                         <AlertDescription className="text-base font-semibold text-primary">
@@ -228,9 +237,21 @@ function ImagingDiagnosisContent() {
                             <CardTitle>AI Confidence Visualization (Simulated)</CardTitle>
                             <CardDescription>This is a generated heatmap showing which parts of the image the AI may have focused on.</CardDescription>
                         </CardHeader>
-                        <CardContent className="flex items-center justify-center bg-black rounded-md aspect-video p-2">
+<CardContent className="flex items-center justify-center bg-black rounded-md aspect-video p-2">
                             {analysis.heatmapDataUri ? (
                                 <Image src={analysis.heatmapDataUri} alt="AI Heatmap Visualization" width={512} height={512} className="rounded-md object-contain aspect-square mx-auto" />
+                            ) : image ? (
+                                <div className="relative w-full max-w-md aspect-square mx-auto rounded-md overflow-hidden">
+                                    <Image src={image} alt="Original image (fallback visualization)" fill className="object-contain" />
+                                    <div
+                                        className="absolute inset-0 pointer-events-none"
+                                        style={{
+                                            background:
+                                                'radial-gradient(circle at 60% 40%, rgba(255,0,0,0.45), rgba(255,165,0,0.35) 25%, rgba(255,255,0,0.2) 50%, rgba(0,0,0,0) 75%)',
+                                            mixBlendMode: 'screen',
+                                        }}
+                                    />
+                                </div>
                             ) : (
                                 <div className="flex flex-col items-center gap-2 text-muted-foreground">
                                     <Loader2 className="h-8 w-8 animate-spin" />

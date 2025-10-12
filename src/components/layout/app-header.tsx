@@ -23,7 +23,7 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { LogOut, UserCircle, Search, Bell, LayoutDashboard, Stethoscope, Calendar, Bot, Beaker } from 'lucide-react';
+import { LogOut, UserCircle, Search, Bell, LayoutDashboard, Stethoscope, Calendar, Bot, Beaker, FileText } from 'lucide-react';
 import { SidebarTrigger } from '../ui/sidebar';
 import { Input } from '../ui/input';
 import { ThemeToggle } from '../theme-toggle';
@@ -37,8 +37,8 @@ const patientNavItems = [
     { href: '/dashboard', icon: <LayoutDashboard />, label: 'Dashboard' },
     { href: '/appointments', icon: <Calendar />, label: 'Appointments' },
     { href: '/doctors', icon: <Stethoscope />, label: 'Find a Doctor' },
-    { href: '/symptom-analyzer', icon: <Bot />, label: 'Symptom Analyzer' },
-    { href: '/medication-checker', icon: <Beaker />, label: 'Interaction Checker' },
+  { href: '/symptom-analyzer', icon: <Bot />, label: 'Symptom Analyzer' },
+  { href: '/medication-checker', icon: <Beaker />, label: 'Interaction Checker' },
 ];
 
 const employeeNavItems = [

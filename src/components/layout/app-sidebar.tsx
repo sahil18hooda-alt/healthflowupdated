@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot, Route, ShieldAlert, Activity, FilePlus, CalendarClock, TestTube, Cross, Beaker, Users as UsersIcon, ScanSearch, Dumbbell, MessageSquare, ShieldCheck } from 'lucide-react';
+import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot, Route, ShieldAlert, Activity, FilePlus, CalendarClock, TestTube, Cross, Beaker, Users as UsersIcon, ScanSearch, Dumbbell, MessageSquare, ShieldCheck, FileText } from 'lucide-react';
 
 import {
   Accordion,

@@ -9,7 +9,8 @@ import { Calendar as CalendarIcon, Bot, Loader2, CalendarClock, User, Stethoscop
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { scheduleAppointment, type ScheduleAppointmentOutput } from '@/ai/flows/ai-surgery-scheduling-assistant';
+import { scheduleAppointment } from '@/ai/flows/ai-surgery-scheduling-assistant';
+import type { ScheduleAppointmentOutput } from '@/lib/types';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';

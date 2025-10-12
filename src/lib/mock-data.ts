@@ -1,6 +1,7 @@
 
 
 import type { Doctor, HospitalReview, Appointment, AttendanceRecord, AppointmentRequest, Medication, ChatMessage } from './types';
+export type { ChatMessage } from './types';
 
 // Custom event for storage updates
 const dispatchStorageEvent = (key: string) => {

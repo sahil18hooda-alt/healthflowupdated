@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Calendar, Pill, Stethoscope, Bot, Beaker } from 'lucide-react';
 import Link from 'next/link';
 import { getPatientAppointments, mockMedications } from '@/lib/mock-data';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { format } from 'date-fns';
 
 const QuickLink = ({ icon, title, href }: { icon: React.ReactNode, title: string, href: string }) => (
@@ -17,7 +17,12 @@ const QuickLink = ({ icon, title, href }: { icon: React.ReactNode, title: string
 );
 
 export default function PatientDashboard({ name }: { name: string }) {
-  const appointments = getPatientAppointments(name);
+  // Load appointments after mount to avoid SSR/localStorage mismatch
+  const [appointments, setAppointments] = useState<ReturnType<typeof getPatientAppointments>>([] as any);
+
+  useEffect(() => {
+    setAppointments(getPatientAppointments(name));
+  }, [name]);
   
   const upcomingAppointment = useMemo(() => {
     const now = new Date();

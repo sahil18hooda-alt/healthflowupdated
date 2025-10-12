@@ -28,6 +28,31 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      // Potential hosts returned by Google AI media endpoints
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'generativelanguage.googleapis.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'gstatic.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };
