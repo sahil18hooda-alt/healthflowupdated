@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot, Route, ShieldAlert, Activity, FilePlus, CalendarClock, TestTube, Cross, Beaker, Users as UsersIcon, ScanSearch, Dumbbell, MessageSquare, ShieldCheck, FileText } from 'lucide-react';
+import { Hospital, LayoutDashboard, Stethoscope, Calendar, Star, Clock, User, Bell, Pill, Settings, BrainCircuit, Bot, Route, ShieldAlert, Activity, FilePlus, CalendarClock, TestTube, Cross, Beaker, Users as UsersIcon, ScanSearch, Dumbbell, MessageSquare, ShieldCheck } from 'lucide-react';
 
 import {
   Accordion,
@@ -25,6 +25,7 @@ const patientNavGroups = [
     {
         title: 'Health Tools',
         items: [
+            { href: '/care-coordination', icon: <Activity />, label: 'Care Coordination' },
             { href: '/symptom-analyzer', icon: <Bot />, label: 'Symptom Analyzer' },
             { href: '/ai-therapist', icon: <BrainCircuit />, label: 'AI Therapist' },
             { href: '/inquiries', icon: <Route />, label: 'Inquiry Assistant' },
@@ -48,6 +49,7 @@ const employeeNavGroups = [
     {
         title: 'Management',
         items: [
+            { href: '/care-coordination', icon: <Activity />, label: 'Care Coordination' },
             { href: '/appointments', icon: <Calendar />, label: 'Appointments' },
             { href: '/requests', icon: <Bell />, label: 'Requests' },
             { href: '/attendance', icon: <Clock />, label: 'Attendance' },

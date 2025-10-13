@@ -226,3 +226,57 @@ export interface FitnessCoachOutput {
     };
   };
 }
+
+// Document analysis types
+export type HealthDocumentStatus = 'uploaded' | 'processing' | 'ready' | 'error';
+
+export type HealthDocumentCategory =
+  | 'lab_report'
+  | 'imaging_report'
+  | 'prescription'
+  | 'discharge_summary'
+  | 'consultation_note'
+  | 'procedure_report'
+  | 'pathology_report'
+  | 'referral_letter'
+  | 'billing_statement'
+  | 'vital_signs'
+  | 'immunization_record'
+  | 'other';
+
+export type AbnormalValueSeverity = 'minor' | 'moderate' | 'major';
+
+export type HealthAbnormalValue = {
+  name: string;
+  value: string;
+  unit?: string;
+  normalRange?: string;
+  severity: AbnormalValueSeverity;
+  page?: number;
+};
+
+export type HealthDocumentAnalysis = {
+  category: HealthDocumentCategory;
+  healthRelevanceScore?: number; // 0-100
+  summary: string;
+  conditions?: string[];
+  medications?: string[];
+  providers?: string[];
+  dates?: string[];
+  abnormalValues?: HealthAbnormalValue[];
+  tags?: string[];
+  disclaimer: string;
+};
+
+export type HealthDocument = {
+  id: string;
+  userId: string;
+  name: string;
+  createdAt: string;
+  status: HealthDocumentStatus;
+  pageCount?: number;
+  chunkCount?: number;
+  storagePath?: string;
+  downloadURL?: string;
+  analysis?: HealthDocumentAnalysis;
+};
