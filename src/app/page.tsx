@@ -1,5 +1,7 @@
+'use client';
 import { Stethoscope, User } from 'lucide-react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 
 import {
   Card,
@@ -8,9 +10,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
+const Galaxy = dynamic(() => import('@/components/Galaxy'), { ssr: false });
+
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
+      <div style={{ width: '100vw', height: '100vh', position: 'fixed', top: 0, left: 0, zIndex: -1 }}>
+        <Galaxy />
+      </div>
       <div className="text-center mb-12">
         <h1 className="font-headline text-5xl md:text-7xl font-bold text-primary-foreground bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">
           HealthFlow
