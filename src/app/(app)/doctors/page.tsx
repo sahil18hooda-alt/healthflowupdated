@@ -1,24 +1,14 @@
 'use client';
 
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { mockDoctors } from '@/lib/mock-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import ProfileCard from '@/components/ProfileCard';
 
 function DoctorsContent() {
   const searchParams = useSearchParams();
-  const role = searchParams.get('role');
 
   const createLink = (href: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -41,7 +31,6 @@ function DoctorsContent() {
             Browse our list of specialists and book an appointment today.
           </p>
         </div>
-
       </div>
 
       {/* Doctor Cards */}
@@ -51,46 +40,21 @@ function DoctorsContent() {
             (p) => p.id === doctor.imageId
           );
           return (
-            <Card key={doctor.id} className="flex flex-col hover:shadow-md transition-shadow">
-              <CardHeader className="items-center text-center">
-                {placeholder && (
-                  <div>
-                    <Image
-                      src={placeholder.imageUrl}
-                      alt={`Photo of ${doctor.name}`}
-                      width={128}
-                      height={128}
-                      className="rounded-full border-4 border-primary/20 shadow-lg"
-                      data-ai-hint={placeholder.imageHint}
-                    />
-                  </div>
-                )}
-              </CardHeader>
-
-              <CardContent className="flex-1 text-center">
-                <CardTitle>{doctor.name}</CardTitle>
-                <CardDescription className="text-primary font-semibold">
-                  {doctor.specialization}
-                </CardDescription>
-                <p className="mt-4 text-sm text-muted-foreground">
-                  {doctor.availability}
-                </p>
-              </CardContent>
-
-              <CardFooter>
-                <Button className="w-full" asChild>
-                  <Link
-                    href={createLink(
-                      `/appointments?tab=book&doctor=${encodeURIComponent(
-                        doctor.name
-                      )}`
-                    )}
-                  >
-                    Book Appointment
-                  </Link>
-                </Button>
-              </CardFooter>
-            </Card>
+            <ProfileCard
+              key={doctor.id}
+              name={doctor.name}
+              title={doctor.specialization}
+              status={doctor.availability}
+              contactText="Book Appointment"
+              avatarUrl={placeholder?.imageUrl}
+              onContactClick={() => {
+                window.location.href = createLink(
+                  `/appointments?tab=book&doctor=${encodeURIComponent(
+                    doctor.name
+                  )}`
+                );
+              }}
+            />
           );
         })}
       </div>
