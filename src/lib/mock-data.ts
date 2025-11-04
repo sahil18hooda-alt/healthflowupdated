@@ -1,5 +1,3 @@
-
-
 import type { Doctor, HospitalReview, Appointment, AttendanceRecord, AppointmentRequest, Medication, ChatMessage } from './types';
 export type { ChatMessage } from './types';
 
@@ -48,6 +46,28 @@ export const mockDoctors: Doctor[] = [
     specialization: 'Cardiologist',
     availability: 'Mon, Wed, Fri (9 AM - 1 PM)',
     imageId: 'doctor-2',
+    description: 'A highly experienced cardiologist with over 15 years of practice, specializing in interventional cardiology and cardiac imaging.',
+    profile: {
+      id: 'prof1',
+      doctorId: '1',
+      education: [
+        { institution: 'All India Institute of Medical Sciences, New Delhi', degree: 'MD, Cardiology', year: '2008' },
+        { institution: 'Jawaharlal Institute of Postgraduate Medical Education & Research, Puducherry', degree: 'MBBS', year: '2004' },
+      ],
+      experience: [
+        { hospital: 'Fortis Escorts Heart Institute, New Delhi', position: 'Senior Consultant Cardiologist', years: '2012-Present' },
+        { hospital: 'Apollo Hospitals, Chennai', position: 'Consultant Cardiologist', years: '2008-2012' },
+      ],
+      publications: [
+        { title: 'Innovations in Cardiac Catheterization', journal: 'Indian Heart Journal', year: '2020' },
+        { title: 'A Study on Heart Failure Management', journal: 'Journal of the American College of Cardiology', year: '2018' },
+      ],
+      awards: [
+        { name: 'Best Cardiologist of the Year', year: '2021' },
+        { name: 'Excellence in Patient Care', year: '2019' },
+      ],
+      personalStatement: 'My mission is to provide cutting-edge, compassionate cardiac care. I believe in a patient-centric approach, where we work together to achieve the best possible outcomes for your heart health. Continuous learning and a commitment to excellence are the cornerstones of my practice.',
+    },
   },
   {
     id: '2',
@@ -55,6 +75,26 @@ export const mockDoctors: Doctor[] = [
     specialization: 'Neurologist',
     availability: 'Tue, Thu (10 AM - 4 PM)',
     imageId: 'doctor-1',
+    description: 'A leading neurologist known for his work in treating complex neurological disorders, including epilepsy and stroke.',
+    profile: {
+      id: 'prof2',
+      doctorId: '2',
+      education: [
+        { institution: 'National Institute of Mental Health and Neurosciences, Bengaluru', degree: 'DM, Neurology', year: '2010' },
+        { institution: 'King George\'s Medical University, Lucknow', degree: 'MBBS', year: '2006' },
+      ],
+      experience: [
+        { hospital: 'Medanta - The Medicity, Gurugram', position: 'Head of Neurology', years: '2015-Present' },
+        { hospital: 'PGIMER, Chandigarh', position: 'Assistant Professor of Neurology', years: '2010-2015' },
+      ],
+      publications: [
+        { title: 'Advances in Stroke Rehabilitation', journal: 'Annals of Indian Academy of Neurology', year: '2022' },
+      ],
+      awards: [
+        { name: 'Pioneer in Neurology', year: '2020' },
+      ],
+      personalStatement: 'I am dedicated to advancing the field of neurology through both clinical practice and research. My focus is on providing comprehensive care for patients with complex neurological conditions, always with a human touch.',
+    },
   },
   {
     id: '3',
@@ -62,6 +102,21 @@ export const mockDoctors: Doctor[] = [
     specialization: 'Pediatrician',
     availability: 'Mon - Fri (9 AM - 5 PM)',
     imageId: 'doctor-3',
+    description: 'A dedicated pediatrician with a passion for child wellness and development, offering comprehensive care for children of all ages.',
+    profile: {
+      id: 'prof3',
+      doctorId: '3',
+      education: [
+        { institution: 'Lady Hardinge Medical College, New Delhi', degree: 'MD, Pediatrics', year: '2012' },
+        { institution: 'Maulana Azad Medical College, New Delhi', degree: 'MBBS', year: '2008' },
+      ],
+      experience: [
+        { hospital: 'Sir Ganga Ram Hospital, New Delhi', position: 'Consultant Pediatrician', years: '2014-Present' },
+      ],
+      publications: [],
+      awards: [],
+      personalStatement: 'I believe in a holistic approach to child health, focusing on both physical and emotional well-being. My goal is to create a friendly and trusting environment where children and parents feel comfortable and supported.',
+    },
   },
   {
     id: '4',
@@ -69,6 +124,21 @@ export const mockDoctors: Doctor[] = [
     specialization: 'Orthopedic Surgeon',
     availability: 'Mon, Thu (2 PM - 6 PM)',
     imageId: 'doctor-5',
+    description: 'A skilled orthopedic surgeon specializing in joint replacement and sports injuries, committed to helping patients regain mobility.',
+    profile: {
+      id: 'prof4',
+      doctorId: '4',
+      education: [
+        { institution: 'Smt. NHL Municipal Medical College, Ahmedabad', degree: 'MS, Orthopedics', year: '2014' },
+        { institution: 'B. J. Medical College, Ahmedabad', degree: 'MBBS', year: '2010' },
+      ],
+      experience: [
+        { hospital: 'Kokilaben Dhirubhai Ambani Hospital, Mumbai', position: 'Orthopedic Surgeon', years: '2016-Present' },
+      ],
+      publications: [],
+      awards: [],
+      personalStatement: 'My focus is on restoring function and relieving pain for my patients. I am committed to using the latest surgical techniques to ensure the best possible outcomes.',
+    },
   },
   {
     id: '5',
@@ -76,6 +146,21 @@ export const mockDoctors: Doctor[] = [
     specialization: 'General Physician',
     availability: 'Mon - Sat (8 AM - 12 PM)',
     imageId: 'doctor-4',
+    description: 'A compassionate general physician with a focus on preventative care and managing chronic conditions.',
+    profile: {
+      id: 'prof5',
+      doctorId: '5',
+      education: [
+        { institution: 'Armed Forces Medical College, Pune', degree: 'MD, General Medicine', year: '2005' },
+        { institution: 'Grant Medical College, Mumbai', degree: 'MBBS', year: '2000' },
+      ],
+      experience: [
+        { hospital: 'Lilavati Hospital and Research Centre, Mumbai', position: 'Consultant Physician', years: '2008-Present' },
+      ],
+      publications: [],
+      awards: [],
+      personalStatement: 'I believe in building long-term relationships with my patients, providing them with continuous and comprehensive care. My approach is to empower patients with knowledge about their health.',
+    },
   },
   {
     id: '6',
@@ -83,6 +168,21 @@ export const mockDoctors: Doctor[] = [
     specialization: 'Dermatologist',
     availability: 'Wed, Fri, Sat (11 AM - 3 PM)',
     imageId: 'doctor-6',
+    description: 'A board-certified dermatologist with expertise in cosmetic dermatology and treatment of skin conditions.',
+    profile: {
+      id: 'prof6',
+      doctorId: '6',
+      education: [
+        { institution: 'Christian Medical College, Vellore', degree: 'MD, Dermatology, Venereology & Leprosy', year: '2016' },
+        { institution: 'Kasturba Medical College, Mangalore', degree: 'MBBS', year: '2012' },
+      ],
+      experience: [
+        { hospital: 'Jaslok Hospital, Mumbai', position: 'Dermatologist', years: '2018-Present' },
+      ],
+      publications: [],
+      awards: [],
+      personalStatement: 'I am passionate about helping people achieve healthy, beautiful skin. I offer a range of treatments, from medical dermatology to the latest cosmetic procedures, all tailored to individual needs.',
+    },
   },
 ];
 
@@ -217,9 +317,9 @@ const initialAppointmentRequests: AppointmentRequest[] = [
   ];
 
 const initialChatMessages: ChatMessage[] = [
-  { id: 'msg1', sender: 'Dr. Arjun Sharma', receiver: 'Guest', content: "Hello! I've reviewed the report you sent over. I'm happy to discuss the results with you. What's on your mind?", timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString()},
-  { id: 'msg2', sender: 'Guest', receiver: 'Dr. Arjun Sharma', content: "Thanks, Doctor. I was a bit worried about the 'minor opacity' mentioned in the summary. What does that mean?", timestamp: new Date(Date.now() - 1000 * 60 * 3).toISOString()},
-  { id: 'msg3', sender: 'Dr. Arjun Sharma', receiver: 'Guest', content: "That's a very common question. An 'opacity' is just a term for an area that looks lighter on an X-ray. In your case, it's very small and likely just some leftover inflammation from a past cold. It's not something to be concerned about at this stage.", timestamp: new Date(Date.now() - 1000 * 60 * 1).toISOString()},
+  { id: 'msg1', sender: 'Dr. Arjun Sharma', receiver: 'Guest', content: "Hello! I\'ve reviewed the report you sent over. I\'m happy to discuss the results with you. What\'s on your mind?", timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString()},
+  { id: 'msg2', sender: 'Guest', receiver: 'Dr. Arjun Sharma', content: "Thanks, Doctor. I was a bit worried about the \'minor opacity\' mentioned in the summary. What does that mean?", timestamp: new Date(Date.now() - 1000 * 60 * 3).toISOString()},
+  { id: 'msg3', sender: 'Dr. Arjun Sharma', receiver: 'Guest', content: "That\'s a very common question. An \'opacity\' is just a term for an area that looks lighter on an X-ray. In your case, it\'s very small and likely just some leftover inflammation from a past cold. It\'s not something to be concerned about at this stage.", timestamp: new Date(Date.now() - 1000 * 60 * 1).toISOString()},
 ];
 
 export const getMessages = () => {

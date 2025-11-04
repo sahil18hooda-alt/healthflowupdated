@@ -1,4 +1,4 @@
-
+import { DoctorProfile } from './types';
 
 export type UserRole = 'patient' | 'employee';
 
@@ -16,6 +16,8 @@ export type Doctor = {
   specialization: string;
   availability: string;
   imageId: string;
+  description?: string;
+  profile?: DoctorProfile;
 };
 
 export type HospitalReview = {
@@ -279,4 +281,14 @@ export type HealthDocument = {
   storagePath?: string;
   downloadURL?: string;
   analysis?: HealthDocumentAnalysis;
+};
+
+export type DoctorProfile = {
+  id: string;
+  doctorId: string;
+  education: Array<{ institution: string; degree: string; year: string; }>;
+  experience: Array<{ hospital: string; position: string; years: string; }>;
+  publications: Array<{ title: string; journal: string; year: string; }>;
+  awards: Array<{ name: string; year: string; }>;
+  personalStatement: string;
 };

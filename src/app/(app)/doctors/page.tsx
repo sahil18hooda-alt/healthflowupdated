@@ -4,11 +4,44 @@ import { mockDoctors } from '@/lib/mock-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
-import ChromaGrid from '@/components/ChromaGrid';
+import { Suspense, useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+
+function DoctorCard({ doctor, placeholder, createLink }) {
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out">
+      <div className="flex">
+        <div className="flex-shrink-0">
+          <img className="h-48 w-48 object-cover" src={placeholder?.imageUrl} alt={doctor.name} />
+        </div>
+        <div className="p-6 flex flex-col justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{doctor.name}</h2>
+            <p className="text-md text-gray-600 dark:text-gray-300">{doctor.specialization}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">{doctor.description}</p>
+          </div>
+          <div className="mt-4 flex space-x-3">
+            <Link href={createLink(`/appointments?tab=book&doctor=${encodeURIComponent(doctor.name)}`)} passHref>
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors duration-300">
+                Book an Appointment
+              </Button>
+            </Link>
+            <Link href={`/doctors/${doctor.id}`} passHref>
+              <Button variant="outline" className="font-bold py-2 px-4 rounded transition-colors duration-300">
+                View Profile
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function DoctorsContent() {
   const searchParams = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState('');
 
   const createLink = (href: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -17,58 +50,42 @@ function DoctorsContent() {
     hrefParams.forEach((value, key) => {
       params.set(key, value);
     });
-
     return `${baseHref}?${params.toString()}`;
   };
 
-  const doctorItems = mockDoctors.map((doctor, index) => {
-    const placeholder = PlaceHolderImages.find((p) => p.id === doctor.imageId);
-    const colors = [
-      { borderColor: "#3B82F6", gradient: "linear-gradient(145deg, #3B82F6, #000)" },
-      { borderColor: "#10B981", gradient: "linear-gradient(180deg, #10B981, #000)" },
-      { borderColor: "#F59E0B", gradient: "linear-gradient(165deg, #F59E0B, #000)" },
-      { borderColor: "#EF4444", gradient: "linear-gradient(195deg, #EF4444, #000)" },
-      { borderColor: "#8B5CF6", gradient: "linear-gradient(225deg, #8B5CF6, #000)" },
-      { borderColor: "#06B6D4", gradient: "linear-gradient(135deg, #06B6D4, #000)" },
-    ];
-    const color = colors[index % colors.length];
-
-    return {
-      image: placeholder?.imageUrl,
-      title: doctor.name,
-      subtitle: doctor.specialization,
-      handle: doctor.availability,
-      borderColor: color.borderColor,
-      gradient: color.gradient,
-      url: createLink(`/appointments?tab=book&doctor=${encodeURIComponent(doctor.name)}`),
-    };
-  });
+  const filteredDoctors = mockDoctors.filter(doctor =>
+    doctor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    doctor.specialization.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Find a Doctor</h1>
-          <p className="text-muted-foreground">
-            Browse our list of specialists and book an appointment today.
-          </p>
+    <div className="space-y-8">
+      <div className="text-center">
+        <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white">Find a Doctor</h1>
+        <p className="mt-2 text-lg text-gray-600 dark:text-gray-300">
+          Search by doctor name or specialization.
+        </p>
+      </div>
+
+      <div className="flex justify-center">
+        <div className="w-full max-w-lg">
+          <Input
+            type="text"
+            placeholder="Search by Doctor Name or Department..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+          />
         </div>
       </div>
 
-      {/* Doctor Cards */}
-      <div style={{ height: 'auto', position: 'relative' }}>
-        <ChromaGrid 
-          items={doctorItems}
-          radius={300}
-          damping={0.45}
-          fadeOut={0.6}
-          ease="power3.out"
-          columns={3}
-        />
+      <div className="grid grid-cols-1 gap-8">
+        {filteredDoctors.map((doctor, index) => {
+          const placeholder = PlaceHolderImages.find((p) => p.id === doctor.imageId);
+          return <DoctorCard key={index} doctor={doctor} placeholder={placeholder} createLink={createLink} />;
+        })}
       </div>
 
-      {/* Small note for transparency */}
       <p className="text-xs text-muted-foreground text-center mt-6">
         Live availability powered by{' '}
         <Link
