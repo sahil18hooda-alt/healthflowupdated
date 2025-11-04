@@ -142,6 +142,16 @@ const initialPatientAppointments: Appointment[] = [
         time: '09:00 AM',
         type: 'Hospital',
         status: 'Completed',
+    },
+    {
+        id: '4',
+        doctorName: 'Dr. Vikram Singh',
+        patientName: 'Guest',
+        date: '2024-08-20',
+        time: '11:00 AM',
+        type: 'Online',
+        status: 'Upcoming',
+        meetingLink: 'https://meet.google.com/abc-def-ghi'
     }
 ];
 
