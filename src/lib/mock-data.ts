@@ -3,6 +3,9 @@
 import type { Doctor, HospitalReview, Appointment, AttendanceRecord, AppointmentRequest, Medication, ChatMessage } from './types';
 export type { ChatMessage } from './types';
 
+const APPOINTMENTS_STORAGE_KEY = 'allAppointments_v2';
+const REQUESTS_STORAGE_KEY = 'appointmentRequests_v2';
+
 // Custom event for storage updates
 const dispatchStorageEvent = (key: string) => {
     if (typeof window !== 'undefined') {
@@ -55,7 +58,7 @@ export const mockDoctors: Doctor[] = [
   },
   {
     id: '3',
-    name: 'Dr. Rohan Patel',
+    name: 'Dr. Nandani Mehra',
     specialization: 'Pediatrician',
     availability: 'Mon - Fri (9 AM - 5 PM)',
     imageId: 'doctor-3',
@@ -114,21 +117,23 @@ export const mockReviews: HospitalReview[] = [
   },
 ];
 
+const futureYear = new Date().getFullYear() + 1;
+
 const initialPatientAppointments: Appointment[] = [
     {
         id: '1',
         doctorName: 'Dr. Arjun Sharma',
         patientName: 'Guest',
-        date: '2024-08-10',
+        date: `${futureYear}-08-10`,
         time: '10:00 AM',
         type: 'Hospital',
         status: 'Upcoming',
     },
     {
         id: '2',
-        doctorName: 'Dr. Rohan Patel',
+        doctorName: 'Dr. Nandani Mehra',
         patientName: 'Guest',
-        date: '2024-08-15',
+        date: `${futureYear}-08-15`,
         time: '02:30 PM',
         type: 'Online',
         status: 'Upcoming',
@@ -147,7 +152,7 @@ const initialPatientAppointments: Appointment[] = [
         id: '4',
         doctorName: 'Dr. Vikram Singh',
         patientName: 'Guest',
-        date: '2024-08-20',
+        date: `${futureYear}-08-20`,
         time: '11:00 AM',
         type: 'Online',
         status: 'Upcoming',
@@ -160,7 +165,7 @@ const initialEmployeeAppointments: Appointment[] = [
         id: 'emp1',
         doctorName: 'Dr. Arjun Sharma',
         patientName: 'Ravi Kumar',
-        date: '2024-08-10',
+        date: `${futureYear}-08-10`,
         time: '11:00 AM',
         type: 'Hospital',
         status: 'Upcoming',
@@ -169,7 +174,7 @@ const initialEmployeeAppointments: Appointment[] = [
         id: 'emp2',
         doctorName: 'Dr. Arjun Sharma',
         patientName: 'Sunita Devi',
-        date: '2024-08-11',
+        date: `${futureYear}-08-11`,
         time: '03:00 PM',
         type: 'Online',
         status: 'Upcoming',
@@ -190,7 +195,7 @@ const initialAppointmentRequests: AppointmentRequest[] = [
     {
       id: 'req1',
       doctor: 'Dr. Arjun Sharma',
-      date: new Date('2024-08-20'),
+      date: new Date(`${futureYear}-08-20`),
       time: '10:00 AM',
       type: 'Hospital',
       patientName: 'Ravi Kumar',
@@ -201,7 +206,7 @@ const initialAppointmentRequests: AppointmentRequest[] = [
     {
       id: 'req2',
       doctor: 'Dr. Vikram Singh',
-      date: new Date('2024-08-21'),
+      date: new Date(`${futureYear}-08-21`),
       time: '11:30 AM',
       type: 'Online',
       patientName: 'Sunita Devi',
@@ -249,17 +254,17 @@ const N8N_MEET_WEBHOOK_URL = 'PASTE_YOUR_N8N_WEBHOOK_URL_HERE';
 
 
 export const getPatientAppointments = (patientName: string) => {
-    const allAppointments = getStoredData<Appointment[]>('allAppointments', [...initialPatientAppointments, ...initialEmployeeAppointments]);
+    const allAppointments = getStoredData<Appointment[]>(APPOINTMENTS_STORAGE_KEY, [...initialPatientAppointments, ...initialEmployeeAppointments]);
     return allAppointments.filter(app => app.patientName === patientName);
 };
 
 export const getEmployeeAppointments = (doctorName: string) => {
-    const allAppointments = getStoredData<Appointment[]>('allAppointments', [...initialPatientAppointments, ...initialEmployeeAppointments]);
+    const allAppointments = getStoredData<Appointment[]>(APPOINTMENTS_STORAGE_KEY, [...initialPatientAppointments, ...initialEmployeeAppointments]);
     return allAppointments.filter(app => app.doctorName === doctorName);
 };
 
 export const getAppointmentRequests = () => {
-    const requests = getStoredData<AppointmentRequest[]>('appointmentRequests', initialAppointmentRequests);
+    const requests = getStoredData<AppointmentRequest[]>(REQUESTS_STORAGE_KEY, initialAppointmentRequests);
     return requests.map(req => ({...req, date: new Date(req.date)}));
 };
 
@@ -273,7 +278,7 @@ export const addAppointmentRequest = (request: Omit<AppointmentRequest, 'id' | '
         patientName,
     };
     const updatedRequests = [newRequest, ...requests];
-    setStoredData('appointmentRequests', updatedRequests);
+    setStoredData(REQUESTS_STORAGE_KEY, updatedRequests);
     return newRequest;
 }
 
@@ -286,7 +291,7 @@ export const updateAppointmentRequestStatus = async (id: string, status: 'Accept
         request.status = status;
         
         if (status === 'Accepted') {
-            const allAppointments = getStoredData<Appointment[]>('allAppointments', [...initialPatientAppointments, ...initialEmployeeAppointments]);
+            const allAppointments = getStoredData<Appointment[]>(APPOINTMENTS_STORAGE_KEY, [...initialPatientAppointments, ...initialEmployeeAppointments]);
             const newAppointment: Appointment = {
                 id: `app${Date.now()}`,
                 doctorName: request.doctor,
@@ -324,10 +329,10 @@ export const updateAppointmentRequestStatus = async (id: string, status: 'Accept
                 newAppointment.meetingLink = `https://meet.google.com/${randomString}`;
             }
             
-            setStoredData('allAppointments', [...allAppointments, newAppointment]);
+            setStoredData(APPOINTMENTS_STORAGE_KEY, [...allAppointments, newAppointment]);
         }
         
-        setStoredData('appointmentRequests', requests);
+        setStoredData(REQUESTS_STORAGE_KEY, requests);
         
         return requests[requestIndex];
     }
@@ -335,7 +340,7 @@ export const updateAppointmentRequestStatus = async (id: string, status: 'Accept
 };
 
 export const addAppointment = async (appointment: Omit<Appointment, 'id' | 'status'>) => {
-    const allAppointments = getStoredData<Appointment[]>('allAppointments', [...initialPatientAppointments, ...initialEmployeeAppointments]);
+    const allAppointments = getStoredData<Appointment[]>(APPOINTMENTS_STORAGE_KEY, [...initialPatientAppointments, ...initialEmployeeAppointments]);
     const newAppointment: Appointment = {
         ...appointment,
         id: `app${Date.now()}`,
@@ -368,7 +373,7 @@ export const addAppointment = async (appointment: Omit<Appointment, 'id' | 'stat
         newAppointment.meetingLink = `https://meet.google.com/${randomString}`;
     }
     
-    setStoredData('allAppointments', [...allAppointments, newAppointment]);
+    setStoredData(APPOINTMENTS_STORAGE_KEY, [...allAppointments, newAppointment]);
     return newAppointment;
 };
 

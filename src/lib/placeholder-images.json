@@ -15,14 +15,14 @@
     {
       "id": "doctor-3",
       "description": "An experienced senior male doctor.",
-      "imageUrl": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkb2N0b3J8ZW58MHx8fHwxNzIyMzgxODg5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://media.istockphoto.com/id/497142181/photo/physician.jpg?s=612x612&w=0&k=20&c=PX_lRXXQo7lUpE1Slj2vHsiCnZZnVNF_OX99-ag6O_8=",
       "imageHint": "doctor"
     },
     {
       "id": "doctor-4",
-      "description": "A young, energetic female doctor.",
-      "imageUrl": "https://images.unsplash.com/photo-1537368910025-700350fe46c7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkb2N0b3J8ZW58MHx8fHwxNzIyMzgxODg5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "doctor"
+      "description": "A young, energetic Indian female doctor.",
+      "imageUrl": "https://media.istockphoto.com/id/1293373291/photo/portrait-of-confident-ethnic-female-doctor.jpg?s=612x612&w=0&k=20&c=CJsw6IgTecJZoBeVXqZdvh2BI-NyVa-8VcQM3fPhbYc=",
+      "imageHint": "Indian female doctor"
     },
     {
       "id": "doctor-5",
@@ -33,7 +33,7 @@
     {
       "id": "doctor-6",
       "description": "A female surgeon in scrubs.",
-      "imageUrl": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxJbmRpYW4lMjBkb2N0b3J8ZW58MHx8fHwxNzU5MDY5MDQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://media.istockphoto.com/id/1194419245/photo/i-have-a-chance-to-make-a-difference-each-day.jpg?s=612x612&w=0&k=20&c=iyacaRuIIYabsuhojT2nDyamlxILvHMZl1NL2--Prvw=",
       "imageHint": "Indian doctor"
     }
   ]
