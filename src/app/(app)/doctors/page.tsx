@@ -8,36 +8,7 @@ import { Suspense, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-function DoctorCard({ doctor, placeholder, createLink }) {
-  return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out">
-      <div className="flex">
-        <div className="flex-shrink-0">
-          <img className="h-48 w-48 object-cover" src={placeholder?.imageUrl} alt={doctor.name} />
-        </div>
-        <div className="p-6 flex flex-col justify-between">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{doctor.name}</h2>
-            <p className="text-md text-gray-600 dark:text-gray-300">{doctor.specialization}</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">{doctor.description}</p>
-          </div>
-          <div className="mt-4 flex space-x-3">
-            <Link href={createLink(`/appointments?tab=book&doctor=${encodeURIComponent(doctor.name)}`)} passHref>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors duration-300">
-                Book an Appointment
-              </Button>
-            </Link>
-            <Link href={`/doctors/${doctor.id}`} passHref>
-              <Button variant="outline" className="font-bold py-2 px-4 rounded transition-colors duration-300">
-                View Profile
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+import { FlipCard } from '@/components/animate-ui/components/community/flip-card';
 
 function DoctorsContent() {
   const searchParams = useSearchParams();
@@ -79,10 +50,18 @@ function DoctorsContent() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
         {filteredDoctors.map((doctor, index) => {
           const placeholder = PlaceHolderImages.find((p) => p.id === doctor.imageId);
-          return <DoctorCard key={index} doctor={doctor} placeholder={placeholder} createLink={createLink} />;
+          const cardData = {
+            name: doctor.name,
+            specialization: doctor.specialization,
+            image: placeholder?.imageUrl || '',
+            bio: doctor.description || '',
+            id: doctor.id,
+            createLink: createLink,
+          };
+          return <FlipCard key={index} data={cardData} />;
         })}
       </div>
 

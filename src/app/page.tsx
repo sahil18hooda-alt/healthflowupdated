@@ -23,8 +23,9 @@ export default function Home() {
           forceHoverState={false}
         />
       </div>
+
       <div className="text-center mb-12">
-        <h1 className="font-headline text-5xl md:text-7xl font-bold text-primary-foreground bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">
+        <h1 className="font-headline text-5xl md:text-7xl font-bold text-primary-foreground bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300 drop-shadow-md">
           HealthFlow
         </h1>
         <p className="mt-4 text-lg md:text-xl text-foreground/80 max-w-2xl mx-auto">
@@ -35,20 +36,20 @@ export default function Home() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl w-full">
         <Link href="/dashboard?role=patient">
-          <Card className="text-center hover:shadow-lg hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-1">
+          <Card className="text-center hover:shadow-lg hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-1 bg-black/40 backdrop-blur-md border-white/10 text-white">
             <CardHeader>
-              <User className="h-12 w-12 mx-auto text-primary" />
+              <User className="h-12 w-12 mx-auto text-blue-400" />
               <CardTitle className="mt-4">Patient Portal</CardTitle>
-              <CardDescription>Access your health records, book appointments, and connect with your doctor.</CardDescription>
+              <CardDescription className="text-gray-200">Access your health records, book appointments, and connect with your doctor.</CardDescription>
             </CardHeader>
           </Card>
         </Link>
         <Link href="/dashboard?role=employee">
-          <Card className="text-center hover:shadow-lg hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-1">
+          <Card className="text-center hover:shadow-lg hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-1 bg-black/40 backdrop-blur-md border-white/10 text-white">
             <CardHeader>
-              <Stethoscope className="h-12 w-12 mx-auto text-primary" />
+              <Stethoscope className="h-12 w-12 mx-auto text-blue-400" />
               <CardTitle className="mt-4">Doctor Portal</CardTitle>
-              <CardDescription>Manage your appointments, view patient requests, and track your schedule.</CardDescription>
+              <CardDescription className="text-gray-200">Manage your appointments, view patient requests, and track your schedule.</CardDescription>
             </CardHeader>
           </Card>
         </Link>

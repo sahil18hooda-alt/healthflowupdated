@@ -15,7 +15,6 @@ import '@/ai/flows/ai-medication-interaction-checker.ts';
 import '@/ai/flows/ai-queue-management.ts';
 import '@/ai/flows/ai-imaging-diagnosis-flow.ts';
 import '@/ai/flows/ai-fitness-coach-flow.ts'
-import '@/ai/flows/rag-ingest-pdf.ts';
-import '@/ai/flows/rag-chat.ts';
+
 import '@/ai/flows/care-insights.ts';
 import '@/ai/flows/rag-website-chat.ts';
