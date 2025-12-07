@@ -34,6 +34,7 @@ const patientNavGroups = [
             { href: '/queue-status', icon: <UsersIcon />, label: 'Queue Status' },
             { href: '/imaging-diagnosis', icon: <ScanSearch />, label: 'AI Imaging' },
             { href: '/fitness-coach', icon: <Dumbbell />, label: 'Fitness Coach' },
+            { href: '/diabetes-prediction', icon: <Activity />, label: 'Diabetes Prediction' },
 
 
         ]
